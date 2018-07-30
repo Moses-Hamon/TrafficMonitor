@@ -1,12 +1,28 @@
 
 package traffic_monitor_application_v1;
 
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.*;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 /**
  *
  * @author Moses
@@ -33,7 +49,6 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setVisible(true);
         setTitle("Traffic Monitor Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         
         displayGUI();
     }
@@ -41,21 +56,18 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         SpringLayout TrafficLayout = new SpringLayout();
         setLayout(TrafficLayout);
-        displayPanels(TrafficLayout);
+        displayPanels();
         displayButtons(TrafficLayout);
-        
+        pnlTrafficData.add(btnPreOrderDisplay);
     }
     private void displayButtons(SpringLayout layout)
     {
         btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Pre-Order Display", 50, 600, 150, 35);
         
     }
-    private void displayPanels(SpringLayout layout)
+    private void displayPanels()
     {
         pnlTrafficData = new JPanel();
-        pnlTrafficData.setLayout(layout);
-        
-        pnlTrafficData.setVisible(true);
         pnlTrafficData.setBackground(Color.yellow);
         this.add(pnlTrafficData);
     }
