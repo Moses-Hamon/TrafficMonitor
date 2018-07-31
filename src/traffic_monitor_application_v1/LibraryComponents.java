@@ -23,6 +23,7 @@ package traffic_monitor_application_v1;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 
@@ -45,6 +46,7 @@ public class LibraryComponents
 	// Set the position of the JLabel (From left hand side of the JFrame (West), and from top of JFrame (North))
         myJLabelLayout.putConstraint(SpringLayout.WEST, myJLabel, x, SpringLayout.WEST, myJFrame);
         myJLabelLayout.putConstraint(SpringLayout.NORTH, myJLabel, y, SpringLayout.NORTH, myJFrame);
+        myJLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 	// Return the label to the calling method
         return myJLabel;
     }

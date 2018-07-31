@@ -3,7 +3,6 @@ package traffic_monitor_application_v1;
 
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +21,8 @@ import javax.swing.*;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 
 /**
@@ -34,7 +35,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay, btnPreOrderSave, btnInOrderDisplay,  btnInOrderSave, btnPostOrderDisplay, btnPostOrderSave, btnBinaryTreeDisplay ;
     private JTextArea txtLinkedList, txtBinaryTreeList;
     private JPanel pnlTrafficData, pnlInformation;
-    private JLabel lblTitle, lblDataHeading, lblDataTime, lblDataLocation, lblDataAverageVehicleNum, lblDataAverageVelocity;
+    private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder;
     private JTable tblTrafficData;
 
     public static void main(String[] args)
@@ -45,12 +46,12 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         myFrame.setLocationRelativeTo(null);
         myFrame.setResizable(true);
         myFrame.setVisible(true);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    private void Traffic_Monitor_Application_v1()
+    public Traffic_Monitor_Application_v1()
     {
         setTitle("Traffic Monitor Application");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         SpringLayout TrafficLayout = new SpringLayout();
         setLayout(TrafficLayout);
@@ -60,15 +61,39 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     }
     
     private void displayLabels(SpringLayout layout){
-        lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Office", 50, 50);
-        lblDataTime = LibraryComponents.LocateAJLabel(this, layout, "Time", 50, 50);
+        
+        lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Office", 300, 0);
+        lblTitle.setFont(new Font("Serif", Font.PLAIN, 50));
+        
+        lblDataHeading = LibraryComponents.LocateAJLabel(this, layout, "Traffic Monitoring Data", 100, 75);
+        
+        lblPreOrder= LibraryComponents.LocateAJLabel(this, layout, "Pre-Order", 50, 565);
+        setupLabel(lblPreOrder);
+        lblInOrder = LibraryComponents.LocateAJLabel(this, layout, "In-Order", 400, 565);
+        setupLabel(lblInOrder);
+        lblPostOrder = LibraryComponents.LocateAJLabel(this, layout, "Post-Order", 800, 565);
+        setupLabel(lblPostOrder);
+        
     }
     private void displayButtons(SpringLayout layout)
     {
-        btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Pre-Order Display", 50, 600, 150, 35);
+        btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 50, 600, 75, 35);
+        btnPreOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 125, 600, 75, 35);
         
+        btnInOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 400, 600, 75, 35);
+        btnInOrderSave  = LibraryComponents.LocateAJButton(this, this, layout, "Save", 475, 600, 75, 35);
+        
+        btnPostOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 800, 600, 75, 35);
+        btnPostOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 875, 600, 75, 35);
     }
-   
+private void setupLabel(JLabel label){
+    label.setBorder(new LineBorder(Color.BLACK));
+    label.setPreferredSize(new Dimension(150, 35));
+    label.setOpaque(true);
+    label.setBackground(Color.GREEN);
+    label.setHorizontalAlignment(JLabel.CENTER);
+    label.setVerticalAlignment(JLabel.CENTER);
+}
 
 
     @Override
