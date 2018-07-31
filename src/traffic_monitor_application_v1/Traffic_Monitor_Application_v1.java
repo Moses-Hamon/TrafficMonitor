@@ -59,6 +59,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayLabels(TrafficLayout);
         displayButtons(TrafficLayout);
         displayTextFields(TrafficLayout);
+        displayJTable(TrafficLayout);
     }
     
     private void displayLabels(SpringLayout layout){
@@ -70,12 +71,15 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         
         lblPreOrder= LibraryComponents.LocateAJLabel(this, layout, "Pre-Order", 50, 575);
         setupLabel(lblPreOrder);
+        
         lblInOrder = LibraryComponents.LocateAJLabel(this, layout, "In-Order", 400, 575);
         setupLabel(lblInOrder);
+        
         lblPostOrder = LibraryComponents.LocateAJLabel(this, layout, "Post-Order", 800, 575);
         setupLabel(lblPostOrder);
-        lblLinkedList = LibraryComponents.LocateAJLabel(this, layout, "Linked List:", 5, 330);
-        lblBinaryTree = LibraryComponents.LocateAJLabel(this, layout, "Binary Tree:", 5, 450);
+        
+        lblLinkedList = LibraryComponents.LocateAJLabel(this, layout, "Linked List:", 5, 320);
+        lblBinaryTree = LibraryComponents.LocateAJLabel(this, layout, "Binary Tree:", 5, 445);
         
     }
     private void displayButtons(SpringLayout layout)
@@ -104,9 +108,17 @@ private void setupLabel(JLabel label){
 }
 private void displayTextFields(SpringLayout layout){
     
-    txtLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txtLinkedList, 5, 350, 5, 88);
+    txtLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txtLinkedList, 5, 340, 5, 108);
     
-   txtBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txtBinaryTreeList, 5, 470, 6, 88);
+   txtBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txtBinaryTreeList, 5, 465, 5, 108);
+}
+private void displayJTable(SpringLayout layout){
+    tblTrafficData = new JTable();
+    add(tblTrafficData);
+    JScrollPane tablePane = new JScrollPane(tblTrafficData);
+    layout.putConstraint(SpringLayout.WEST, tablePane, 50, SpringLayout.WEST, this);
+    layout.putConstraint(SpringLayout.NORTH, tablePane, 50, SpringLayout.NORTH, this);
+    this.add(tablePane);
 }
 
 

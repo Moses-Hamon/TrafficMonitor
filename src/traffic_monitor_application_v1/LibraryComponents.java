@@ -102,9 +102,10 @@ public class LibraryComponents
         myJTextArea.setWrapStyleWord(true);
         myJTextArea.setLineWrap(true);
         myJTextArea.setFont(new Font("Consolas", Font.PLAIN, 16));
-        myJFrame.add(myJTextArea);
-        myLayout.putConstraint(SpringLayout.WEST, myJTextArea, x, SpringLayout.WEST, myJFrame);
-        myLayout.putConstraint(SpringLayout.NORTH, myJTextArea, y, SpringLayout.NORTH, myJFrame);
+        JScrollPane myScrollPane = new JScrollPane(myJTextArea);
+        myJFrame.add(myScrollPane);
+        myLayout.putConstraint(SpringLayout.WEST, myScrollPane, x, SpringLayout.WEST, myJFrame);
+        myLayout.putConstraint(SpringLayout.NORTH, myScrollPane, y, SpringLayout.NORTH, myJFrame);
         
         return myJTextArea;
     }
