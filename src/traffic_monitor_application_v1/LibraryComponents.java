@@ -20,6 +20,7 @@
 package traffic_monitor_application_v1;
 
 
+import java.awt.BorderLayout;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.Dimension;
@@ -96,10 +97,15 @@ public class LibraryComponents
     */
     public static JTextArea LocateAJTextArea(JFrame myJFrame, SpringLayout myLayout, JTextArea myJTextArea, int x, int y, int w, int h)
     {    
+        
         myJTextArea = new JTextArea(w,h);
+        myJTextArea.setWrapStyleWord(true);
+        myJTextArea.setLineWrap(true);
+        myJTextArea.setFont(new Font("Consolas", Font.PLAIN, 16));
         myJFrame.add(myJTextArea);
         myLayout.putConstraint(SpringLayout.WEST, myJTextArea, x, SpringLayout.WEST, myJFrame);
         myLayout.putConstraint(SpringLayout.NORTH, myJTextArea, y, SpringLayout.NORTH, myJFrame);
+        
         return myJTextArea;
     }
 //    public static JPanel LocateAJPanel(JFrame myJFrame, SpringLayout myLayout, JPanel myJPanel){

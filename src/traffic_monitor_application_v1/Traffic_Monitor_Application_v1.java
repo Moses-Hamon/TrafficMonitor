@@ -35,7 +35,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay, btnPreOrderSave, btnInOrderDisplay,  btnInOrderSave, btnPostOrderDisplay, btnPostOrderSave, btnBinaryTreeDisplay ;
     private JTextArea txtLinkedList, txtBinaryTreeList;
     private JPanel pnlTrafficData, pnlInformation;
-    private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder;
+    private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder, lblLinkedList, lblBinaryTree;
     private JTable tblTrafficData;
 
     public static void main(String[] args)
@@ -74,6 +74,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setupLabel(lblInOrder);
         lblPostOrder = LibraryComponents.LocateAJLabel(this, layout, "Post-Order", 800, 575);
         setupLabel(lblPostOrder);
+        lblLinkedList = LibraryComponents.LocateAJLabel(this, layout, "Linked List:", 5, 330);
+        lblBinaryTree = LibraryComponents.LocateAJLabel(this, layout, "Binary Tree:", 5, 450);
         
     }
     private void displayButtons(SpringLayout layout)
@@ -101,8 +103,10 @@ private void setupLabel(JLabel label){
     label.setVerticalAlignment(JLabel.CENTER);
 }
 private void displayTextFields(SpringLayout layout){
-    txtLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txtLinkedList, 5, 370, 5, 88);
-   txtBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txtBinaryTreeList, 5, 480, 5, 88);
+    
+    txtLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txtLinkedList, 5, 350, 5, 88);
+    
+   txtBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txtBinaryTreeList, 5, 470, 6, 88);
 }
 
 
