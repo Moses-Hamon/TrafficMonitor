@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.*;
 
+
 /**
  *
  * @author Moses
@@ -38,39 +39,36 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
     public static void main(String[] args)
     {
-        Traffic_Monitor_Application_v1 TrafficApplication = new Traffic_Monitor_Application_v1();
-        TrafficApplication.run();
+        JFrame myFrame = new Traffic_Monitor_Application_v1();
+        
+        myFrame.setSize(1000,700);
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setResizable(true);
+        myFrame.setVisible(true);
     }
     
-    private void run()
+    private void Traffic_Monitor_Application_v1()
     {
-        setSize(1000,700); //sets size
-        setLocationRelativeTo(null);
-        setVisible(true);
         setTitle("Traffic Monitor Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        displayGUI();
-    }
-    public void displayGUI()
-    {
         SpringLayout TrafficLayout = new SpringLayout();
         setLayout(TrafficLayout);
-        displayPanels();
+        
+        displayLabels(TrafficLayout);
         displayButtons(TrafficLayout);
-        pnlTrafficData.add(btnPreOrderDisplay);
+    }
+    
+    private void displayLabels(SpringLayout layout){
+        lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Office", 50, 50);
+        lblDataTime = LibraryComponents.LocateAJLabel(this, layout, "Time", 50, 50);
     }
     private void displayButtons(SpringLayout layout)
     {
         btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Pre-Order Display", 50, 600, 150, 35);
         
     }
-    private void displayPanels()
-    {
-        pnlTrafficData = new JPanel();
-        pnlTrafficData.setBackground(Color.yellow);
-        this.add(pnlTrafficData);
-    }
+   
 
 
     @Override
