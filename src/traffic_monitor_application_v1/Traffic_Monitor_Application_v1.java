@@ -58,6 +58,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         
         displayLabels(TrafficLayout);
         displayButtons(TrafficLayout);
+        displayTextFields(TrafficLayout);
     }
     
     private void displayLabels(SpringLayout layout){
@@ -67,24 +68,29 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         
         lblDataHeading = LibraryComponents.LocateAJLabel(this, layout, "Traffic Monitoring Data", 100, 75);
         
-        lblPreOrder= LibraryComponents.LocateAJLabel(this, layout, "Pre-Order", 50, 565);
+        lblPreOrder= LibraryComponents.LocateAJLabel(this, layout, "Pre-Order", 50, 575);
         setupLabel(lblPreOrder);
-        lblInOrder = LibraryComponents.LocateAJLabel(this, layout, "In-Order", 400, 565);
+        lblInOrder = LibraryComponents.LocateAJLabel(this, layout, "In-Order", 400, 575);
         setupLabel(lblInOrder);
-        lblPostOrder = LibraryComponents.LocateAJLabel(this, layout, "Post-Order", 800, 565);
+        lblPostOrder = LibraryComponents.LocateAJLabel(this, layout, "Post-Order", 800, 575);
         setupLabel(lblPostOrder);
         
     }
     private void displayButtons(SpringLayout layout)
     {
-        btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 50, 600, 75, 35);
-        btnPreOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 125, 600, 75, 35);
+        btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 50, 610, 75, 35);
+        btnPreOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 125, 610, 75, 35);
         
-        btnInOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 400, 600, 75, 35);
-        btnInOrderSave  = LibraryComponents.LocateAJButton(this, this, layout, "Save", 475, 600, 75, 35);
+        btnInOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 400, 610, 75, 35);
+        btnInOrderSave  = LibraryComponents.LocateAJButton(this, this, layout, "Save", 475, 610, 75, 35);
         
-        btnPostOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 800, 600, 75, 35);
-        btnPostOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 875, 600, 75, 35);
+        btnPostOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 800, 610, 75, 35);
+        btnPostOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 875, 610, 75, 35);
+        
+        btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 750, 300, 200, 25);
+        btnSortLocation = LibraryComponents.LocateAJButton(this, this, layout, "Location", 190, 300, 90, 25);
+        btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 280, 300, 90, 25);
+        btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 370, 300, 80, 25);
     }
 private void setupLabel(JLabel label){
     label.setBorder(new LineBorder(Color.BLACK));
@@ -93,6 +99,10 @@ private void setupLabel(JLabel label){
     label.setBackground(Color.GREEN);
     label.setHorizontalAlignment(JLabel.CENTER);
     label.setVerticalAlignment(JLabel.CENTER);
+}
+private void displayTextFields(SpringLayout layout){
+    txtLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txtLinkedList, 5, 370, 5, 88);
+   txtBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txtBinaryTreeList, 5, 480, 5, 88);
 }
 
 
