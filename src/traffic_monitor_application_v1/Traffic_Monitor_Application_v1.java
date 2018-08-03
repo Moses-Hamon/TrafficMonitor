@@ -118,27 +118,16 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         // Create column names
         String columnNames[] =
         {
-            "Word 1", "Word 2"
+            "Time", "Location", "Av.Vehicle#", "Av.Velocity" 
         };
 
         // Create some data
         ArrayList<Object[]> dataValues = new ArrayList();
         dataValues.add(new Object[]
         {
-            "Yes", "No"
+            "Yes", "No" , "h", "k" 
         });
-        dataValues.add(new Object[]
-        {
-            "Hi", "there"
-        });
-        dataValues.add(new Object[]
-        {
-            "True", "False"
-        });
-        dataValues.add(new Object[]
-        {
-            "Cat", "Dog"
-        });
+  
 
         // constructor of JTable model
         trafficModel = new MyModel(dataValues, columnNames);
@@ -160,9 +149,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         // Add the table to a scrolling pane, size and locate
         JScrollPane scrollPane = tblTrafficData.createScrollPaneForTable(tblTrafficData);
         pnlTrafficData.add(scrollPane, BorderLayout.CENTER);
-        pnlTrafficData.setPreferredSize(new Dimension(172, 115));
-        layout.putConstraint(SpringLayout.WEST, pnlTrafficData, 280, SpringLayout.WEST, this);
-        layout.putConstraint(SpringLayout.NORTH, pnlTrafficData, 40, SpringLayout.NORTH, this);
+        pnlTrafficData.setPreferredSize(new Dimension(400, 250));
+        layout.putConstraint(SpringLayout.WEST, pnlTrafficData, 10, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.NORTH, pnlTrafficData, 75, SpringLayout.NORTH, this);
     }
 
     @Override
