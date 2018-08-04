@@ -45,7 +45,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         myFrame.setSize(800, 700);
         myFrame.getContentPane().setBackground(new Color(255, 254, 235)); //Sets Jframe Background Color
         myFrame.setLocationRelativeTo(null); //open in the middle of the screen. 
-        myFrame.setResizable(true);
+        myFrame.setResizable(false);
         myFrame.setVisible(true);
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -67,18 +67,22 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private void displayLabels(SpringLayout layout)
     {
         lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Office", 0, 15);
-        lblTitle.setFont(new Font("Aharoni", Font.PLAIN, 50));
         lblDataHeading = LibraryComponents.LocateAJLabel(this, layout, "Traffic Monitoring Data", 100, 75);
-        lblPreOrder = LibraryComponents.LocateAJLabel(this, layout, "Pre-Order", 50, 575);
-        lblInOrder = LibraryComponents.LocateAJLabel(this, layout, "In-Order", 400, 575);
-        lblPostOrder = LibraryComponents.LocateAJLabel(this, layout, "Post-Order", 800, 575);
+        lblPreOrder = LibraryComponents.LocateAJLabel(this, layout, "Pre-Order", 5, 575);
+        lblInOrder = LibraryComponents.LocateAJLabel(this, layout, "In-Order", 322, 575);
+        lblPostOrder = LibraryComponents.LocateAJLabel(this, layout, "Post-Order", 640, 575);
         lblLinkedList = LibraryComponents.LocateAJLabel(this, layout, "Linked List:", 5, 320);
         lblBinaryTree = LibraryComponents.LocateAJLabel(this, layout, "Binary Tree:", 5, 445);
     }
     private void setupLabels()
     {
-        setupLabel(lblTitle, 800, 60, guiColor);
-        setupLabel(lblPreOrder, 150, 35, Color.GREEN);
+        setupLabel(lblTitle, 805, 60, guiColor);
+        lblTitle.setFont(new Font("Aharoni", Font.PLAIN, 50));
+        setupLabel(lblPreOrder, 150, 35, guiColor);
+        setupLabel(lblInOrder, 150, 35, guiColor);
+        setupLabel(lblPostOrder, 150, 35, guiColor);
+        setupLabel(lblLinkedList, 120, 20, guiColor);
+        setupLabel(lblBinaryTree, 120, 20, guiColor);
     }
 
     private void setupLabel(JLabel label, int x, int y, Color color)
@@ -93,12 +97,12 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     }
     private void displayButtons(SpringLayout layout)
     {
-        btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 50, 610, 75, 35);
-        btnPreOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 125, 610, 75, 35);
-        btnInOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 400, 610, 75, 35);
-        btnInOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 475, 610, 75, 35);
-        btnPostOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 800, 610, 75, 35);
-        btnPostOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 875, 610, 75, 35);
+        btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 5, 610, 75, 35);
+        btnPreOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 80, 610, 75, 35);
+        btnInOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 322, 610, 75, 35);
+        btnInOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 397, 610, 75, 35);
+        btnPostOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 640, 610, 75, 35);
+        btnPostOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 715, 610, 75, 35);
         btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 750, 300, 200, 25);
         btnSortLocation = LibraryComponents.LocateAJButton(this, this, layout, "Location", 190, 300, 90, 25);
         btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 280, 300, 90, 25);
@@ -109,8 +113,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
     private void displayTextFields(SpringLayout layout)
     {
-        txtLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txtLinkedList, 5, 340, 5, 108);
-        txtBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txtBinaryTreeList, 5, 465, 5, 108);
+        txtLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txtLinkedList, 5, 340, 5, 87);
+        txtBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txtBinaryTreeList, 5, 465, 5, 87);
     }
 
     private void displayJTable(SpringLayout layout)
