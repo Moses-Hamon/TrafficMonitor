@@ -36,13 +36,15 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder, lblLinkedList, lblBinaryTree;
     private JTable tblTrafficData;
     private MyModel trafficModel;
+    private Color guiColor = new Color(0, 102, 0);
 
     public static void main(String[] args)
     {
         JFrame myFrame = new Traffic_Monitor_Application_v1();
 
-        myFrame.setSize(1000, 700);
-        myFrame.setLocationRelativeTo(null);
+        myFrame.setSize(800, 700);
+        myFrame.getContentPane().setBackground(new Color(255, 254, 235)); //Sets Jframe Background Color
+        myFrame.setLocationRelativeTo(null); //open in the middle of the screen. 
         myFrame.setResizable(true);
         myFrame.setVisible(true);
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,6 +58,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setLayout(TrafficLayout);
 
         displayLabels(TrafficLayout);
+        setupLabels();
         displayButtons(TrafficLayout);
         displayTextFields(TrafficLayout);
         displayJTable(TrafficLayout);
@@ -63,8 +66,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
     private void displayLabels(SpringLayout layout)
     {
-        lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Office", 300, 0);
-        lblTitle.setFont(new Font("Serif", Font.PLAIN, 50));
+        lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Office", 0, 15);
+        lblTitle.setFont(new Font("Aharoni", Font.PLAIN, 50));
         lblDataHeading = LibraryComponents.LocateAJLabel(this, layout, "Traffic Monitoring Data", 100, 75);
         lblPreOrder = LibraryComponents.LocateAJLabel(this, layout, "Pre-Order", 50, 575);
         lblInOrder = LibraryComponents.LocateAJLabel(this, layout, "In-Order", 400, 575);
@@ -72,7 +75,22 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         lblLinkedList = LibraryComponents.LocateAJLabel(this, layout, "Linked List:", 5, 320);
         lblBinaryTree = LibraryComponents.LocateAJLabel(this, layout, "Binary Tree:", 5, 445);
     }
+    private void setupLabels()
+    {
+        setupLabel(lblTitle, 800, 60, guiColor);
+        setupLabel(lblPreOrder, 150, 35, Color.GREEN);
+    }
 
+    private void setupLabel(JLabel label, int x, int y, Color color)
+    {
+        label.setBorder(new LineBorder(Color.BLACK));
+        label.setPreferredSize(new Dimension(x, y));
+        label.setOpaque(true);
+        label.setBackground(color);
+        label.setForeground(Color.WHITE);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
+    }
     private void displayButtons(SpringLayout layout)
     {
         btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 50, 610, 75, 35);
@@ -87,20 +105,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 370, 300, 80, 25);
     }
 
-    private void setupLabels()
-    {
-        setupLabel(lblPreOrder, 150, 35, Color.GREEN);
-    }
 
-    private void setupLabel(JLabel label, int x, int y, Color color)
-    {
-        label.setBorder(new LineBorder(Color.BLACK));
-        label.setPreferredSize(new Dimension(x, y));
-        label.setOpaque(true);
-        label.setBackground(color);
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.CENTER);
-    }
 
     private void displayTextFields(SpringLayout layout)
     {
