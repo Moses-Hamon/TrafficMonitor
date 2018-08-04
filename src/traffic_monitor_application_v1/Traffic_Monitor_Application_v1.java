@@ -33,7 +33,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay, btnPreOrderSave, btnInOrderDisplay, btnInOrderSave, btnPostOrderDisplay, btnPostOrderSave, btnBinaryTreeDisplay;
     private JTextArea txtLinkedList, txtBinaryTreeList;
     private JPanel pnlTrafficData, pnlInformation;
-    private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder, lblLinkedList, lblBinaryTree;
+    private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder, lblLinkedList, lblBinaryTree, lblSort;
     private JTable tblTrafficData;
     private MyModel trafficModel;
     private Color guiColor = new Color(0, 102, 0);
@@ -42,7 +42,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         JFrame myFrame = new Traffic_Monitor_Application_v1();
 
-        myFrame.setSize(800, 700);
+        myFrame.setSize(800, 680);
         myFrame.getContentPane().setBackground(new Color(255, 254, 235)); //Sets Jframe Background Color
         myFrame.setLocationRelativeTo(null); //open in the middle of the screen. 
         myFrame.setResizable(false);
@@ -66,10 +66,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
     private void displayLabels(SpringLayout layout)
     {
-        lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Office", 0, 15);
-        lblDataHeading = LibraryComponents.LocateAJLabel(this, layout, "Traffic Monitoring Data", 100, 75);
+        lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Office", 0, 10);
+        lblDataHeading = LibraryComponents.LocateAJLabel(this, layout, "Traffic Monitoring Data", 125, 75);
         lblPreOrder = LibraryComponents.LocateAJLabel(this, layout, "Pre-Order", 5, 575);
         lblInOrder = LibraryComponents.LocateAJLabel(this, layout, "In-Order", 322, 575);
+        lblSort = LibraryComponents.LocateAJLabel(this, layout, "Sort: ", 105, 294);
         lblPostOrder = LibraryComponents.LocateAJLabel(this, layout, "Post-Order", 640, 575);
         lblLinkedList = LibraryComponents.LocateAJLabel(this, layout, "Linked List:", 5, 320);
         lblBinaryTree = LibraryComponents.LocateAJLabel(this, layout, "Binary Tree:", 5, 445);
@@ -78,6 +79,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         setupLabel(lblTitle, 805, 60, guiColor);
         lblTitle.setFont(new Font("Aharoni", Font.PLAIN, 50));
+        setupLabel(lblDataHeading, 160, 20, guiColor);
         setupLabel(lblPreOrder, 150, 35, guiColor);
         setupLabel(lblInOrder, 150, 35, guiColor);
         setupLabel(lblPostOrder, 150, 35, guiColor);
@@ -103,10 +105,10 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         btnInOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 397, 610, 75, 35);
         btnPostOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 640, 610, 75, 35);
         btnPostOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 715, 610, 75, 35);
-        btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 750, 300, 200, 25);
-        btnSortLocation = LibraryComponents.LocateAJButton(this, this, layout, "Location", 190, 300, 90, 25);
-        btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 280, 300, 90, 25);
-        btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 370, 300, 80, 25);
+        btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 500, 290, 200, 25);
+        btnSortLocation = LibraryComponents.LocateAJButton(this, this, layout, "Location", 145, 290, 90, 25);
+        btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 235, 290, 90, 25);
+        btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 325, 290, 80, 25);
     }
 
 
@@ -123,46 +125,38 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         JPanel pnlTrafficData = new JPanel();
         pnlTrafficData.setLayout(new BorderLayout());
         add(pnlTrafficData);
-
         // Create column names
         String columnNames[] =
         {
             "Time", "Location", "Av.Vehicle#", "Av.Velocity" 
         };
-
         // Create some data
         ArrayList<Object[]> dataValues = new ArrayList();
         dataValues.add(new Object[]
         {
             "Yes", "No" , "h", "k" 
         });
-  
-
         // constructor of JTable model
         trafficModel = new MyModel(dataValues, columnNames);
-
         // Create a new table instance
         tblTrafficData = new JTable(trafficModel);
-
         // Configure some of JTable's paramters
         tblTrafficData.isForegroundSet();
         tblTrafficData.setShowHorizontalLines(false);
         tblTrafficData.setRowSelectionAllowed(true);
         tblTrafficData.setColumnSelectionAllowed(true);
         add(tblTrafficData);
-
         // Change the text and background colours
         tblTrafficData.setSelectionForeground(Color.white);
         tblTrafficData.setSelectionBackground(Color.red);
-
         // Add the table to a scrolling pane, size and locate
         JScrollPane scrollPane = tblTrafficData.createScrollPaneForTable(tblTrafficData);
-        pnlTrafficData.add(scrollPane, BorderLayout.CENTER);
-        pnlTrafficData.setPreferredSize(new Dimension(400, 250));
-        layout.putConstraint(SpringLayout.WEST, pnlTrafficData, 10, SpringLayout.WEST, this);
-        layout.putConstraint(SpringLayout.NORTH, pnlTrafficData, 75, SpringLayout.NORTH, this);
+        pnlTrafficData.add(scrollPane, BorderLayout.NORTH);
+        pnlTrafficData.setPreferredSize(new Dimension(400, 195));
+        layout.putConstraint(SpringLayout.WEST, pnlTrafficData, 5, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.NORTH, pnlTrafficData, 95, SpringLayout.NORTH, this);
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e)
     {
