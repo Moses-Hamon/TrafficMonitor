@@ -30,10 +30,11 @@ import javax.swing.border.LineBorder;
 public class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener
 {
 
-    private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay, btnPreOrderSave, btnInOrderDisplay, btnInOrderSave, btnPostOrderDisplay, btnPostOrderSave, btnBinaryTreeDisplay;
-    private JTextArea txtLinkedList, txtBinaryTreeList;
+    private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay,
+            btnPreOrderSave, btnInOrderDisplay, btnInOrderSave, btnPostOrderDisplay, btnPostOrderSave, btnBinaryTreeDisplay;
+    private JTextArea txaLinkedList, txaBinaryTreeList, txaInformation;
     private JPanel pnlTrafficData, pnlInformation;
-    private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder, lblLinkedList, lblBinaryTree, lblSort;
+    private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder, lblLinkedList, lblBinaryTree, lblSort, informationHeading;
     private JTable tblTrafficData;
     private MyModel trafficModel;
     private Color guiColor = new Color(0, 102, 0);
@@ -62,6 +63,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayButtons(TrafficLayout);
         displayTextFields(TrafficLayout);
         displayJTable(TrafficLayout);
+        displayIncomingInformation(TrafficLayout);
     }
 
     private void displayLabels(SpringLayout layout)
@@ -75,6 +77,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         lblLinkedList = LibraryComponents.LocateAJLabel(this, layout, "Linked List:", 5, 320);
         lblBinaryTree = LibraryComponents.LocateAJLabel(this, layout, "Binary Tree:", 5, 445);
     }
+
     private void setupLabels()
     {
         setupLabel(lblTitle, 805, 60, guiColor);
@@ -97,6 +100,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
     }
+
     private void displayButtons(SpringLayout layout)
     {
         btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 5, 610, 75, 35);
@@ -105,36 +109,34 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         btnInOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 397, 610, 75, 35);
         btnPostOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 640, 610, 75, 35);
         btnPostOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 715, 610, 75, 35);
-        btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 500, 290, 200, 25);
-        btnSortLocation = LibraryComponents.LocateAJButton(this, this, layout, "Location", 145, 290, 90, 25);
-        btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 235, 290, 90, 25);
-        btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 325, 290, 80, 25);
+        btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 500, 290, 150, 25);
+        btnSortLocation = LibraryComponents.LocateAJButton(this, this, layout, "Location", 144, 290, 90, 25);
+        btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 234, 290, 90, 25);
+        btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 324, 290, 80, 25);
     }
-
-
 
     private void displayTextFields(SpringLayout layout)
     {
-        txtLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txtLinkedList, 5, 340, 5, 87);
-        txtBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txtBinaryTreeList, 5, 465, 5, 87);
+        txaLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txaLinkedList, 5, 340, 5, 87);
+        txaBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txaBinaryTreeList, 5, 465, 5, 87);
     }
 
     private void displayJTable(SpringLayout layout)
     {
         // Create a panel to hold all other components
-        JPanel pnlTrafficData = new JPanel();
+        pnlTrafficData = new JPanel();
         pnlTrafficData.setLayout(new BorderLayout());
         add(pnlTrafficData);
         // Create column names
         String columnNames[] =
         {
-            "Time", "Location", "Av.Vehicle#", "Av.Velocity" 
+            "Time", "Location", "Av.Vehicle#", "Av.Velocity"
         };
         // Create some data
         ArrayList<Object[]> dataValues = new ArrayList();
         dataValues.add(new Object[]
         {
-            "Yes", "No" , "h", "k" 
+            "Yes", "No", "h", "k"
         });
         // constructor of JTable model
         trafficModel = new MyModel(dataValues, columnNames);
@@ -148,7 +150,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         add(tblTrafficData);
         // Change the text and background colours
         tblTrafficData.setSelectionForeground(Color.white);
-        tblTrafficData.setSelectionBackground(Color.red);
+        tblTrafficData.setSelectionBackground(guiColor);
         // Add the table to a scrolling pane, size and locate
         JScrollPane scrollPane = tblTrafficData.createScrollPaneForTable(tblTrafficData);
         pnlTrafficData.add(scrollPane, BorderLayout.NORTH);
@@ -156,7 +158,32 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         layout.putConstraint(SpringLayout.WEST, pnlTrafficData, 5, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, pnlTrafficData, 95, SpringLayout.NORTH, this);
     }
-    
+
+    private void displayIncomingInformation(SpringLayout layout)
+    {
+        txaInformation = LibraryComponents.LocateAJTextArea(this, layout, txaInformation, 350, 150, 5, 5);
+        txaInformation.setEditable(false);
+        
+        informationHeading = new JLabel("New data recieved from: ");
+        informationHeading.setForeground(guiColor);
+        
+        pnlInformation = new JPanel();
+        pnlInformation.setLayout(new BorderLayout());
+        pnlInformation.setBorder(new LineBorder(Color.LIGHT_GRAY));
+        this.add(pnlInformation);
+        pnlInformation.setPreferredSize(new Dimension(370, 220));
+        layout.putConstraint(SpringLayout.WEST, pnlInformation, 420, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.NORTH, pnlInformation, 95, SpringLayout.NORTH, this);
+        
+        pnlInformation.add(txaInformation, BorderLayout.CENTER);
+        pnlInformation.add(informationHeading, BorderLayout.NORTH);
+        pnlInformation.add(btnExit, BorderLayout.SOUTH);
+        
+        
+        
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e)
     {
