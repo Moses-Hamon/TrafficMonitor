@@ -64,6 +64,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayTextFields(TrafficLayout);
         displayJTable(TrafficLayout);
         displayIncomingInformation(TrafficLayout);
+        
+        //need to find out how to display frame (but set properties in the class Monitoring_Station.)
+        JFrame J = new Monitoring_Station();
+        J.show();
+        
     }
 
     private void displayLabels(SpringLayout layout)
@@ -113,6 +118,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         btnSortLocation = LibraryComponents.LocateAJButton(this, this, layout, "Location", 144, 290, 90, 25);
         btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 234, 290, 90, 25);
         btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 324, 290, 80, 25);
+        btnBinaryTreeDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 715, 441, 75, 25);
     }
 
     private void displayTextFields(SpringLayout layout)
@@ -178,10 +184,6 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         pnlInformation.add(txaInformation, BorderLayout.CENTER);
         pnlInformation.add(informationHeading, BorderLayout.NORTH);
         pnlInformation.add(btnExit, BorderLayout.SOUTH);
-        
-        
-        
-
     }
 
     @Override
