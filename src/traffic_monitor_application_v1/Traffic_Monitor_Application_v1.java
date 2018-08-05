@@ -66,8 +66,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayIncomingInformation(TrafficLayout);
         
         //need to find out how to display frame (but set properties in the class Monitoring_Station.)
-        JFrame J = new Monitoring_Station();
-        J.show();
+//        JFrame J = new Monitoring_Station();
+//        J.show();
         
     }
 
