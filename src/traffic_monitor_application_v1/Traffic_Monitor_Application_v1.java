@@ -1,4 +1,3 @@
-
 package traffic_monitor_application_v1;
 
 import java.awt.BorderLayout;
@@ -38,6 +37,12 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private JTable tblTrafficData;
     private MyModel trafficModel;
     private Color guiColor = new Color(0, 102, 0);
+    private ArrayList<Object[]> trafficData;
+    
+    String columnNames[] =
+        {
+            "Time", "Location", "Av.Vehicle#", "Av.Velocity"
+        };
 
     public static void main(String[] args)
     {
@@ -64,15 +69,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayTextFields(TrafficLayout);
         displayJTable(TrafficLayout);
         displayIncomingInformation(TrafficLayout);
-        
-        
-        
-        
-        //need to find out how to display frame (but set properties in the class Monitoring_Station.)
-//        JFrame J = new Monitoring_Station();
-//        J.show();
-        
+
     }
+//<editor-fold defaultstate="collapsed" desc="Display GUI">
 
     private void displayLabels(SpringLayout layout)
     {
@@ -118,9 +117,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         btnPostOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 640, 610, 75, 35);
         btnPostOrderSave = LibraryComponents.LocateAJButton(this, this, layout, "Save", 715, 610, 75, 35);
         btnExit = LibraryComponents.LocateAJButton(this, this, layout, "Exit", 500, 290, 150, 25);
-        btnSortLocation = LibraryComponents.LocateAJButton(this, this, layout, "Location", 144, 290, 90, 25);
-        btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 234, 290, 90, 25);
-        btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 324, 290, 80, 25);
+        btnSortLocation = LibraryComponents.LocateAJButton(this, this, layout, "Location", 144, 288, 90, 25);
+        btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 234, 288, 90, 25);
+        btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 324, 288, 80, 25);
         btnBinaryTreeDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 715, 441, 75, 25);
     }
 
@@ -129,11 +128,13 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         txaLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txaLinkedList, 5, 340, 5, 87);
         txaBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txaBinaryTreeList, 5, 465, 5, 87);
     }
-/**
- * Method for setting up and displaying JTable to Hold incoming data.
- * @param layout spring layout
- * 
- */
+
+    /**
+     * Method for setting up and displaying JTable to Hold incoming data.
+     *
+     * @param layout spring layout
+     *
+     */
     private void displayJTable(SpringLayout layout)
     {
         // Create a panel to hold all other components
@@ -141,37 +142,25 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         pnlTrafficData.setLayout(new BorderLayout());
         add(pnlTrafficData);
         // Create column names
-        String columnNames[] =
-        {
-            "Time", "Location", "Av.Vehicle#", "Av.Velocity"
-        };
-        // Create some data
-        ArrayList<Object[]> dataValues = new ArrayList();
-        dataValues.add(new Object[]
-        {
-            "6:00:00 AM", "1", "27", "70"
-        });
-        dataValues.add(new Object[]
-        {
-            "6:00:00 AM", "2", "16", "80"
-        });
-        dataValues.add(new Object[]
-        {
-            "7:00:00 AM", "1", "30", "60"
-        });
-        dataValues.add(new Object[]
-        {
-            "7:00:00 AM", "2", "20", "60"
-        });
-        dataValues.add(new Object[]
-        {
-            "8:00:00 AM", "1", "36", "40"
-        });dataValues.add(new Object[]
-        {
-            "9:00:00 AM", "1", "33", "50"
-        });
+        
+        //add data
+       
+        trafficData = new ArrayList();
+        trafficData.add(new Object[] {"44", "5", "78", "4"});
+        trafficData.add(new Object[] {"44", "57", "65", "34"});
+        trafficData.add(new Object[] {"4", "5", "78", "23"});
+        trafficData.add(new Object[] {"64", "5", "54", "6"});
+        trafficData.add(new Object[] {"49", "35", "78", "34"});
+        trafficData.add(new Object[] {"4", "53", "43", "6"});
+        trafficData.add(new Object[] {"48", "5", "78", "34"});
+        trafficData.add(new Object[] {"4", "35", "354", "34"});
+        trafficData.add(new Object[] {"54", "45", "78", "34"});
+        trafficData.add(new Object[] {"4", "5", "34", "76"});
+        trafficData.add(new Object[] {"44", "655", "374", "7"});
+
+        
         // constructor of JTable model
-        trafficModel = new MyModel(dataValues, columnNames);
+        trafficModel = new MyModel(trafficData, columnNames);
         // Create a new table instance
         tblTrafficData = new JTable(trafficModel);
         // Configure some of JTable's paramters
@@ -185,26 +174,27 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         tblTrafficData.setSelectionBackground(guiColor);
         // Add the table to a scrolling pane, size and locate
         JScrollPane scrollPane = tblTrafficData.createScrollPaneForTable(tblTrafficData);
-        pnlTrafficData.add(scrollPane, BorderLayout.NORTH);
+        pnlTrafficData.add(scrollPane, BorderLayout.CENTER);
         pnlTrafficData.setPreferredSize(new Dimension(400, 195));
         layout.putConstraint(SpringLayout.WEST, pnlTrafficData, 5, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, pnlTrafficData, 95, SpringLayout.NORTH, this);
     }
 
     /**
-     * 
-     * Method for setting up for incoming information text area. 
+     *
+     * Method for setting up for incoming information text area.
+     *
      * @param layout Utilizes SpringLayout to position panel on form
-     * 
+     *
      */
     private void displayIncomingInformation(SpringLayout layout)
     {
         txaInformation = LibraryComponents.LocateAJTextArea(this, layout, txaInformation, 350, 150, 5, 5);
         txaInformation.setEditable(false);
-        
+
         informationHeading = new JLabel("New data recieved from: ");
         informationHeading.setForeground(guiColor);
-        
+
         pnlInformation = new JPanel();
         pnlInformation.setLayout(new BorderLayout());
         pnlInformation.setBorder(new LineBorder(Color.LIGHT_GRAY));
@@ -212,16 +202,50 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         pnlInformation.setPreferredSize(new Dimension(370, 220));
         layout.putConstraint(SpringLayout.WEST, pnlInformation, 420, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, pnlInformation, 95, SpringLayout.NORTH, this);
-        
+
         pnlInformation.add(txaInformation, BorderLayout.CENTER);
         pnlInformation.add(informationHeading, BorderLayout.NORTH);
         pnlInformation.add(btnExit, BorderLayout.SOUTH);
     }
+    //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="Action and Key Listeners">  
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        if (e.getSource() == btnSortLocation)
+        {
+           ArrayList<Object[]> sortedArray = bubbleSort(trafficData);
+           tblTrafficData.setModel(new MyModel(sortedArray, columnNames));
+        }
+        if (e.getSource() == btnExit)
+        {
+            System.exit(0);
+        }
 
     }
-
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Sorting Functions">
+        public static ArrayList<Object[]> bubbleSort(ArrayList<Object[]> arr) 
+    {
+        
+        for(int j=0; j<arr.size(); j++) 
+        {  
+            for(int i=j+1; i<arr.size(); i++)
+            {  
+                if((arr.get(i)[0]).toString().compareToIgnoreCase(arr.get(j)[0].toString())<0)
+                {  
+                    //swap the two values being compared
+                   Object[] words = arr.get(j); 
+                   arr.set(j, arr.get(i));
+                   arr.set(i, words);
+                }  
+            }
+            System.out.println(arr.get(j)[0] + " - " + arr.get(j)[1] + " - " + arr.get(j)[2] + " - " + arr.get(j)[3]);
+            
+        }
+        return arr;
+    }  
+        //</editor-fold>
 }
