@@ -229,14 +229,18 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     //<editor-fold defaultstate="collapsed" desc="Sorting Functions">
         public static ArrayList<Object[]> bubbleSort(ArrayList<Object[]> arr) 
     {
-        
+        //for each Object[]
         for(int j=0; j<arr.size(); j++) 
         {  
+            //compare the first entry in object[] to the next entry
             for(int i=j+1; i<arr.size(); i++)
             {  
-                if((arr.get(i)[0]).toString().compareToIgnoreCase(arr.get(j)[0].toString())<0)
-                {  
-                    //swap the two values being compared
+                //check if the next entry is greater than the selected entry
+                //if((arr.get(i)[1]).toString().compareToIgnoreCase(arr.get(j)[1].toString())<0);
+
+                if (Integer.parseInt(arr.get(i)[1].toString()) < Integer.parseInt(arr.get(j)[1].toString()))
+                {
+                    //swap the two values being compared if the 
                    Object[] words = arr.get(j); 
                    arr.set(j, arr.get(i));
                    arr.set(i, words);
