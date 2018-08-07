@@ -1,4 +1,4 @@
-//This is a test
+
 package traffic_monitor_application_v1;
 
 import java.awt.BorderLayout;
@@ -65,6 +65,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayJTable(TrafficLayout);
         displayIncomingInformation(TrafficLayout);
         
+        
+        
+        
         //need to find out how to display frame (but set properties in the class Monitoring_Station.)
 //        JFrame J = new Monitoring_Station();
 //        J.show();
@@ -126,7 +129,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         txaLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txaLinkedList, 5, 340, 5, 87);
         txaBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txaBinaryTreeList, 5, 465, 5, 87);
     }
-
+/**
+ * Method for setting up and displaying JTable to Hold incoming data.
+ * @param layout spring layout
+ * 
+ */
     private void displayJTable(SpringLayout layout)
     {
         // Create a panel to hold all other components
@@ -142,7 +149,26 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         ArrayList<Object[]> dataValues = new ArrayList();
         dataValues.add(new Object[]
         {
-            "Yes", "No", "h", "k"
+            "6:00:00 AM", "1", "27", "70"
+        });
+        dataValues.add(new Object[]
+        {
+            "6:00:00 AM", "2", "16", "80"
+        });
+        dataValues.add(new Object[]
+        {
+            "7:00:00 AM", "1", "30", "60"
+        });
+        dataValues.add(new Object[]
+        {
+            "7:00:00 AM", "2", "20", "60"
+        });
+        dataValues.add(new Object[]
+        {
+            "8:00:00 AM", "1", "36", "40"
+        });dataValues.add(new Object[]
+        {
+            "9:00:00 AM", "1", "33", "50"
         });
         // constructor of JTable model
         trafficModel = new MyModel(dataValues, columnNames);
@@ -165,6 +191,12 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         layout.putConstraint(SpringLayout.NORTH, pnlTrafficData, 95, SpringLayout.NORTH, this);
     }
 
+    /**
+     * 
+     * Method for setting up for incoming information text area. 
+     * @param layout Utilizes SpringLayout to position panel on form
+     * 
+     */
     private void displayIncomingInformation(SpringLayout layout)
     {
         txaInformation = LibraryComponents.LocateAJTextArea(this, layout, txaInformation, 350, 150, 5, 5);
