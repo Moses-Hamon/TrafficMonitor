@@ -10,13 +10,13 @@ import javax.swing.table.AbstractTableModel;
  */
 public class MyModel extends AbstractTableModel
     {
-        ArrayList<Object[]> al;
+        ArrayList<TrafficEntry> al;
 
         // the headers
         String[] header;
 
         // constructor 
-        MyModel(ArrayList<Object[]> obj, String[] header)
+        MyModel(ArrayList<TrafficEntry> obj, String[] header)
         {
             // save the header
             this.header = header;
@@ -40,7 +40,7 @@ public class MyModel extends AbstractTableModel
         // method that needs to be overload. The object is in the arrayList at rowIndex
         public Object getValueAt(int rowIndex, int columnIndex)
         {
-            return al.get(rowIndex)[columnIndex];
+            return al.get(rowIndex).getTrafficEntry(columnIndex);
         }
 
         // a method to return the column name 

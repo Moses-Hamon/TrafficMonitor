@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author Moses
  */
-public class TrafficEntry extends Object
+public class TrafficEntry
 {
 
     //properties
@@ -27,6 +27,49 @@ public class TrafficEntry extends Object
         this.avgVelocity = avgVelocity;
         this.totalNumberOfVehicles = totalNumberOfVehicles;
     }
+    
+    public Object[] TrafficEntry(String date, int stationLocationID, int numberOfLanes, int avgNumberOfVehicles, int avgVelocity, int totalNumberOfVehicles)
+    {
+        this.date = date;
+        this.stationLocationID = stationLocationID;
+        this.numberOfLanes = numberOfLanes;
+        this.avgNumberOfVehicles = avgNumberOfVehicles;
+        this.avgVelocity = avgVelocity;
+        this.totalNumberOfVehicles = totalNumberOfVehicles;
+        
+        Object[] entryArray = new Object[]
+        {
+            this.date,
+            this.stationLocationID,
+            this.avgNumberOfVehicles,
+            this.avgVelocity
+
+        };
+        System.out.println();
+        return entryArray;
+    }
+
+    public Object getTrafficEntry(int index)
+    {
+        Object property = new Object();
+        
+        switch (index)
+        {
+            case 0: property = getDate();
+            break;
+            case 1: property = getStationLocationID();
+            break;
+            case 2: property = getAvgNumberOfVehicles();
+            break;
+            case 3: property = getAvgVelocity();
+            break;
+            default: property = "error";
+            break;
+        }
+        return property;
+    }
+
+
 
     //getters and setters for properties
     public String getDate()

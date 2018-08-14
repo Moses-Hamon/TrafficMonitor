@@ -37,7 +37,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private JTable tblTrafficData;
     private MyModel trafficModel;
     private Color guiColor = new Color(0, 102, 0);
-    private ArrayList<Object[]> trafficData;
+    private ArrayList<TrafficEntry> trafficData;
     
     String columnNames[] =
         {
@@ -147,21 +147,20 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         
         //add data
        
-        trafficData = new ArrayList();
-//        trafficData.add(new TrafficEntry("6:00:00 AM", 1, 3, 27, 9, 70));
+        trafficData = new ArrayList<TrafficEntry>();
+
+        trafficData.add(new TrafficEntry("6:00:00 AM",1,3,27,9,70));
+//        trafficData.add(new Object[] {"6:00:00 AM",1,2,16,8,80});
+//        trafficData.add(new Object[] {"4", "5", "78", "23"});
+//        trafficData.add(new Object[] {"64", "5", "54", "6"});
+//        trafficData.add(new Object[] {"49", "35", "78", "34"});
+//        trafficData.add(new Object[] {"4", "53", "43", "6"});
+//        trafficData.add(new Object[] {"48", "5", "78", "34"});
+//        trafficData.add(new Object[] {"4", "35", "354", "34"});
+//        trafficData.add(new Object[] {"54", "45", "78", "34"});
+//        trafficData.add(new Object[] {"4", "5", "34", "76"});
+//        trafficData.add(new Object[] {"44", "655", "374", "7"});
         
-        
-        trafficData.add(new Object[] {"44", "5", "78", "4"});
-        trafficData.add(new Object[] {"44", "57", "65", "34"});
-        trafficData.add(new Object[] {"4", "5", "78", "23"});
-        trafficData.add(new Object[] {"64", "5", "54", "6"});
-        trafficData.add(new Object[] {"49", "35", "78", "34"});
-        trafficData.add(new Object[] {"4", "53", "43", "6"});
-        trafficData.add(new Object[] {"48", "5", "78", "34"});
-        trafficData.add(new Object[] {"4", "35", "354", "34"});
-        trafficData.add(new Object[] {"54", "45", "78", "34"});
-        trafficData.add(new Object[] {"4", "5", "34", "76"});
-        trafficData.add(new Object[] {"44", "655", "374", "7"});
 
         
         // constructor of JTable model
@@ -220,7 +219,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         if (e.getSource() == btnSortLocation)
         {
-           ArrayList<Object[]> sortedArray = bubbleSort(trafficData);
+           ArrayList<TrafficEntry> sortedArray = bubbleSort(trafficData);
            tblTrafficData.setModel(new MyModel(sortedArray, columnNames));
         }
         if (e.getSource() == btnExit)
@@ -232,7 +231,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Sorting Functions">
-        public static ArrayList<Object[]> bubbleSort(ArrayList<Object[]> arr) 
+        public static ArrayList<TrafficEntry> bubbleSort(ArrayList<TrafficEntry> arr) 
     {
         //for each Object[]
         for(int j=0; j<arr.size(); j++) 
@@ -257,4 +256,6 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         return arr;
     }  
         //</editor-fold>
+        
+
 }
