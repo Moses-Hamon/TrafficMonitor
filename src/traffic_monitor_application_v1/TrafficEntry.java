@@ -10,22 +10,25 @@ import java.util.Date;
 public class TrafficEntry extends Object
 {
 
-    public TrafficEntry(String date, String stationLocationID, String avgNumberOfVehicles, String avgVelocity)
+    //properties
+    public String date;
+    public int stationLocationID;
+    public int numberOfLanes;
+    public int totalNumberOfVehicles;
+    public int avgNumberOfVehicles;
+    public int avgVelocity;
+
+    public TrafficEntry(String date, int stationLocationID, int numberOfLanes, int avgNumberOfVehicles, int avgVelocity, int totalNumberOfVehicles)
     {
         this.date = date;
         this.stationLocationID = stationLocationID;
+        this.numberOfLanes = numberOfLanes;
         this.avgNumberOfVehicles = avgNumberOfVehicles;
         this.avgVelocity = avgVelocity;
+        this.totalNumberOfVehicles = totalNumberOfVehicles;
     }
 
-    //properties
-    public String date;
-    public String stationLocationID;
-    public String numberOfLanes;
-    public String totalNumberOfVehicles;
-    public String avgNumberOfVehicles;
-    public String avgVelocity;
-
+    //getters and setters for properties
     public String getDate()
     {
         return date;
@@ -36,55 +39,54 @@ public class TrafficEntry extends Object
         this.date = date;
     }
 
-    public String getStationLocationID()
+    public int getStationLocationID()
     {
         return stationLocationID;
     }
 
-    public void setStationLocationID(String stationLocationID)
+    public void setStationLocationID(int stationLocationID)
     {
         this.stationLocationID = stationLocationID;
     }
 
-    public String getNumberOfLanes()
+    public int getNumberOfLanes()
     {
         return numberOfLanes;
     }
 
-    public void setNumberOfLanes(String numberOfLanes)
+    public void setNumberOfLanes(int numberOfLanes)
     {
         this.numberOfLanes = numberOfLanes;
     }
 
-    public String getTotalNumberOfVehicles()
+    public int getTotalNumberOfVehicles()
     {
         return totalNumberOfVehicles;
     }
 
-    public void setTotalNumberOfVehicles(String totalNumberOfVehicles)
+    public void setTotalNumberOfVehicles(int totalNumberOfVehicles)
     {
         this.totalNumberOfVehicles = totalNumberOfVehicles;
     }
 
-    public String getAvgNumberOfVehicles()
+    public int getAvgNumberOfVehicles()
     {
         return avgNumberOfVehicles;
     }
 
-    public void setAvgNumberOfVehicles(String avgNumberOfVehicles)
+    public void setAvgNumberOfVehicles(int avgNumberOfVehicles)
     {
         this.avgNumberOfVehicles = avgNumberOfVehicles;
     }
 
-    public String getAvgVelocity()
+    public int getAvgVelocity()
     {
         return avgVelocity;
     }
 
-    public void setAvgVelocity(String avgVelocity)
+    public void setAvgVelocity(int avgVelocity)
     {
         this.avgVelocity = avgVelocity;
     }
 
-    
 }

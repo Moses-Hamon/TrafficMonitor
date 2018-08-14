@@ -69,6 +69,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayTextFields(TrafficLayout);
         displayJTable(TrafficLayout);
         displayIncomingInformation(TrafficLayout);
+        
+        
 
     }
 //<editor-fold defaultstate="collapsed" desc="Display GUI">
@@ -146,6 +148,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         //add data
        
         trafficData = new ArrayList();
+//        trafficData.add(new TrafficEntry("6:00:00 AM", 1, 3, 27, 9, 70));
+        
+        
         trafficData.add(new Object[] {"44", "5", "78", "4"});
         trafficData.add(new Object[] {"44", "57", "65", "34"});
         trafficData.add(new Object[] {"4", "5", "78", "23"});
