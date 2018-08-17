@@ -28,15 +28,9 @@ public class TrafficEntry
         this.totalNumberOfVehicles = totalNumberOfVehicles;
     }
     
-    public Object[] TrafficEntry(String date, int stationLocationID, int numberOfLanes, int avgNumberOfVehicles, int avgVelocity, int totalNumberOfVehicles)
+    public Object[] ToArray()
     {
-        this.date = date;
-        this.stationLocationID = stationLocationID;
-        this.numberOfLanes = numberOfLanes;
-        this.avgNumberOfVehicles = avgNumberOfVehicles;
-        this.avgVelocity = avgVelocity;
-        this.totalNumberOfVehicles = totalNumberOfVehicles;
-        
+           
         Object[] entryArray = new Object[]
         {
             this.date,

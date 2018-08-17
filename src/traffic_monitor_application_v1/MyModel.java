@@ -40,9 +40,9 @@ public class MyModel extends AbstractTableModel
         // method that needs to be overload. The object is in the arrayList at rowIndex
         public Object getValueAt(int rowIndex, int columnIndex)
         {
-            return al.get(rowIndex).getTrafficEntry(columnIndex);
+//            return al.get(rowIndex).getTrafficEntry(columnIndex);
+            return al.get(rowIndex).ToArray()[columnIndex];
         }
-
         // a method to return the column name 
         public String getColumnName(int index)
         {
