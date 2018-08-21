@@ -1,5 +1,6 @@
 package traffic_monitor_application_v1;
 
+import java.util.Arrays;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -38,11 +39,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private MyModel trafficModel;
     private Color guiColor = new Color(0, 102, 0);
     private ArrayList<TrafficEntry> trafficData;
-    
+
     String columnNames[] =
-        {
-            "Time", "Location", "Av.Vehicle#", "Av.Velocity"
-        };
+    {
+        "Time", "Location", "Av.Vehicle#", "Av.Velocity"
+    };
 
     public static void main(String[] args)
     {
@@ -69,8 +70,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayTextFields(TrafficLayout);
         displayJTable(TrafficLayout);
         displayIncomingInformation(TrafficLayout);
-        
-        
+        displayArrayToConsole(trafficData);
 
     }
 //<editor-fold defaultstate="collapsed" desc="Display GUI">
@@ -144,7 +144,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         pnlTrafficData.setLayout(new BorderLayout());
         add(pnlTrafficData);
         // Create column names
-        
+
         //add data
        
         trafficData = new ArrayList<TrafficEntry>();
@@ -159,8 +159,6 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         trafficData.add(new TrafficEntry("9:00:00 AM", 2, 2, 18, 9, 65));
         trafficData.add(new TrafficEntry("10:00:00 AM", 1, 3, 24, 8, 80));
         trafficData.add(new TrafficEntry("10:00:00 AM", 2, 2, 14, 7, 80));
-        
-
         
         // constructor of JTable model
         trafficModel = new MyModel(trafficData, columnNames);
@@ -210,6 +208,15 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         pnlInformation.add(informationHeading, BorderLayout.NORTH);
         pnlInformation.add(btnExit, BorderLayout.SOUTH);
     }
+
+    public void displayArrayToConsole(ArrayList<TrafficEntry> entry)
+    {
+        for (int i = 0; i < entry.size(); i++)
+        {
+            System.out.println(Arrays.toString(entry.get(i).toStringArray()));
+        }
+        System.out.println("-----------------------------------------------------");
+    }
     //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Action and Key Listeners">  
@@ -218,8 +225,17 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         if (e.getSource() == btnSortLocation)
         {
-           ArrayList<TrafficEntry> sortedArray = bubbleSort(trafficData);
-           tblTrafficData.setModel(new MyModel(sortedArray, columnNames));
+            ArrayList<TrafficEntry> sortedArray = bubbleSort(trafficData);
+            tblTrafficData.setModel(new MyModel(sortedArray, columnNames));
+        }
+        if (e.getSource() == btnSortVehicleNumber)
+        {
+            ArrayList<TrafficEntry> sortedArray = selectionSort(trafficData);
+            tblTrafficData.setModel(new MyModel(sortedArray, columnNames));
+
+            displayArrayToConsole(trafficData);
+            displayArrayToConsole(sortedArray);
+
         }
         if (e.getSource() == btnExit)
         {
@@ -228,36 +244,57 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
     }
     //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="Sorting Functions">
-    
-    
-    
-        public static ArrayList<TrafficEntry> bubbleSort(ArrayList<TrafficEntry> arr) 
-    {
-        //for each Object[]
-        for(int j=0; j<arr.size(); j++) 
-        {  
-            //compare the first entry in object[] to the next entry
-            for(int i=j+1; i<arr.size(); i++)
-            {  
-                //check if the next entry is greater than the selected entry
-                //if((arr.get(i)[1]).toString().compareToIgnoreCase(arr.get(j)[1].toString())<0);
 
-                if (Integer.parseInt(arr.get(i).ToArray()[1].toString()) < Integer.parseInt(arr.get(j).ToArray()[1].toString()))
+    //<editor-fold defaultstate="collapsed" desc="Sorting Functions">
+    public static ArrayList<TrafficEntry> bubbleSort(ArrayList<TrafficEntry> entry)
+    {
+        //for each Traffic Entry
+        for (int j = 0; j < entry.size(); j++)
+        {
+            //compare the first entry in Arraylist to the next entry
+            for (int i = j + 1; i < entry.size(); i++)
+            {
+                //check if the next entry is greater than the selected entry
+                if (entry.get(i).stationLocationID < entry.get(j).stationLocationID)
                 {
                     //swap the two values being compared if the 
-                   TrafficEntry words = arr.get(j); 
-                   arr.set(j, arr.get(i));
-                   arr.set(i, words);
-                }  
+                    TrafficEntry temp = entry.get(j);
+                    entry.set(j, entry.get(i));
+                    entry.set(i, temp);
+                }
             }
-            System.out.println(arr.get(j).date + " - " + arr.get(j).stationLocationID + " - " + arr.get(j).avgNumberOfVehicles + " - " + arr.get(j).avgVelocity);
-            
+            System.out.println(entry.get(j).date + " - " + entry.get(j).stationLocationID + " - " + entry.get(j).avgNumberOfVehicles + " - " + entry.get(j).avgVelocity);
+
         }
-        return arr;
-    }  
-        //</editor-fold>
-        
+        return entry;
+    }
+
+    public static ArrayList<TrafficEntry> selectionSort(ArrayList<TrafficEntry> entry)
+    {
+
+        //for each traffic entry in the array
+        for (int i = 0; i < entry.size(); i++)
+        {
+            //find the minimum entry in the arraylist of traffic entries
+            int minIndex = i;
+            for (int j = i + 1; j < entry.size(); j++)
+            {
+                if (entry.get(j).avgNumberOfVehicles < entry.get(minIndex).avgNumberOfVehicles)
+                {
+                    minIndex = j;
+                }
+                //swap the minimum entry with first entry
+
+                //Move miniumum entry into temp
+                TrafficEntry temp = entry.get(minIndex);
+                //place the first entry into Minimum's spot in the Arraylist
+                entry.set(minIndex, entry.get(i));
+                //place temp into first index
+                entry.set(i, temp);
+            }
+        }
+        return entry;
+    }
+    //</editor-fold>
 
 }

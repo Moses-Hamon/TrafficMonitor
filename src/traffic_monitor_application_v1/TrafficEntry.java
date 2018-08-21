@@ -43,6 +43,16 @@ public class TrafficEntry
         
         return entryArray;
     }
+    public String[] toStringArray(){
+    
+        String[] array = new  String[]{
+            this.date.toString(),
+            Integer.toString(this.stationLocationID) ,
+            Integer.toString(this.avgNumberOfVehicles),
+            Integer.toString(this.avgVelocity)
+        };
+        return array;
+}
 
     //Switch case for Table Model Indexer
 //    public Object getTrafficEntry(int index)
