@@ -1,5 +1,6 @@
 package traffic_monitor_application_v1;
 
+import java.util.Random;
 import java.util.Arrays;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -20,6 +21,7 @@ import javax.swing.*;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.*;
+import java.lang.reflect.Array;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -225,17 +227,18 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         if (e.getSource() == btnSortLocation)
         {
-            ArrayList<TrafficEntry> sortedArray = bubbleSort(trafficData);
-            tblTrafficData.setModel(new MyModel(sortedArray, columnNames));
+            tblTrafficData.setModel(new MyModel(bubbleSort(trafficData), columnNames));
+            displayArrayToConsole(trafficData);
         }
         if (e.getSource() == btnSortVehicleNumber)
         {
-            ArrayList<TrafficEntry> sortedArray = selectionSort(trafficData);
-            tblTrafficData.setModel(new MyModel(sortedArray, columnNames));
-
+            tblTrafficData.setModel(new MyModel(selectionSort(trafficData), columnNames));
             displayArrayToConsole(trafficData);
-            displayArrayToConsole(sortedArray);
-
+        }
+        if (e.getSource() == btnSortVelocity)
+        {
+            
+            tblTrafficData.setModel(new MyModel(QuickSort(trafficData, 0, trafficData.size()), columnNames));
         }
         if (e.getSource() == btnExit)
         {
@@ -284,14 +287,50 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
                     minIndex = j;
                 }
                 //swap the minimum entry with first entry
-
-                //Move miniumum entry into temp
+            }
+              //Move miniumum entry into temp
                 TrafficEntry temp = entry.get(minIndex);
                 //place the first entry into Minimum's spot in the Arraylist
                 entry.set(minIndex, entry.get(i));
                 //place temp into first index
                 entry.set(i, temp);
+        }
+        return entry;
+    }
+
+    static ArrayList<TrafficEntry> QuickSort(ArrayList<TrafficEntry> entry, int left, int right)
+    {
+        int l = left;
+        int r = right - 1;
+        int size = right - left;
+        if (size > 1)
+        {
+            //sets random entry (pivot for sort)
+            Random rn = new Random();
+            int pivot = entry.get(rn.nextInt(size) + l).avgVelocity;
+            System.out.println();
+            while (l < r)
+            {
+                while (entry.get(r).avgVelocity > pivot && r > l)
+                {
+                    System.out.println(entry.get(r).avgVelocity);
+                    r--;
+                }
+                while (entry.get(l).avgVelocity < pivot && l <= r)
+                {
+                    System.out.println(entry.get(l).avgVelocity);
+                    l++;
+                }
+                if (l < r)
+                {
+                    TrafficEntry temp = entry.get(l);
+                    entry.set(l, entry.get(r));
+                    entry.set(r, temp);
+                    l++;
+                }
             }
+            QuickSort(entry, left, l);
+            QuickSort(entry, r, right);
         }
         return entry;
     }
