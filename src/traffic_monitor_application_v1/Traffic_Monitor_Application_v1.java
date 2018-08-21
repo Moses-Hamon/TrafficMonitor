@@ -150,17 +150,15 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         trafficData = new ArrayList<TrafficEntry>();
 
         trafficData.add(new TrafficEntry("6:00:00 AM",1,3,27,9,70));
-        trafficData.add(new TrafficEntry("7:00:00 AM", 2, 5, 21, 70, 52));
-//        trafficData.add(new Object[] {"6:00:00 AM",1,2,16,8,80});
-//        trafficData.add(new Object[] {"4", "5", "78", "23"});
-//        trafficData.add(new Object[] {"64", "5", "54", "6"});
-//        trafficData.add(new Object[] {"49", "35", "78", "34"});
-//        trafficData.add(new Object[] {"4", "53", "43", "6"});
-//        trafficData.add(new Object[] {"48", "5", "78", "34"});
-//        trafficData.add(new Object[] {"4", "35", "354", "34"});
-//        trafficData.add(new Object[] {"54", "45", "78", "34"});
-//        trafficData.add(new Object[] {"4", "5", "34", "76"});
-//        trafficData.add(new Object[] {"44", "655", "374", "7"});
+        trafficData.add(new TrafficEntry("6:00:00 AM",2, 2, 16, 8, 80));
+        trafficData.add(new TrafficEntry("7:00:00 AM",1, 3, 30, 10, 60));
+        trafficData.add(new TrafficEntry("7:00:00 AM", 2, 2, 20, 10, 60));
+        trafficData.add(new TrafficEntry("8:00:00 AM", 1, 3, 36, 12, 40));
+        trafficData.add(new TrafficEntry("8:00:00 AM",2, 2, 22, 11, 50));
+        trafficData.add(new TrafficEntry("9:00:00 AM", 1, 3, 33, 11, 50));
+        trafficData.add(new TrafficEntry("9:00:00 AM", 2, 2, 18, 9, 65));
+        trafficData.add(new TrafficEntry("10:00:00 AM", 1, 3, 24, 8, 80));
+        trafficData.add(new TrafficEntry("10:00:00 AM", 2, 2, 14, 7, 80));
         
 
         
@@ -232,6 +230,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Sorting Functions">
+    
+    
+    
         public static ArrayList<TrafficEntry> bubbleSort(ArrayList<TrafficEntry> arr) 
     {
         //for each Object[]
@@ -243,15 +244,15 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
                 //check if the next entry is greater than the selected entry
                 //if((arr.get(i)[1]).toString().compareToIgnoreCase(arr.get(j)[1].toString())<0);
 
-                if (Integer.parseInt(arr.get(i)[1].toString()) < Integer.parseInt(arr.get(j)[1].toString()))
+                if (Integer.parseInt(arr.get(i).ToArray()[1].toString()) < Integer.parseInt(arr.get(j).ToArray()[1].toString()))
                 {
                     //swap the two values being compared if the 
-                   Object[] words = arr.get(j); 
+                   TrafficEntry words = arr.get(j); 
                    arr.set(j, arr.get(i));
                    arr.set(i, words);
                 }  
             }
-            System.out.println(arr.get(j)[0] + " - " + arr.get(j)[1] + " - " + arr.get(j)[2] + " - " + arr.get(j)[3]);
+            System.out.println(arr.get(j).date + " - " + arr.get(j).stationLocationID + " - " + arr.get(j).avgNumberOfVehicles + " - " + arr.get(j).avgVelocity);
             
         }
         return arr;

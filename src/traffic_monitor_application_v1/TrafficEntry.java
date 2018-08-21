@@ -1,6 +1,7 @@
 package traffic_monitor_application_v1;
 
 import java.util.Date;
+import java.util.Arrays;
 
 /**
  * Class that holds the properties of one Traffic Entry
@@ -39,29 +40,30 @@ public class TrafficEntry
             this.avgVelocity
 
         };
-        System.out.println();
+        
         return entryArray;
     }
 
-    public Object getTrafficEntry(int index)
-    {
-        Object property = new Object();
-        
-        switch (index)
-        {
-            case 0: property = getDate();
-            break;
-            case 1: property = getStationLocationID();
-            break;
-            case 2: property = getAvgNumberOfVehicles();
-            break;
-            case 3: property = getAvgVelocity();
-            break;
-            default: property = "error";
-            break;
-        }
-        return property;
-    }
+    //Switch case for Table Model Indexer
+//    public Object getTrafficEntry(int index)
+//    {
+//        Object property = new Object();
+//        
+//        switch (index)
+//        {
+//            case 0: property = getDate();
+//            break;
+//            case 1: property = getStationLocationID();
+//            break;
+//            case 2: property = getAvgNumberOfVehicles();
+//            break;
+//            case 3: property = getAvgVelocity();
+//            break;
+//            default: property = "error";
+//            break;
+//        }
+//        return property;
+//    }
 
 
 
