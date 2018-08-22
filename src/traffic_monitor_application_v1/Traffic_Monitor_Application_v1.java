@@ -73,6 +73,13 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayJTable(TrafficLayout);
         displayIncomingInformation(TrafficLayout);
         displayArrayToConsole(trafficData);
+        
+        
+        //Need Help
+//        
+//        Monitoring_Station test = new Monitoring_Station();
+//        test.setSize(300, 400);
+//        test.show();
 
     }
 //<editor-fold defaultstate="collapsed" desc="Display GUI">

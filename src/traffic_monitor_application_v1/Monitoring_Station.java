@@ -11,16 +11,18 @@ import javax.swing.JFrame;
  */
 public class Monitoring_Station extends JFrame
 {
-    JButton test, test3;
+
+    JButton Btntest, test3;
 
     public void Monitoring_Station()
-    {
-             getContentPane().setBackground(Color.yellow);
-             add(test);
-             add(test3);
-              
+    {   //Why won't these show up in the application when instantiated.
+        JFrame test = new JFrame();
+        getContentPane().setBackground(Color.yellow);
+        test.setSize(300, 400);
+        test.setVisible(rootPaneCheckingEnabled);
+        test.add(Btntest);
+        add(test3);
+
     }
-
-
 
 }
