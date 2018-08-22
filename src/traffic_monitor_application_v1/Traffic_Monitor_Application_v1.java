@@ -266,7 +266,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
                     entry.set(i, temp);
                 }
             }
-            System.out.println(entry.get(j).date + " - " + entry.get(j).stationLocationID + " - " + entry.get(j).avgNumberOfVehicles + " - " + entry.get(j).avgVelocity);
+            System.out.println(entry.get(j).time + " - " + entry.get(j).stationLocationID + " - " + entry.get(j).avgNumberOfVehicles + " - " + entry.get(j).avgVelocity);
 
         }
         return entry;
@@ -308,22 +308,23 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
             //sets random entry (pivot for sort)
             Random rn = new Random();
             int pivot = entry.get(rn.nextInt(size) + l).avgVelocity;
-            System.out.println();
+//            System.out.println(pivot);
             while (l < r)
             {
                 while (entry.get(r).avgVelocity > pivot && r > l)
                 {
-                    System.out.println(entry.get(r).avgVelocity);
+//                    System.out.println(entry.get(r).avgVelocity + " > " + pivot + " & " + r + " > " + l);
                     r--;
                 }
                 while (entry.get(l).avgVelocity < pivot && l <= r)
                 {
-                    System.out.println(entry.get(l).avgVelocity);
+//                    System.out.println(entry.get(l).avgVelocity  + " < " + pivot + " & " + l + " <= " + r);
                     l++;
                 }
                 if (l < r)
                 {
                     TrafficEntry temp = entry.get(l);
+//                    System.out.print("swapping entry " + l + " with entry " + "" + r + "\n");
                     entry.set(l, entry.get(r));
                     entry.set(r, temp);
                     l++;

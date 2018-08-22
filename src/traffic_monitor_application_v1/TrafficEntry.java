@@ -12,21 +12,25 @@ public class TrafficEntry
 {
 
     //properties
-    public String date;
+    public String time;
     public int stationLocationID;
     public int numberOfLanes;
     public int totalNumberOfVehicles;
     public int avgNumberOfVehicles;
     public int avgVelocity;
 
-    public TrafficEntry(String date, int stationLocationID, int numberOfLanes, int avgNumberOfVehicles, int avgVelocity, int totalNumberOfVehicles)
+    public TrafficEntry()
     {
-        this.date = date;
+    }
+
+    public TrafficEntry(String time, int stationLocationID, int numberOfLanes, int totalNumberOfVehicles, int avgNumberOfVehicles, int avgVelocity )
+    {
+        this.time = time;
         this.stationLocationID = stationLocationID;
         this.numberOfLanes = numberOfLanes;
+        this.totalNumberOfVehicles = totalNumberOfVehicles;
         this.avgNumberOfVehicles = avgNumberOfVehicles;
         this.avgVelocity = avgVelocity;
-        this.totalNumberOfVehicles = totalNumberOfVehicles;
     }
     
     public Object[] ToArray()
@@ -34,7 +38,7 @@ public class TrafficEntry
            
         Object[] entryArray = new Object[]
         {
-            this.date,
+            this.time,
             this.stationLocationID,
             this.avgNumberOfVehicles,
             this.avgVelocity
@@ -46,8 +50,10 @@ public class TrafficEntry
     public String[] toStringArray(){
     
         String[] array = new  String[]{
-            this.date.toString(),
+            this.time.toString(),
             Integer.toString(this.stationLocationID) ,
+            Integer.toString(this.numberOfLanes),
+            Integer.toString(this.totalNumberOfVehicles),
             Integer.toString(this.avgNumberOfVehicles),
             Integer.toString(this.avgVelocity)
         };
@@ -80,12 +86,12 @@ public class TrafficEntry
     //getters and setters for properties
     public String getDate()
     {
-        return date;
+        return time;
     }
 
     public void setDate(String date)
     {
-        this.date = date;
+        this.time = date;
     }
 
     public int getStationLocationID()
