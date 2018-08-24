@@ -21,12 +21,14 @@ package traffic_monitor_application_v1;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
+import javax.swing.border.LineBorder;
 
 
 public class LibraryComponents
@@ -117,5 +119,16 @@ public class LibraryComponents
 //            return myJPanel;
 //        
 //    }
-    
+
+
+    public static void setupLabel(JLabel label, int x, int y, Color color)
+    {
+        label.setBorder(new LineBorder(Color.BLACK));
+        label.setPreferredSize(new Dimension(x, y));
+        label.setOpaque(true);
+        label.setBackground(color);
+        label.setForeground(Color.WHITE);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
+    }
 }

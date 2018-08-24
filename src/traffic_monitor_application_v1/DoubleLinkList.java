@@ -52,7 +52,8 @@ public class DoubleLinkList
                 next.prev = newNode;
             }
             next = newNode;
-            System.out.println("Node added with Traffic Data " + Arrays.toString(newNode.trafficEntry.toStringArray()));
+            System.out.println("Node added with Traffic Data " + Arrays.toString(newNode.trafficEntry.toStringArray()) + " added ontop of  " 
+            + prev.trafficEntry.convertToString());
             
         }
 

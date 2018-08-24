@@ -81,8 +81,10 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         //Need Help
 //        
         Monitoring_Station test = new Monitoring_Station();
-        test.setSize(300, 400);
-        test.show();
+      test.show();
+      Monitoring_Station test2 = new Monitoring_Station();
+      test2.show();
+        
 
     }
 //<editor-fold defaultstate="collapsed" desc="Display GUI">
@@ -101,26 +103,17 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
     private void setupLabels()
     {
-        setupLabel(lblTitle, 805, 60, guiColor);
+       LibraryComponents.setupLabel(lblTitle, 805, 60, guiColor);
         lblTitle.setFont(new Font("Aharoni", Font.PLAIN, 50));
-        setupLabel(lblDataHeading, 160, 20, guiColor);
-        setupLabel(lblPreOrder, 150, 35, guiColor);
-        setupLabel(lblInOrder, 150, 35, guiColor);
-        setupLabel(lblPostOrder, 150, 35, guiColor);
-        setupLabel(lblLinkedList, 120, 20, guiColor);
-        setupLabel(lblBinaryTree, 120, 20, guiColor);
+        LibraryComponents.setupLabel(lblDataHeading, 160, 20, guiColor);
+        LibraryComponents.setupLabel(lblPreOrder, 150, 35, guiColor);
+        LibraryComponents.setupLabel(lblInOrder, 150, 35, guiColor);
+        LibraryComponents.setupLabel(lblPostOrder, 150, 35, guiColor);
+        LibraryComponents.setupLabel(lblLinkedList, 120, 20, guiColor);
+        LibraryComponents.setupLabel(lblBinaryTree, 120, 20, guiColor);
     }
 
-    private void setupLabel(JLabel label, int x, int y, Color color)
-    {
-        label.setBorder(new LineBorder(Color.BLACK));
-        label.setPreferredSize(new Dimension(x, y));
-        label.setOpaque(true);
-        label.setBackground(color);
-        label.setForeground(Color.WHITE);
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.CENTER);
-    }
+
 
     private void displayButtons(SpringLayout layout)
     {
