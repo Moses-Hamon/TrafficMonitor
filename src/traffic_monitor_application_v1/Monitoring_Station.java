@@ -16,9 +16,9 @@ public class Monitoring_Station extends JFrame
 
     public void Monitoring_Station()
     {   //Why won't these show up in the application when instantiated.
-        JFrame test = new JFrame();
+        JFrame test = new Monitoring_Station();
         getContentPane().setBackground(Color.yellow);
-        test.setSize(300, 400);
+        test.setBounds(10,10,300, 400);
         test.setVisible(rootPaneCheckingEnabled);
         test.add(Btntest);
         add(test3);

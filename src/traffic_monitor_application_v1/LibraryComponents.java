@@ -101,6 +101,7 @@ public class LibraryComponents
         myJTextArea = new JTextArea(w,h);
         myJTextArea.setWrapStyleWord(true);
         myJTextArea.setLineWrap(true);
+        myJTextArea.setEditable(false);
         myJTextArea.setFont(new Font("Consolas", Font.PLAIN, 16));
         JScrollPane myScrollPane = new JScrollPane(myJTextArea);
         myJFrame.add(myScrollPane);

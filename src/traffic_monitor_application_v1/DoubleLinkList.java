@@ -15,7 +15,7 @@ public class DoubleLinkList
 {
 
     //node class for double linked list
-    class Node
+    public static class Node
     {
 
         Node prev;  // previous Node in a doubly-linked list
@@ -52,7 +52,8 @@ public class DoubleLinkList
                 next.prev = newNode;
             }
             next = newNode;
-            System.out.println("Node with Traffic Data " + Arrays.toString(newNode.trafficEntry.toStringArray()) + " Appended after Node with Traffic Data " + Arrays.toString(trafficEntry.toStringArray()));
+            System.out.println("Node added with Traffic Data " + Arrays.toString(newNode.trafficEntry.toStringArray()));
+            
         }
 
         public void insert(Node newNode)
@@ -71,7 +72,7 @@ public class DoubleLinkList
         }
     }
 
-    class DList
+    public static class DList
     {
 
         Node head;
@@ -92,19 +93,34 @@ public class DoubleLinkList
         }
 
 //--------------------------------------------------
-            public void print()
+        public void print()
         {                  // print content of list
             if (head.next == head)
             {             // list is empty, only header Node
                 System.out.println("List empty");
                 return;
             }
-            System.out.print("List content = ");
+            System.out.println("List content = ");
             for (Node current = head.next; current != head; current = current.next)
             {
-                System.out.print(" " + Arrays.toString(current.trafficEntry.toStringArray()));
+                System.out.println(" " + Arrays.toString(current.trafficEntry.toStringArray()));
             }
             System.out.println("");
+        }
+
+        public String convertToString()
+        {
+            String str = "";
+            if (head.next == head)
+            {             // list is empty, only header Node
+                return "List Empty";
+            }
+            str = "list content = ";
+            for (Node current = head.next; current != head && current != null; current = current.next)
+            {
+                str = str + " [ " + current.trafficEntry.convertToString() + " ] ";
+            }
+            return str;
         }
     }
 

@@ -25,6 +25,7 @@ import java.lang.reflect.Array;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+
 /**
  *
  * @author Moses
@@ -41,6 +42,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private MyModel trafficModel;
     private Color guiColor = new Color(0, 102, 0);
     private ArrayList<TrafficEntry> trafficData;
+    DoubleLinkList.DList Dlist;
 
     String columnNames[] =
     {
@@ -73,13 +75,14 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayJTable(TrafficLayout);
         displayIncomingInformation(TrafficLayout);
         displayArrayToConsole(trafficData);
-        
+        setupDoubleLinkedList(trafficData);
+        displayLinkedList(Dlist);
         
         //Need Help
 //        
-//        Monitoring_Station test = new Monitoring_Station();
-//        test.setSize(300, 400);
-//        test.show();
+        Monitoring_Station test = new Monitoring_Station();
+        test.setSize(300, 400);
+        test.show();
 
     }
 //<editor-fold defaultstate="collapsed" desc="Display GUI">
@@ -226,6 +229,12 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         }
         System.out.println("-----------------------------------------------------");
     }
+    
+    public void displayLinkedList(DoubleLinkList.DList Dlist)
+    {
+        txaLinkedList.append(Dlist.convertToString());
+    }
+   
     //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Action and Key Listeners">  
@@ -255,7 +264,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Sorting Functions">
+//<editor-fold defaultstate="collapsed" desc="Sorting Functions">
     public static ArrayList<TrafficEntry> bubbleSort(ArrayList<TrafficEntry> entry)
     {
         //for each Traffic Entry
@@ -343,5 +352,23 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         return entry;
     }
     //</editor-fold>
+    
+//<editor-fold defaultstate="collapsed" desc="Data Management">
+    
+    public void setupDoubleLinkedList(ArrayList<TrafficEntry> entry)
+    {
+        Dlist = new DoubleLinkList.DList(); 
+
+        for (int i = 0; i < entry.size(); i++)
+        {
+            TrafficEntry test = entry.get(i); //grab first Traffic Entry Object
+            Dlist.head.append(new DoubleLinkList.Node(test));
+            
+        }
+        System.out.println("-----------------------------------------------------");
+        Dlist.print();
+    }
+    
+//</editor-fold>
 
 }

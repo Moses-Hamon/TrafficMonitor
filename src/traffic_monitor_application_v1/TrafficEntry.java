@@ -47,18 +47,34 @@ public class TrafficEntry
         
         return entryArray;
     }
-    public String[] toStringArray(){
-    
-        String[] array = new  String[]{
-            this.time.toString(),
-            Integer.toString(this.stationLocationID) ,
+    public String[] toStringArray()
+    {
+
+        String[] array = new String[]
+        {
+            this.time,
+            Integer.toString(this.stationLocationID),
             Integer.toString(this.numberOfLanes),
             Integer.toString(this.totalNumberOfVehicles),
             Integer.toString(this.avgNumberOfVehicles),
             Integer.toString(this.avgVelocity)
         };
         return array;
-}
+    }
+    
+    public String convertToString()
+    {
+        StringBuilder trafficEntryString = new StringBuilder();
+        trafficEntryString.append(time).append(",");
+        trafficEntryString.append(stationLocationID).append(",");
+        trafficEntryString.append(numberOfLanes).append(",");
+        trafficEntryString.append(totalNumberOfVehicles).append(",");
+        trafficEntryString.append(avgNumberOfVehicles).append(",");
+        trafficEntryString.append(avgVelocity);
+
+        String str = trafficEntryString.toString();
+        return str;
+    }
 
     //Switch case for Table Model Indexer
 //    public Object getTrafficEntry(int index)
