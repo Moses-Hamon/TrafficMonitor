@@ -26,6 +26,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
 
+
 /**
  *
  * @author Moses
@@ -43,6 +44,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private Color guiColor = new Color(0, 102, 0);
     private ArrayList<TrafficEntry> trafficData;
     DoubleLinkList.DList Dlist;
+    BinaryTree trafficTree;
 
     String columnNames[] =
     {
@@ -77,7 +79,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayArrayToConsole(trafficData);
         setupDoubleLinkedList(trafficData);
         displayLinkedList(Dlist);
-        
+        setupBinaryTree(trafficData);
         //Need Help
 //        
 //        Monitoring_Station test = new Monitoring_Station();
@@ -249,6 +251,14 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
             
             tblTrafficData.setModel(new MyModel(QuickSort(trafficData, 0, trafficData.size()), columnNames));
         }
+        if (e.getSource() == btnInOrderDisplay)
+        {
+            ArrayList temp = trafficTree.inOrderTraverseTree(trafficTree.root);
+            for (int i = 0; i < temp.size(); i++)
+            {
+                txaBinaryTreeList.append(temp.get(i).toString());
+            }
+        }
         if (e.getSource() == btnExit)
         {
             System.exit(0);
@@ -361,7 +371,16 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         System.out.println("-----------------------------------------------------");
         Dlist.print();
     }
-    
+    public void setupBinaryTree(ArrayList<TrafficEntry> entryList){
+        
+        trafficTree = new BinaryTree();
+        
+        for (int i = 0; i < entryList.size(); i++)
+        {
+        trafficTree.addNode(entryList.get(i));
+        
+        }
+    }
 //</editor-fold>
 
 }

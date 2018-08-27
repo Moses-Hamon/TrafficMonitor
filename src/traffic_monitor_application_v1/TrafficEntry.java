@@ -75,6 +75,7 @@ public class TrafficEntry
         String str = trafficEntryString.toString();
         return str;
     }
+    
 
     //Switch case for Table Model Indexer
 //    public Object getTrafficEntry(int index)

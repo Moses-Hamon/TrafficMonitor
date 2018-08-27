@@ -1,200 +1,195 @@
-
 package traffic_monitor_application_v1;
 
+import java.util.ArrayList;
+
 /**
- *Binary Tree - Source: http://www.newthinktank.com/2013/03/binary-tree-in-java/
+ * Binary Tree - Source:
+ * http://www.newthinktank.com/2013/03/binary-tree-in-java/
+ *
  * @author Moe
  */
 public class BinaryTree
 {
- 
-    class BTNode {
 
-	int key;
-	String name;
+    class BTNode
+    {
 
-	BTNode leftChild;
-	BTNode rightChild;
+        TrafficEntry entry;
 
-	BTNode(int key, String name) {
+        BTNode leftChild;
+        BTNode rightChild;
 
-		this.key = key;
-		this.name = name;
+        BTNode(TrafficEntry entry)
+        {
 
-	}
+            this.entry = entry;
 
-	public String toString() {
+        }
 
-		return name + " has the key " + key;
+        public String toString()
+        {
 
-		/*
+            return entry.convertToString();
+
+            /*
 		 * return name + " has the key " + key + "\nLeft Child: " + leftChild +
 		 * "\nRight Child: " + rightChild + "\n";
-		 */
+             */
+        }
 
-	}
+    }
+    BTNode root;
 
-}
- BTNode root;
+    public void addNode(TrafficEntry trafficEntry)
+    {
 
-	public void addNode(int key, String name) {
+        // Create a new Node and initialize it
+        BTNode newNode = new BTNode(trafficEntry);
 
-		// Create a new Node and initialize it
+        // If there is no root this becomes root
+        if (root == null)
+        {
 
-		BTNode newNode = new BTNode(key, name);
+            root = newNode;
+            System.out.println("newNode was null" + "Adding" + newNode.toString());
 
-		// If there is no root this becomes root
+        } else
+        {
 
-		if (root == null) {
+            // Set root as the Node we will start
+            // with as we traverse the tree
+            BTNode focusNode = root;
 
-			root = newNode;
+            // Future parent for our new Node
+            BTNode parent;
 
-		} else {
+            while (true)
+            {
+                // root is the top parent so we start
+                // there
+                parent = focusNode;
 
-			// Set root as the Node we will start
-			// with as we traverse the tree
+                // Check if the new node should go on
+                // the left side of the parent node
+                if (trafficEntry.totalNumberOfVehicles < focusNode.entry.totalNumberOfVehicles)
+                {
 
-			BTNode focusNode = root;
+                    // Switch focus to the left child
+                    focusNode = focusNode.leftChild;
 
-			// Future parent for our new Node
+                    // If the left child has no children
+                    if (focusNode == null)
+                    {
 
-			BTNode parent;
+                        // then place the new node on the left of it
+                        parent.leftChild = newNode;
+                        return; // All Done
 
-			while (true) {
+                    }
 
-				// root is the top parent so we start
-				// there
+                } else
+                { // If we get here put the node on the right
 
-				parent = focusNode;
+                    focusNode = focusNode.rightChild;
 
-				// Check if the new node should go on
-				// the left side of the parent node
+                    // If the right child has no children
+                    if (focusNode == null)
+                    {
 
-				if (key < focusNode.key) {
+                        // then place the new node on the right of it
+                        parent.rightChild = newNode;
+                        return; // All Done
 
-					// Switch focus to the left child
+                    }
 
-					focusNode = focusNode.leftChild;
+                }
 
-					// If the left child has no children
+            }
+        }
 
-					if (focusNode == null) {
+    }
 
-						// then place the new node on the left of it
+    // All nodes are visited in ascending order
+    // Recursion is used to go to one node and
+    // then go to its child nodes and so forth
+    public ArrayList inOrderTraverseTree(BTNode focusNode)
+    {
+        ArrayList temp = new ArrayList();
+        if (focusNode != null)
+        {
 
-						parent.leftChild = newNode;
-						return; // All Done
+            // Traverse the left node
+            inOrderTraverseTree(focusNode.leftChild);
 
-					}
+            // Visit the currently focused on node
+            System.out.println(focusNode);
+            temp.add(focusNode.entry.convertToString());
+            // Traverse the right node
+            inOrderTraverseTree(focusNode.rightChild);
 
-				} else { // If we get here put the node on the right
+        }
+        return temp;
+    }
 
-					focusNode = focusNode.rightChild;
+    public void preorderTraverseTree(BTNode focusNode)
+    {
 
-					// If the right child has no children
+        if (focusNode != null)
+        {
 
-					if (focusNode == null) {
+            System.out.println(focusNode);
 
-						// then place the new node on the right of it
+            preorderTraverseTree(focusNode.leftChild);
+            preorderTraverseTree(focusNode.rightChild);
 
-						parent.rightChild = newNode;
-						return; // All Done
+        }
 
-					}
+    }
 
-				}
+    public void postOrderTraverseTree(BTNode focusNode)
+    {
 
-			}
-		}
+        if (focusNode != null)
+        {
 
-	}
+            postOrderTraverseTree(focusNode.leftChild);
+            postOrderTraverseTree(focusNode.rightChild);
 
-	// All nodes are visited in ascending order
-	// Recursion is used to go to one node and
-	// then go to its child nodes and so forth
+            System.out.println(focusNode);
 
-	public void inOrderTraverseTree(BTNode focusNode) {
+        }
 
-		if (focusNode != null) {
+    }
 
-			// Traverse the left node
+    public BTNode findNode(int key)
+    {
 
-			inOrderTraverseTree(focusNode.leftChild);
+        // Start at the top of the tree
+        BTNode focusNode = root;
 
-			// Visit the currently focused on node
+        // While we haven't found the Node
+        // keep looking
+        while (focusNode.entry.totalNumberOfVehicles != key)
+        {
+            // If we should search to the left
+            if (key < focusNode.entry.totalNumberOfVehicles)
+            {
+                // Shift the focus Node to the left child
+                focusNode = focusNode.leftChild;
+            } else
+            {
+                // Shift the focus Node to the right child
+                focusNode = focusNode.rightChild;
+            }
+            // The node wasn't found
+            if (focusNode == null)
+            {
+                return null;
+            }
+        }
 
-			System.out.println(focusNode);
+        return focusNode;
 
-			// Traverse the right node
-
-			inOrderTraverseTree(focusNode.rightChild);
-
-		}
-
-	}
-
-	public void preorderTraverseTree(BTNode focusNode) {
-
-		if (focusNode != null) {
-
-			System.out.println(focusNode);
-
-			preorderTraverseTree(focusNode.leftChild);
-			preorderTraverseTree(focusNode.rightChild);
-
-		}
-
-	}
-
-	public void postOrderTraverseTree(BTNode focusNode) {
-
-		if (focusNode != null) {
-
-			postOrderTraverseTree(focusNode.leftChild);
-			postOrderTraverseTree(focusNode.rightChild);
-
-			System.out.println(focusNode);
-
-		}
-
-	}
-
-	public BTNode findNode(int key) {
-
-		// Start at the top of the tree
-
-		BTNode focusNode = root;
-
-		// While we haven't found the Node
-		// keep looking
-
-		while (focusNode.key != key) {
-
-			// If we should search to the left
-
-			if (key < focusNode.key) {
-
-				// Shift the focus Node to the left child
-
-				focusNode = focusNode.leftChild;
-
-			} else {
-
-				// Shift the focus Node to the right child
-
-				focusNode = focusNode.rightChild;
-
-			}
-
-			// The node wasn't found
-
-			if (focusNode == null)
-				return null;
-
-		}
-
-		return focusNode;
-
-	}
+    }
 
 }
