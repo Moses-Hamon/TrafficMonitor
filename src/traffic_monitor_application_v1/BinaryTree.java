@@ -26,16 +26,6 @@ public class BinaryTree
 
         }
 
-        public String toString()
-        {
-
-            return entry.convertToString();
-
-            /*
-		 * return name + " has the key " + key + "\nLeft Child: " + leftChild +
-		 * "\nRight Child: " + rightChild + "\n";
-             */
-        }
 
     }
     BTNode root;
@@ -51,7 +41,7 @@ public class BinaryTree
         {
 
             root = newNode;
-            System.out.println("newNode was null" + "Adding" + newNode.toString());
+            System.out.println("newNode was null" + "Adding" + newNode.entry.convertToString());
 
         } else
         {
@@ -112,22 +102,21 @@ public class BinaryTree
     // All nodes are visited in ascending order
     // Recursion is used to go to one node and
     // then go to its child nodes and so forth
-    public ArrayList inOrderTraverseTree(BTNode focusNode)
+    public ArrayList inOrderTraverseTree(BTNode focusNode, ArrayList temp)
     {
-        ArrayList temp = new ArrayList();
         if (focusNode != null)
         {
-
             // Traverse the left node
-            inOrderTraverseTree(focusNode.leftChild);
-
+            inOrderTraverseTree(focusNode.leftChild, temp);
+            System.out.println(focusNode.entry.convertToString());
             // Visit the currently focused on node
-            System.out.println(focusNode);
+
             temp.add(focusNode.entry.convertToString());
             // Traverse the right node
-            inOrderTraverseTree(focusNode.rightChild);
+            inOrderTraverseTree(focusNode.rightChild, temp);
 
         }
+        
         return temp;
     }
 

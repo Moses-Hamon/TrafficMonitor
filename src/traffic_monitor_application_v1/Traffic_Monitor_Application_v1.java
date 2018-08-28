@@ -253,10 +253,14 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         }
         if (e.getSource() == btnInOrderDisplay)
         {
-            ArrayList temp = trafficTree.inOrderTraverseTree(trafficTree.root);
+            ArrayList temp = new ArrayList();
+            trafficTree.inOrderTraverseTree(trafficTree.root, temp);
             for (int i = 0; i < temp.size(); i++)
             {
+                txaBinaryTreeList.append("[");
                 txaBinaryTreeList.append(temp.get(i).toString());
+                txaBinaryTreeList.append("] ");
+                
             }
         }
         if (e.getSource() == btnExit)
