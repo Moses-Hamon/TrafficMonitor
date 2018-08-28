@@ -80,6 +80,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setupDoubleLinkedList(trafficData);
         displayLinkedList(Dlist);
         setupBinaryTree(trafficData);
+        
         //Need Help
 //        
 //        Monitoring_Station test = new Monitoring_Station();
@@ -253,6 +254,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         }
         if (e.getSource() == btnInOrderDisplay)
         {
+            txaBinaryTreeList.setText("");
             ArrayList temp = new ArrayList();
             trafficTree.inOrderTraverseTree(trafficTree.root, temp);
             for (int i = 0; i < temp.size(); i++)
@@ -260,7 +262,30 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
                 txaBinaryTreeList.append("[");
                 txaBinaryTreeList.append(temp.get(i).toString());
                 txaBinaryTreeList.append("] ");
-                
+            }
+        }
+        if (e.getSource() == btnPreOrderDisplay)
+        {
+            txaBinaryTreeList.setText("");
+            ArrayList temp = new ArrayList();
+            trafficTree.preorderTraverseTree(trafficTree.root, temp);
+            for (int i = 0; i < temp.size(); i++)
+            {
+                txaBinaryTreeList.append("[");
+                txaBinaryTreeList.append(temp.get(i).toString());
+                txaBinaryTreeList.append("] ");
+            }
+        }
+        if (e.getSource() == btnPostOrderDisplay)
+        {
+            txaBinaryTreeList.setText("");
+            ArrayList temp = new ArrayList();
+            trafficTree.preorderTraverseTree(trafficTree.root, temp);
+            for (int i = 0; i < temp.size(); i++)
+            {
+                txaBinaryTreeList.append("[");
+                txaBinaryTreeList.append(temp.get(i).toString());
+                txaBinaryTreeList.append("] ");
             }
         }
         if (e.getSource() == btnExit)
@@ -375,6 +400,10 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         System.out.println("-----------------------------------------------------");
         Dlist.print();
     }
+    /**
+     * Used to setup Binary Tree for storing Traffic Entry Data.
+     * @param entryList 
+     */
     public void setupBinaryTree(ArrayList<TrafficEntry> entryList){
         
         trafficTree = new BinaryTree();

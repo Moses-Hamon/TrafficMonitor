@@ -110,7 +110,6 @@ public class BinaryTree
             inOrderTraverseTree(focusNode.leftChild, temp);
             System.out.println(focusNode.entry.convertToString());
             // Visit the currently focused on node
-
             temp.add(focusNode.entry.convertToString());
             // Traverse the right node
             inOrderTraverseTree(focusNode.rightChild, temp);
@@ -120,31 +119,33 @@ public class BinaryTree
         return temp;
     }
 
-    public void preorderTraverseTree(BTNode focusNode)
+    public ArrayList preorderTraverseTree(BTNode focusNode, ArrayList temp)
     {
 
         if (focusNode != null)
         {
 
-            System.out.println(focusNode);
+            System.out.println(focusNode.entry.convertToString());
+            temp.add(focusNode.entry.convertToString());
 
-            preorderTraverseTree(focusNode.leftChild);
-            preorderTraverseTree(focusNode.rightChild);
+            preorderTraverseTree(focusNode.leftChild, temp);
+            preorderTraverseTree(focusNode.rightChild, temp);
 
         }
-
+return temp;
     }
 
-    public void postOrderTraverseTree(BTNode focusNode)
+    public void postOrderTraverseTree(BTNode focusNode, ArrayList temp)
     {
 
         if (focusNode != null)
         {
 
-            postOrderTraverseTree(focusNode.leftChild);
-            postOrderTraverseTree(focusNode.rightChild);
+            postOrderTraverseTree(focusNode.leftChild, temp);
+            postOrderTraverseTree(focusNode.rightChild, temp);
 
-            System.out.println(focusNode);
+            System.out.println(focusNode.entry.convertToString());
+            temp.add(focusNode.entry.convertToString());
 
         }
 
