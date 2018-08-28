@@ -27,6 +27,7 @@ import javax.swing.border.LineBorder;
 
 
 
+
 /**
  *
  * @author Moses
@@ -83,8 +84,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         
         //Need Help
 //        
-//        Monitoring_Station test = new Monitoring_Station();
-//      test.show();
+        Monitoring_Station test = new Monitoring_Station();
+      test.show();
 //      Monitoring_Station test2 = new Monitoring_Station();
 //      test2.show();
         
@@ -393,8 +394,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
         for (int i = 0; i < entry.size(); i++)
         {
-            TrafficEntry test = entry.get(i); //grab first Traffic Entry Object
-            Dlist.head.append(new DoubleLinkList.Node(test));
+            TrafficEntry temp = entry.get(i); //grab first Traffic Entry Object
+            Dlist.head.append(new DoubleLinkList.Node(temp));
             
         }
         System.out.println("-----------------------------------------------------");

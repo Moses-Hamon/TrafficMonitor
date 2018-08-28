@@ -55,12 +55,15 @@ public class LibraryComponents
     }
    
         
-    /** --------------------------------------------------------
-    * Purpose: Locate a single JTextField within the JFrame.
-    * @param   Layout_manager, Width, X_position, Y_Position
-    * @returns The JTextField.
-    * ----------------------------------------------------------
-    */
+    /**
+     * @param myJFrame - JFrame to implement into
+     * @param myKeyLstnr - Key Listener
+     * @param myJTextFieldLayout - SpringLayout
+     * @param width - Width
+     * @param x - XPos
+     * @param y - YPos
+     * @return JTextField
+     */
     public static JTextField LocateAJTextField(JFrame myJFrame, KeyListener myKeyLstnr, SpringLayout myJTextFieldLayout, int width, int x, int y)
     {
         JTextField myJTextField = new JTextField(width);

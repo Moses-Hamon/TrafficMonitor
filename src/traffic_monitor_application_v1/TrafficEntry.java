@@ -1,7 +1,7 @@
 package traffic_monitor_application_v1;
 
-import java.util.Date;
-import java.util.Arrays;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class that holds the properties of one Traffic Entry
@@ -22,7 +22,15 @@ public class TrafficEntry
     public TrafficEntry()
     {
     }
-
+/**
+ * 
+ * @param time
+ * @param stationLocationID
+ * @param numberOfLanes
+ * @param totalNumberOfVehicles
+ * @param avgNumberOfVehicles
+ * @param avgVelocity 
+ */
     public TrafficEntry(String time, int stationLocationID, int numberOfLanes, int totalNumberOfVehicles, int avgNumberOfVehicles, int avgVelocity )
     {
         this.time = time;
@@ -47,6 +55,11 @@ public class TrafficEntry
         
         return entryArray;
     }
+    /**
+     * Converts the traffic entry into a String[]
+     * 
+     * @return String[] 
+     */
     public String[] toStringArray()
     {
 
@@ -61,18 +74,27 @@ public class TrafficEntry
         };
         return array;
     }
-    
+    /**
+     * Converts the TrafficEntry to a Single String.
+     * @return String
+     * 
+     */
     public String convertToString()
     {
-        StringBuilder trafficEntryString = new StringBuilder();
-        trafficEntryString.append(time).append(",");
-        trafficEntryString.append(stationLocationID).append(",");
-        trafficEntryString.append(numberOfLanes).append(",");
-        trafficEntryString.append(totalNumberOfVehicles).append(",");
-        trafficEntryString.append(avgNumberOfVehicles).append(",");
-        trafficEntryString.append(avgVelocity);
-
-        String str = trafficEntryString.toString();
+        String str;
+        
+        str = StringUtils.join(this.toStringArray(), ",");
+        
+        
+//        StringBuilder trafficEntryString = new StringBuilder();
+//        trafficEntryString.append(time).append(",");
+//        trafficEntryString.append(stationLocationID).append(",");
+//        trafficEntryString.append(numberOfLanes).append(",");
+//        trafficEntryString.append(totalNumberOfVehicles).append(",");
+//        trafficEntryString.append(avgNumberOfVehicles).append(",");
+//        trafficEntryString.append(avgVelocity);
+//
+//        String str = trafficEntryString.toString();
         return str;
     }
     

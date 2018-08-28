@@ -2,6 +2,9 @@ package traffic_monitor_application_v1;
 
 import java.awt.Color;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,7 +15,7 @@ import javax.swing.SpringLayout;
  *
  * @author Moe
  */
-public class Monitoring_Station extends JFrame
+public class Monitoring_Station extends JFrame implements ActionListener
 {
 
     static int monitorNumber = 0;
@@ -35,6 +38,7 @@ public class Monitoring_Station extends JFrame
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
         displayLabels(springLayout);
+        displayTextFields(springLayout);
 
     }
 
@@ -48,5 +52,29 @@ public class Monitoring_Station extends JFrame
         }
         lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Stn " + monitorNumber, 10, 10);
     }
+
+    private void displayTextFields(SpringLayout springLayout)
+    {
+        int yPos = 0;
+        for (int i = 0; i < textFields.length; i++)
+        {
+            yPos = yPos + 25;
+            textFields[i] = LibraryComponents.LocateAJTextField(this, null, springLayout, 8, 100, yPos);
+        }
+    }
+    
+//<editor-fold defaultstate="collapsed" desc="Action and Key Listeners">  
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+         if (e.getSource() == btnExit)
+        {
+            ;
+        }
+
+    }
+    //</editor-fold>
+
+    
 
 }
