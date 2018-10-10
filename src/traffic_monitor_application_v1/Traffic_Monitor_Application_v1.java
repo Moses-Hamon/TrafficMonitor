@@ -88,8 +88,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setupBinaryTree(trafficData);
         connectToServer();
         
-        //Need Help
-//        
+
         Monitoring_Station test = new Monitoring_Station();
       test.show();
     Monitoring_Station test2 = new Monitoring_Station();
@@ -394,6 +393,10 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     
 //<editor-fold defaultstate="collapsed" desc="Data Management">
     
+    /**
+     * Code used to setup the double linked list.
+     * @param entry 
+     */
     public void setupDoubleLinkedList(ArrayList<TrafficEntry> entry)
     {
         Dlist = new DoubleLinkList.DList(); 
