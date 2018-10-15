@@ -39,6 +39,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
         setLayout(springLayout);
         displayLabels(springLayout);
         displayTextFields(springLayout);
+        displayButtons(springLayout);
 
     }
 
@@ -47,7 +48,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
         int yPos = 0;
         for (int i = 0; i < 6; i++)
         {
-            yPos = yPos + 25;
+            yPos = yPos + 35;
             labels[i] = LibraryComponents.LocateAJLabel(this, layout, lblHeadings[i], 10, yPos);
         }
         lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Stn " + monitorNumber, 10, 10);
@@ -58,18 +59,23 @@ public class Monitoring_Station extends JFrame implements ActionListener
         int yPos = 0;
         for (int i = 0; i < textFields.length; i++)
         {
-            yPos = yPos + 25;
-            textFields[i] = LibraryComponents.LocateAJTextField(this, null, springLayout, 8, 100, yPos);
+            yPos = yPos + 35;
+            textFields[i] = LibraryComponents.LocateAJTextField(this, null, springLayout, 8, 200, yPos);
         }
     }
     
+    private void displayButtons(SpringLayout springLayout)
+    {
+        btnSubmit = LibraryComponents.LocateAJButton(this, this, springLayout, "Submit", 10, 350, 125, 40);
+        btnExit = LibraryComponents.LocateAJButton(this, this, springLayout, "Exit", 175, 350, 125, 40);
+    }
 //<editor-fold defaultstate="collapsed" desc="Action and Key Listeners">  
     @Override
     public void actionPerformed(ActionEvent e)
     {
          if (e.getSource() == btnExit)
         {
-            ;
+            this.dispose();
         }
 
     }

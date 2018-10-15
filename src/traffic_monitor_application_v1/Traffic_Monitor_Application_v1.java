@@ -86,8 +86,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 //        
         Monitoring_Station test = new Monitoring_Station();
       test.show();
-//      Monitoring_Station test2 = new Monitoring_Station();
-//      test2.show();
+    Monitoring_Station test2 = new Monitoring_Station();
+     test2.show();
         
 
     }
