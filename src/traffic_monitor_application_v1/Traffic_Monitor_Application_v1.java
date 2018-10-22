@@ -88,8 +88,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
       test.show();
     Monitoring_Station test2 = new Monitoring_Station();
      test2.show();
+     
         
-
     }
 //<editor-fold defaultstate="collapsed" desc="Display GUI">
 
