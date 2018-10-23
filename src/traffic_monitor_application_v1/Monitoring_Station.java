@@ -5,11 +5,16 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import static traffic_monitor_application_v1.Traffic_Monitor_Application_v1.applicationName;
 
 /**
  *
@@ -17,7 +22,16 @@ import javax.swing.SpringLayout;
  */
 public class Monitoring_Station extends JFrame implements ActionListener
 {
-
+    static String applicationName = "Monitoring Station";
+    //Socket used to connect to server
+    private Socket socket;
+    private String host = "DESKTOP-E8H27QU";
+    private int port = 4444;
+    // The streams we communicate to the server; these come
+    // from the socket
+    private DataOutputStream dataOut;
+    private DataInputStream dataIn;
+    
     static int monitorNumber = 0;
     JLabel lblTitle;
     JButton btnSubmit, btnExit;
@@ -40,7 +54,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
         displayLabels(springLayout);
         displayTextFields(springLayout);
         displayButtons(springLayout);
-
+        connectToServer();
     }
 
     void displayLabels(SpringLayout layout)
@@ -81,6 +95,33 @@ public class Monitoring_Station extends JFrame implements ActionListener
     }
     //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="Server Connection">
+    /**
+     * connects the application to the server
+     */
+    private void connectToServer()
+    {
+        try
+        {
+            //initiate connection
+            socket = new Socket(host, port);
+            // Display if conneciton is successful
+            System.out.println("Connected to "+socket);
+            
+            //Lets's grab the streams and create DataInput/Output streams from them
+             dataIn = new DataInputStream(socket.getInputStream());
+             dataOut = new DataOutputStream(socket.getOutputStream());
+            
+            //Start a background thread for receiving messages
+            ClientThread clientThread = new ClientThread(socket, applicationName);
+            clientThread.start();
+            
+        } catch (IOException ex)
+        {
+            System.out.println("Connection Failed" + ex);
+        }
+    }
+//</editor-fold>
     
 
 }

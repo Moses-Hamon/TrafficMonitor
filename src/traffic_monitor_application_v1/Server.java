@@ -3,10 +3,12 @@ package traffic_monitor_application_v1;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import sun.security.x509.IPAddressName;
 
 /**
  * Server used for communication between Monitoring stations and Monitor
@@ -16,6 +18,7 @@ import java.util.Hashtable;
  */
 public class Server
 {
+   //InetAddress address = InetAddress.getByName("60.230.168.124");
     // The ServerSocket we'll use for accepting new connections
     private ServerSocket ss;
     // A mapping from sockets to DataOutputStreams. This will
@@ -29,9 +32,7 @@ private Hashtable outputStreams = new Hashtable();
 // All we have to do is listen
         listen(port);
     }
-    
-    //Main routine
-    // Usage: java Server >port<
+
 
 
     /**
@@ -44,7 +45,7 @@ private Hashtable outputStreams = new Hashtable();
     private void listen(int port) throws IOException
     {
         // create the SeverSocket
-        ServerSocket ss = new ServerSocket(port);
+        ServerSocket ss = new ServerSocket(port, 50, InetAddress.getLocalHost());
 
         // Confirmation that socket is listening
         System.out.println("Listening on: " + ss);
@@ -129,7 +130,9 @@ private Hashtable outputStreams = new Hashtable();
         }
     }
     
-    
+        
+    //Main routine
+    // Usage: java Server >port<
         static public void main(String args[]) throws Exception
     {
 

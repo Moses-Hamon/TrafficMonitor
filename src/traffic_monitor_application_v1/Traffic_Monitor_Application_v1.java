@@ -41,9 +41,10 @@ import javax.swing.border.LineBorder;
  */
 public class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener
 {
+    static String applicationName = "Traffic Monitor Main";
     //Socket used to connect to server
     private Socket socket;
-    private String host = "localHost";
+    private String host = "DESKTOP-E8H27QU";
     private int port = 4444;
     // The streams we communicate to the server; these come
     // from the socket
@@ -259,7 +260,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         {
             try
             {
-                dataOut.writeUTF("Test for the server");
+                dataOut.writeUTF("Test for the server from:" + socket);
             } catch (IOException ex)
             {
                 System.out.println("Failed");
@@ -458,15 +459,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         {
             //initiate connection
             socket = new Socket(host, port);
-            // Display if conneciton is successful
-            System.out.println("Connected to "+socket);
-            
-            //Lets's grab the streams and create DataInput/Output streams from them
-             dataIn = new DataInputStream(socket.getInputStream());
-             dataOut = new DataOutputStream(socket.getOutputStream());
-            
             //Start a background thread for receiving messages
-            
+            ClientThread clientThread = new ClientThread(socket, applicationName);
+            clientThread.start();
             
         } catch (IOException ex)
         {
