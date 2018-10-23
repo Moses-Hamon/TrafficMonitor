@@ -1,6 +1,7 @@
 package traffic_monitor_application_v1;
 
 
+import java.io.Serializable;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -9,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author Moses
  */
 
-public class TrafficEntry
+public class TrafficEntry implements Serializable
 {
 
     //properties

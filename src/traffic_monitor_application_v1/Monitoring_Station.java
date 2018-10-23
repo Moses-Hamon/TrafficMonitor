@@ -54,7 +54,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
         displayButtons(springLayout);
         connectToServer();
     }
-
+//<editor-fold defaultstate="collapsed" desc="Gui">  
     void displayLabels(SpringLayout layout)
     {
         int yPos = 0;
@@ -81,6 +81,8 @@ public class Monitoring_Station extends JFrame implements ActionListener
         btnSubmit = LibraryComponents.LocateAJButton(this, this, springLayout, "Submit", 10, 350, 125, 40);
         btnExit = LibraryComponents.LocateAJButton(this, this, springLayout, "Exit", 175, 350, 125, 40);
     }
+    //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Action and Key Listeners">  
     @Override
     public void actionPerformed(ActionEvent e)
@@ -100,21 +102,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
      */
     private void connectToServer()
     {
-        try
-        {
-            //initiate connection
-            socket = new Socket(host, port);
-            // Display if conneciton is successful
-            System.out.println("Connected to "+socket);
-              
-            //Start a background thread for receiving messages
-            monitorClient = new ClientThread(socket, applicationName);
-            monitorClient.start();
-            
-        } catch (IOException ex)
-        {
-            System.out.println("Connection Failed" + ex);
-        }
+            monitorClient = new ClientThread(host, port, applicationName);
     }
 //</editor-fold>
     

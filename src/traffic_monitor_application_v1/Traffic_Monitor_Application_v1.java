@@ -42,10 +42,8 @@ import javax.swing.border.LineBorder;
 public class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener
 {
     static String applicationName = "Traffic Monitor Main";
-    //Socket used to connect to server
-    private Socket socket;
-    private String host = "DESKTOP-E8H27QU";
-    private int port = 4444;
+    private final String host = "DESKTOP-E8H27QU";
+    private final int port = 4444;
     // The streams we communicate to the server; these come
     // from the socket
     private ClientThread clientThread;
@@ -378,23 +376,23 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
             //sets random entry (pivot for sort)
             Random rn = new Random();
             int pivot = entry.get(rn.nextInt(size) + l).avgVelocity;
-//            System.out.println(pivot);
+            // System.out.println(pivot);
             while (l < r)
             {
                 while (entry.get(r).avgVelocity > pivot && r > l)
                 {
-//                    System.out.println(entry.get(r).avgVelocity + " > " + pivot + " & " + r + " > " + l);
+                    // System.out.println(entry.get(r).avgVelocity + " > " + pivot + " & " + r + " > " + l);
                     r--;
                 }
                 while (entry.get(l).avgVelocity < pivot && l <= r)
                 {
-//                    System.out.println(entry.get(l).avgVelocity  + " < " + pivot + " & " + l + " <= " + r);
+                // System.out.println(entry.get(l).avgVelocity  + " < " + pivot + " & " + l + " <= " + r);
                     l++;
                 }
                 if (l < r)
                 {
                     TrafficEntry temp = entry.get(l);
-//                    System.out.print("swapping entry " + l + " with entry " + "" + r + "\n");
+                    //  System.out.print("swapping entry " + l + " with entry " + "" + r + "\n");
                     entry.set(l, entry.get(r));
                     entry.set(r, temp);
                     l++;
@@ -448,18 +446,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
      */
     private void connectToServer()
     {
-        try
-        {
-            //initiate connection
-            socket = new Socket(host, port);
             //Start a background thread for receiving messages
-            clientThread = new ClientThread(socket, applicationName);
-            clientThread.start();
-            
-        } catch (IOException ex)
-        {
-            System.out.println("Connection Failed" + ex);
-        }
+            clientThread = new ClientThread(host, port, applicationName);
     }
 //</editor-fold>
 }
