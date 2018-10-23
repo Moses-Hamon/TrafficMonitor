@@ -45,7 +45,7 @@ private Hashtable outputStreams = new Hashtable();
     private void listen(int port) throws IOException
     {
         // create the SeverSocket
-        ServerSocket ss = new ServerSocket(port, 50, InetAddress.getLocalHost());
+        ServerSocket ss = new ServerSocket(port, 5, InetAddress.getLocalHost());
 
         // Confirmation that socket is listening
         System.out.println("Listening on: " + ss);
@@ -62,10 +62,10 @@ private Hashtable outputStreams = new Hashtable();
 
             // Create a DataOutputStream for writing data to the
             // other side
-            DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+            DataOutputStream dataOut = new DataOutputStream(s.getOutputStream());
 
             // Save this stream so we don't need to make it again
-            outputStreams.put(s, dout);
+            outputStreams.put(s, dataOut);
 
             // Create a new thread for this connection, and then forget
             //about it

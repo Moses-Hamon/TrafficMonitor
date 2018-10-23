@@ -5,8 +5,7 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+
 import java.io.IOException;
 import java.net.Socket;
 import javax.swing.JButton;
@@ -29,8 +28,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
     private int port = 4444;
     // The streams we communicate to the server; these come
     // from the socket
-    private DataOutputStream dataOut;
-    private DataInputStream dataIn;
+    private ClientThread monitorClient;
     
     static int monitorNumber = 0;
     JLabel lblTitle;
@@ -89,6 +87,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
     {
          if (e.getSource() == btnExit)
         {
+            monitorClient.close();
             this.dispose();
         }
 
@@ -107,14 +106,10 @@ public class Monitoring_Station extends JFrame implements ActionListener
             socket = new Socket(host, port);
             // Display if conneciton is successful
             System.out.println("Connected to "+socket);
-            
-            //Lets's grab the streams and create DataInput/Output streams from them
-             dataIn = new DataInputStream(socket.getInputStream());
-             dataOut = new DataOutputStream(socket.getOutputStream());
-            
+              
             //Start a background thread for receiving messages
-            ClientThread clientThread = new ClientThread(socket, applicationName);
-            clientThread.start();
+            monitorClient = new ClientThread(socket, applicationName);
+            monitorClient.start();
             
         } catch (IOException ex)
         {

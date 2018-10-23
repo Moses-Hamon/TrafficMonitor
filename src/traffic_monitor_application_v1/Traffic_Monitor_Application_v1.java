@@ -48,8 +48,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private int port = 4444;
     // The streams we communicate to the server; these come
     // from the socket
-    private DataOutputStream dataOut;
-    private DataInputStream dataIn;
+    private ClientThread clientThread;
 
     
     private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay,
@@ -100,11 +99,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setupBinaryTree(trafficData);
         connectToServer();
         
-
-        Monitoring_Station test = new Monitoring_Station();
-      test.show();
-    Monitoring_Station test2 = new Monitoring_Station();
-     test2.show();
+        for (int i = 0; i < 2; i++)
+        {
+            Monitoring_Station monitor = new Monitoring_Station();
+            monitor.show();
+        }
      
         
     }
@@ -258,13 +257,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         if (e.getSource() == btnTestConnection)
         {
-            try
-            {
-                dataOut.writeUTF("Test for the server from:" + socket);
-            } catch (IOException ex)
-            {
-                System.out.println("Failed");
-            }
+            clientThread.sendMsg(trafficData.get(1).convertToString());
         }
         if (e.getSource() == btnSortLocation)
         {
@@ -460,7 +453,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
             //initiate connection
             socket = new Socket(host, port);
             //Start a background thread for receiving messages
-            ClientThread clientThread = new ClientThread(socket, applicationName);
+            clientThread = new ClientThread(socket, applicationName);
             clientThread.start();
             
         } catch (IOException ex)
