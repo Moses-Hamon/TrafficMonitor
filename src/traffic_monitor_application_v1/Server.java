@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Hashtable;
 
 /**
  * Server used for communication between Monitoring stations and Monitor
@@ -12,10 +13,16 @@ import java.net.Socket;
  *
  * @author Moses
  */
-public class Server
+public class Server implements Runnable
 {
+    // The ServerSocket we'll use for accepting new connections
+    private ServerSocket ss;
+    // A mapping from sockets to DataOutputStreams. This will
+// help us avoid having to create a DataOutputStream each time
+// we want to write to a stream.
+private Hashtable outputStreams = new Hashtable();
+    
     // Constructor and while-accept loop all in one.
-
     public Server(int port) throws IOException
     {
 // All we have to do is listen
@@ -29,45 +36,50 @@ public class Server
 
         // Get the port # from the command line
         int port = Integer.parseInt(args[0]);
-        
+
         //Create a new server object, which will automatically begin
         // accepting conecitons
-        new Server( port );
+        new Server(port);
     }
+
     /**
-     * Listens for a connection on a port, accepts connections and creates threads
-     * to deal with them
+     * Listens for a connection on a port, accepts connections and creates
+     * threads to deal with them
+     *
      * @param port
-     * @throws IOException 
+     * @throws IOException
      */
-  private void listen( int port ) throws IOException
-  {
+    private void listen(int port) throws IOException
+    {
         // create the SeverSocket
-        ServerSocket ss = new ServerSocket( port );
-        
+        ServerSocket ss = new ServerSocket(port);
+
         // Confirmation that socket is listening
         System.out.println("Listening on: " + ss);
-        
+
         //Keep accepting connections forever
-        while (true){
-            
+        while (true)
+        {
+
             //grab the next incoming connection
             Socket s = ss.accept();
-            
+
             // displays connection on console
             System.out.println("Connection from: " + s);
-            
+
             // Create a DataOutputStream for writing data to the
             // other side
-            DataOutputStream dout = new DataOutputStream(s.getOutputStream() );
-            
+            DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+
             // Save this stream so we don't need to make it again
-            outputStreams.put (s, dout);
-            
+            outputStreams.put(s, dout);
+
             // Create a new thread for this connection, and then forget
             //about it
-            new ServerThread( this, s);
+            new ServerThread(this, s);
         }
-  }
+    }
+    
+    
 
 }

@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.*;
 import java.lang.reflect.Array;
+import java.net.Socket;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -34,7 +35,11 @@ import javax.swing.border.LineBorder;
  */
 public class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener
 {
-
+    
+    private String host = "localHost";
+    private int port = 5000;
+    
+    
     private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay,
             btnPreOrderSave, btnInOrderDisplay, btnInOrderSave, btnPostOrderDisplay, btnPostOrderSave, btnBinaryTreeDisplay;
     private JTextArea txaLinkedList, txaBinaryTreeList, txaInformation;
@@ -81,6 +86,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setupDoubleLinkedList(trafficData);
         displayLinkedList(Dlist);
         setupBinaryTree(trafficData);
+        connectToServer();
         
         //Need Help
 //        
@@ -417,4 +423,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     }
 //</editor-fold>
 
+//<editor-fold defaultstate="collapsed" desc="Server Connection">
+    private void connectToServer()
+    {
+        //initiate connection
+        socket = new Socket(host, port);
+    }
+//</editor-fold>
 }
