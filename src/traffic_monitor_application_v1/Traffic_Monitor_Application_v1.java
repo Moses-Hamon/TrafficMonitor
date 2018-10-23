@@ -170,19 +170,17 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         // Create column names
 
         //add data
-       
         trafficData = new ArrayList<TrafficEntry>();
-
-        trafficData.add(new TrafficEntry("6:00:00 AM",1,3,27,9,70));
-        trafficData.add(new TrafficEntry("6:00:00 AM",2, 2, 16, 8, 80));
-        trafficData.add(new TrafficEntry("7:00:00 AM",1, 3, 30, 10, 60));
-        trafficData.add(new TrafficEntry("7:00:00 AM", 2, 2, 20, 10, 60));
-        trafficData.add(new TrafficEntry("8:00:00 AM", 1, 3, 36, 12, 40));
-        trafficData.add(new TrafficEntry("8:00:00 AM",2, 2, 22, 11, 50));
-        trafficData.add(new TrafficEntry("9:00:00 AM", 1, 3, 33, 11, 50));
-        trafficData.add(new TrafficEntry("9:00:00 AM", 2, 2, 18, 9, 65));
-        trafficData.add(new TrafficEntry("10:00:00 AM", 1, 3, 24, 8, 80));
-        trafficData.add(new TrafficEntry("10:00:00 AM", 2, 2, 14, 7, 80));
+        trafficData.add(new TrafficEntry("6:00:00",1,3,27,9,70));
+        trafficData.add(new TrafficEntry("6:00:00",2, 2, 16, 8, 80));
+        trafficData.add(new TrafficEntry("7:00:00",1, 3, 30, 10, 60));
+        trafficData.add(new TrafficEntry("7:00:00", 2, 2, 20, 10, 60));
+        trafficData.add(new TrafficEntry("8:00:00", 1, 3, 36, 12, 40));
+        trafficData.add(new TrafficEntry("8:00:00",2, 2, 22, 11, 50));
+        trafficData.add(new TrafficEntry("9:00:00", 1, 3, 33, 11, 50));
+        trafficData.add(new TrafficEntry("9:00:00", 2, 2, 18, 9, 65));
+        trafficData.add(new TrafficEntry("10:00:00", 1, 3, 24, 8, 80));
+        trafficData.add(new TrafficEntry("10:00:00", 2, 2, 14, 7, 80));
         
         // constructor of JTable model
         trafficModel = new MyModel(trafficData, columnNames);
@@ -448,6 +446,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
             //Start a background thread for receiving messages
             clientThread = new ClientThread(host, port, applicationName);
+            clientThread.start();
     }
 //</editor-fold>
 }

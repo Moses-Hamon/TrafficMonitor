@@ -4,6 +4,7 @@ package traffic_monitor_application_v1;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
@@ -22,6 +23,8 @@ public class ClientThread extends Thread
     //handles the data input and output
     private DataOutputStream dataOut;
     private DataInputStream dataIn;
+    //for object serialization
+    private ObjectOutputStream objectOut;
     
     /**
      * Constructor creates new Thread using the Socket and ApplicationName
@@ -39,7 +42,7 @@ public class ClientThread extends Thread
 
             this.applicationName = applicationName;
             clientNumber++;
-            start();
+            
         } 
         catch (IOException ex)
         {
@@ -53,7 +56,7 @@ public class ClientThread extends Thread
         {
             dataOut = new DataOutputStream(socket.getOutputStream());
             dataIn = new DataInputStream(socket.getInputStream());
-            
+            objectOut = new ObjectOutputStream(socket.getOutputStream());
             dataOut.writeUTF("Connection established with " + applicationName + " " +clientNumber + "\n");
             
         } catch (IOException ex)
@@ -80,13 +83,30 @@ public class ClientThread extends Thread
      * Sends a message to the server. Used for displaying connection information and other messages
      * @param msg 
      */
-    void sendMsg(String msg){
+    void sendMsg(String msg)
+    {
         try
         {
             dataOut.writeUTF(msg);
         } catch (IOException ex)
         {
             System.out.println("Error Sending Message: " + ex);
+        }
+    }
+
+    /**
+     * Receives a Traffic Entry and sends it on the stream
+     * @param entry 
+     */
+    public void sendObject(TrafficEntry entry)
+    {
+        try
+        {
+            objectOut.writeObject(entry);
+            sendMsg("Item has been sent");
+        } catch (Exception e)
+        {
+            System.out.println("Error sending Object: " + e);
         }
     }
 }

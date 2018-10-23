@@ -43,6 +43,10 @@ public class TrafficEntry implements Serializable
         this.avgVelocity = avgVelocity;
     }
     
+    /**
+     * Method used for Table model (as the table only requires 4 fields)
+     * @return 
+     */
     public Object[] ToArray()
     {
            

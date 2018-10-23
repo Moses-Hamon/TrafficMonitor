@@ -1,19 +1,19 @@
 package traffic_monitor_application_v1;
 
 import java.awt.Color;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import java.io.IOException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-import static traffic_monitor_application_v1.Traffic_Monitor_Application_v1.applicationName;
 
 /**
  *
@@ -73,7 +73,17 @@ public class Monitoring_Station extends JFrame implements ActionListener
         {
             yPos = yPos + 35;
             textFields[i] = LibraryComponents.LocateAJTextField(this, null, springLayout, 8, 200, yPos);
+            if (i==0)
+            {
+                textFields[i].addMouseListener(new MouseAdapter(){
+                    @Override
+                    public void mouseClicked(MouseEvent e){
+                        textFields[0].setText(collectCurrentTime());
+                    }
+                });
+            }
         }
+        
     }
     
     private void displayButtons(SpringLayout springLayout)
@@ -92,10 +102,35 @@ public class Monitoring_Station extends JFrame implements ActionListener
             monitorClient.close();
             this.dispose();
         }
+         if (e.getSource() == btnSubmit)
+        {
+             TrafficEntry data = collectStationData();
+             System.out.println(data.convertToString());
+             monitorClient.sendObject(data);
+        }
 
     }
     //</editor-fold>
+//<editor-fold defaultstate="collapsed" desc="Methods">  
+    private TrafficEntry collectStationData()
+    {
+        TrafficEntry entry = new TrafficEntry();
+        entry.time = textFields[0].getText();
+        entry.stationLocationID = Integer.parseInt(textFields[1].getText());
+        entry.numberOfLanes = Integer.parseInt(textFields[2].getText());
+        entry.totalNumberOfVehicles = Integer.parseInt(textFields[3].getText());
+        entry.avgNumberOfVehicles = Integer.parseInt(textFields[4].getText());
+        entry.avgVelocity = Integer.parseInt(textFields[5].getText());
+        
+        return entry;
+    }
+    
+    private String collectCurrentTime(){
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
+    }
 
+ 
+//</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="Server Connection">
     /**
      * connects the application to the server
@@ -103,6 +138,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
     private void connectToServer()
     {
             monitorClient = new ClientThread(host, port, applicationName);
+            monitorClient.start();
     }
 //</editor-fold>
     

@@ -2,6 +2,7 @@ package traffic_monitor_application_v1;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -25,6 +26,7 @@ public class Server
 // help us avoid having to create a DataOutputStream each time
 // we want to write to a stream.
 private Hashtable outputStreams = new Hashtable();
+private Hashtable objectOutputStreams = new Hashtable();
     
     // Constructor and while-accept loop all in one.
     public Server(int port) throws IOException
@@ -63,9 +65,10 @@ private Hashtable outputStreams = new Hashtable();
             // Create a DataOutputStream for writing data to the
             // other side
             DataOutputStream dataOut = new DataOutputStream(s.getOutputStream());
-
+            ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
             // Save this stream so we don't need to make it again
             outputStreams.put(s, dataOut);
+            objectOutputStreams.put(s, objectOut);
 
             // Create a new thread for this connection, and then forget
             //about it
@@ -77,6 +80,10 @@ private Hashtable outputStreams = new Hashtable();
     // connected to us
     Enumeration getOutputStreams() {
         return outputStreams.elements();
+    }
+    
+    Enumeration getObjectOutputStreams() {
+        return objectOutputStreams.elements();
     }
     
     //Send a message to all clients (utility routine)
@@ -104,6 +111,25 @@ private Hashtable outputStreams = new Hashtable();
             }
         }
     }
+    
+    void sendObjectToAll(TrafficEntry entry)
+    {
+        synchronized (objectOutputStreams)
+        {
+            for (Enumeration e = getObjectOutputStreams(); e.hasMoreElements();)
+            {
+                ObjectOutputStream objectOut = (ObjectOutputStream) e.nextElement();
+
+                try
+                {
+                    objectOut.writeObject(entry);
+                } catch (IOException ex)
+                {
+                    System.out.println("Error sending Object: " + ex);
+                }
+            }
+        }
+    }
 
     // Remove a socket, and it's corresponding output stream, from our
     // list. This is usually called by a connection thread that has
@@ -112,12 +138,14 @@ private Hashtable outputStreams = new Hashtable();
     {
         // Synchronize so we don't mess up sendToAll() while it walks
         // down the list of all output streamsa
+
         synchronized (outputStreams)
         {
             // Tell the world
             System.out.println("Removing connection to " + s);
             // Remove it from our hashtable/list
             outputStreams.remove(s);
+            objectOutputStreams.remove(s);
             // Make sure it's closed
             try
             {
