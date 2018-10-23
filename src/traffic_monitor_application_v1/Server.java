@@ -123,6 +123,7 @@ private Hashtable objectOutputStreams = new Hashtable();
                 try
                 {
                     objectOut.writeObject(entry);
+                    System.out.println("Sent Object: "+ entry.toString());
                 } catch (IOException ex)
                 {
                     System.out.println("Error sending Object: " + ex);
@@ -165,7 +166,7 @@ private Hashtable objectOutputStreams = new Hashtable();
     {
 
         // Get the port # from the command line
-        int port = 4444;
+        int port = 5000;
 
         //Create a new server object, which will automatically begin
         // accepting conecitons

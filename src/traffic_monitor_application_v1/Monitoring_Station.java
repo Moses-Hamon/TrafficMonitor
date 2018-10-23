@@ -137,8 +137,8 @@ public class Monitoring_Station extends JFrame implements ActionListener
      */
     private void connectToServer()
     {
-            monitorClient = new ClientThread(host, port, applicationName);
-            monitorClient.start();
+            monitorClient = new ClientThread(host, port, applicationName, null);
+            
     }
 //</editor-fold>
     

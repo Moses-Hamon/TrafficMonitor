@@ -34,7 +34,7 @@ public class ServerThread extends Thread
             //Create a DataInputStream for communication; the client
             // is using a DataOutputStream to write to us
             DataInputStream dataIn = new DataInputStream(socket.getInputStream());
-            ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
+            ObjectInputStream objectIn = new ObjectInputStream(dataIn);
             //Over and over forever
             while (true)
             {

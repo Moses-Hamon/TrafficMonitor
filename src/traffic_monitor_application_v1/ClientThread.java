@@ -4,6 +4,7 @@ package traffic_monitor_application_v1;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
@@ -13,6 +14,7 @@ import java.net.Socket;
  */
 public class ClientThread extends Thread
 {
+    
     //Used for counting number of clients
     static int clientNumber = 0;
     //Connection used for new thread.
@@ -25,6 +27,7 @@ public class ClientThread extends Thread
     private DataInputStream dataIn;
     //for object serialization
     private ObjectOutputStream objectOut;
+    private ObjectInputStream objectIn;
     
     /**
      * Constructor creates new Thread using the Socket and ApplicationName
@@ -32,17 +35,17 @@ public class ClientThread extends Thread
      * @param host
      * @param port
      * @param applicationName 
+     * @param app 
      */
-    public ClientThread(String host, int port, String applicationName)
+    public ClientThread(String host, int port, String applicationName, Traffic_Monitor_Application_v1 app)
     {
         try
         {
             //initiate connection
             socket = new Socket(host, port);
-
             this.applicationName = applicationName;
             clientNumber++;
-            
+            start();
         } 
         catch (IOException ex)
         {
@@ -56,8 +59,28 @@ public class ClientThread extends Thread
         {
             dataOut = new DataOutputStream(socket.getOutputStream());
             dataIn = new DataInputStream(socket.getInputStream());
-            objectOut = new ObjectOutputStream(socket.getOutputStream());
+            objectOut = new ObjectOutputStream(dataOut);
+            objectIn = new ObjectInputStream(dataIn);
+            
             dataOut.writeUTF("Connection established with " + applicationName + " " +clientNumber + "\n");
+            
+//            while (true)
+//            {
+//                try
+//                {
+//                    TrafficEntry entry = (TrafficEntry) objectIn.readObject();
+//                    System.out.println(applicationName + "Has received: \n" + entry.toString());
+//                    
+//                } catch (Exception e)
+//                {
+//                    System.out.println(applicationName + " Error: " + e);
+//                }
+//                finally{
+//            //The connection is closed for one reason or another,
+//            // so have the server dealing with it
+//            socket.close();
+//                }
+//            }
             
         } catch (IOException ex)
         {
@@ -109,4 +132,7 @@ public class ClientThread extends Thread
             System.out.println("Error sending Object: " + e);
         }
     }
+    
+    
+    
 }

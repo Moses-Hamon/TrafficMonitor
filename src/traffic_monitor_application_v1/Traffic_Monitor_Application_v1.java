@@ -43,7 +43,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 {
     static String applicationName = "Traffic Monitor Main";
     private final String host = "DESKTOP-E8H27QU";
-    private final int port = 4444;
+    private final int port = 5000;
     // The streams we communicate to the server; these come
     // from the socket
     private ClientThread clientThread;
@@ -96,6 +96,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayLinkedList(Dlist);
         setupBinaryTree(trafficData);
         connectToServer();
+        
         
         for (int i = 0; i < 2; i++)
         {
@@ -445,8 +446,14 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private void connectToServer()
     {
             //Start a background thread for receiving messages
-            clientThread = new ClientThread(host, port, applicationName);
-            clientThread.start();
+            clientThread = new ClientThread(host, port, applicationName, this);
+            
+    }
+    
+    public void receiveNewTrafficEntry(TrafficEntry entry){
+        System.out.println(entry.toString());
+        trafficData.add(entry);
+        trafficModel = new MyModel(trafficData, columnNames);
     }
 //</editor-fold>
 }
