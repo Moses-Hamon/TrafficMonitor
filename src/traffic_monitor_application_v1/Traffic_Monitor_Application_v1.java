@@ -21,8 +21,14 @@ import javax.swing.*;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.*;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -35,13 +41,18 @@ import javax.swing.border.LineBorder;
  */
 public class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener
 {
-    
+    //Socket used to connect to server
+    private Socket socket;
     private String host = "localHost";
-    private int port = 5000;
-    
+    private int port = 4444;
+    // The streams we communicate to the server; these come
+    // from the socket
+    private DataOutputStream dataOut;
+    private DataInputStream dataIn;
+
     
     private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay,
-            btnPreOrderSave, btnInOrderDisplay, btnInOrderSave, btnPostOrderDisplay, btnPostOrderSave, btnBinaryTreeDisplay;
+            btnPreOrderSave, btnInOrderDisplay, btnInOrderSave, btnPostOrderDisplay, btnPostOrderSave, btnBinaryTreeDisplay, btnTestConnection;
     private JTextArea txaLinkedList, txaBinaryTreeList, txaInformation;
     private JPanel pnlTrafficData, pnlInformation;
     private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder, lblLinkedList, lblBinaryTree, lblSort, informationHeading;
@@ -137,6 +148,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 234, 288, 90, 25);
         btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 324, 288, 80, 25);
         btnBinaryTreeDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 715, 441, 75, 25);
+        btnTestConnection = LibraryComponents.LocateAJButton(this, this, layout, "Test", 500, 300, 75, 35);
     }
 
     private void displayTextFields(SpringLayout layout)
@@ -243,6 +255,16 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        if (e.getSource() == btnTestConnection)
+        {
+            try
+            {
+                dataOut.writeUTF("Test for the server");
+            } catch (IOException ex)
+            {
+                System.out.println("Failed");
+            }
+        }
         if (e.getSource() == btnSortLocation)
         {
             tblTrafficData.setModel(new MyModel(bubbleSort(trafficData), columnNames));
@@ -427,10 +449,29 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Server Connection">
+    /**
+     * connects the application to the server
+     */
     private void connectToServer()
     {
-        //initiate connection
-        socket = new Socket(host, port);
+        try
+        {
+            //initiate connection
+            socket = new Socket(host, port);
+            // Display if conneciton is successful
+            System.out.println("Connected to "+socket);
+            
+            //Lets's grab the streams and create DataInput/Output streams from them
+             dataIn = new DataInputStream(socket.getInputStream());
+             dataOut = new DataOutputStream(socket.getOutputStream());
+            
+            //Start a background thread for receiving messages
+            
+            
+        } catch (IOException ex)
+        {
+            System.out.println("Connection Failed" + ex);
+        }
     }
 //</editor-fold>
 }
