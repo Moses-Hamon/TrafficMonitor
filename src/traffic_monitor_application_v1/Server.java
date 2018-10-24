@@ -9,6 +9,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Set;
 import sun.security.x509.IPAddressName;
 
 /**
@@ -47,7 +48,7 @@ private Hashtable objectOutputStreams = new Hashtable();
     private void listen(int port) throws IOException
     {
         // create the SeverSocket
-        ServerSocket ss = new ServerSocket(port, 0, InetAddress.getLocalHost());
+         ss = new ServerSocket(port, 0, InetAddress.getLocalHost());
 
         // Confirmation that socket is listening
         System.out.println("Listening on: " + ss);
@@ -65,10 +66,10 @@ private Hashtable objectOutputStreams = new Hashtable();
             // Create a DataOutputStream for writing data to the
             // other side
             DataOutputStream dataOut = new DataOutputStream(s.getOutputStream());
-            ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
+//            ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
             // Save this stream so we don't need to make it again
             outputStreams.put(s, dataOut);
-            objectOutputStreams.put(s, objectOut);
+//            objectOutputStreams.put(s, objectOut);
 
             // Create a new thread for this connection, and then forget
             //about it
@@ -82,18 +83,21 @@ private Hashtable objectOutputStreams = new Hashtable();
         return outputStreams.elements();
     }
     
+    
     Enumeration getObjectOutputStreams() {
         return objectOutputStreams.elements();
     }
     
     //Send a message to all clients (utility routine)
-    void sendToAll(String message)
+    public void sendToAll(String message)
     {
+        message = message + " WEEEEEEEEEEEEEEEE";
         // We synchronize on this because another thread might be
         // calling removeConnection() and this would screw us up
         // as we tried to walk through the list
         synchronized (outputStreams)
         {
+            
             //For each Client...
             for (Enumeration e = getOutputStreams(); e.hasMoreElements();)
             {
@@ -104,6 +108,7 @@ private Hashtable objectOutputStreams = new Hashtable();
                 try
                 {
                     dataOut.writeUTF(message);
+                    System.out.println("Message Sent: " + message);
                 } catch (IOException ex)
                 {
                     System.out.println("Error sending: " + ex);

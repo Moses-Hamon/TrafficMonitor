@@ -40,6 +40,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
     private ClientThread monitorClient;
     
     static int monitorNumber = 0;
+    String appName = "MonitorStation";
     JLabel lblTitle, lblStatus;
     JButton btnSubmit, btnExit;
     String[] lblHeadings = new String[]
@@ -106,19 +107,26 @@ public class Monitoring_Station extends JFrame implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-         if (e.getSource() == btnExit)
+        if (e.getSource() == btnExit)
         {
             monitorClient.close();
             this.dispose();
         }
-         if (e.getSource() == btnSubmit)
+        if (e.getSource() == btnSubmit)
         {
-             TrafficEntry data = collectStationData();
-             System.out.println(data.convertToString());
-             
+//            TrafficEntry data = collectStationData();
+//             System.out.println(data.convertToString());
+            try
+            {
+//                sendObject(data);
+                sendMsg("Test");
+            } catch (Exception ex)
+            {
+                System.out.println("Error Error");
+            }
         }
-
     }
+    
     //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="Methods">  
     private TrafficEntry collectStationData()
@@ -174,15 +182,19 @@ public class Monitoring_Station extends JFrame implements ActionListener
     
     /**
      * Opens new thread for to handle incoming data and objects
+     * Also opens DataOutputStream for sending data.
      */
     private void open()
     {
         try
         {
             dataOut = new DataOutputStream(socket.getOutputStream());
-            objectOut = new ObjectOutputStream(dataOut);
+//            objectOut = new ObjectOutputStream(dataOut);
             
-            monitorClient = new ClientThread(this, socket);
+            monitorClient = new ClientThread(this, socket, appName+monitorNumber);
+            monitorClient.start();
+            
+            dataOut.writeUTF(appName+monitorNumber + " has DataOutStream");
 
         } catch (Exception e)
         {
@@ -202,13 +214,24 @@ public class Monitoring_Station extends JFrame implements ActionListener
             {
                 socket.close();
             }
+            if (objectOut != null)
+            {
+                objectOut.close();
+            }
+            if (dataOut != null)
+            {
+                dataOut.close();
+            }
+            else{
+                
+            }
         } catch (IOException e)
         {
             System.out.println("Error closing connection!! :" + e);
         }
     }
     
-     /**
+        /**
      * Sends a message to the server. Used for displaying connection information and other messages
      * @param msg 
      */
@@ -217,6 +240,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
         try
         {
             dataOut.writeUTF(msg);
+//            dataOut.flush();
         } catch (IOException ex)
         {
             System.out.println("Error Sending Message: " + ex);
@@ -233,11 +257,18 @@ public class Monitoring_Station extends JFrame implements ActionListener
         {
             objectOut.writeObject(entry);
             sendMsg("Item has been sent");
-        } catch (Exception e)
+        } catch (IOException e)
         {
             System.out.println("Error sending Object: " + e);
         }
     }
+    
+    public void receiveMsgFromServer(String msg)
+    {
+        String receivedMsg = msg;
+    }
+    
+     
     
 //</editor-fold>
     

@@ -25,7 +25,7 @@ public class ServerThread extends Thread
 
     // This runs in a separate thread when start() is called in the
     // constructor
-    @Override
+    
     public void run()
     {
         try
@@ -33,21 +33,21 @@ public class ServerThread extends Thread
             //Create a DataInputStream for communication; the client
             // is using a DataOutputStream to write to us
             DataInputStream dataIn = new DataInputStream(socket.getInputStream());
-            ObjectInputStream objectIn = new ObjectInputStream(dataIn);
+//            ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
             //Over and over forever
             while (true)
             {
                 //read the text message
                 String message = dataIn.readUTF();
-                TrafficEntry entry = (TrafficEntry) objectIn.readObject();
+//                TrafficEntry entry = (TrafficEntry) objectIn.readObject();
                 
                 // write to console
                 System.out.println("Message :" + message);
-                System.out.println(entry.convertToString());
+//                System.out.println(entry.convertToString());
                 
                 // Send message/object to all clients
                 server.sendToAll( message );
-                server.sendObjectToAll(entry);
+//                server.sendObjectToAll(entry);
             }
         } catch (Exception ie)
         {

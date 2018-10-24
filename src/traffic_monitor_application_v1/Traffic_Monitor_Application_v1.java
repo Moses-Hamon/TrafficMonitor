@@ -17,10 +17,17 @@ import javax.swing.*;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.border.LineBorder;
+import javax.swing.text.DefaultCaret;
 
 
 
@@ -29,16 +36,24 @@ import javax.swing.border.LineBorder;
  *
  * @author Moses
  */
-public class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener
+public class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener, Runnable
 {
     //Connection used for new thread.
     private Socket socket;
+    //Data Streams
+    DataOutputStream dataOut;
+    DataInputStream dataIn;
+    ObjectInputStream objectIn;
+    ObjectOutputStream objectOut;
+    
+    
     //host and ports for server connection
     private final String host = "DESKTOP-E8H27QU";
     private final int port = 5000;
     // The streams we communicate to the server; these come
     // from the socket
     private ClientThread clientThread;
+    String appName = "Traffic_Application";
 
     
     private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay,
@@ -87,8 +102,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setupDoubleLinkedList(trafficData);
         displayLinkedList(Dlist);
         setupBinaryTree(trafficData);
-//        connect(host, port);
-        //checkForTrafficEntry();
+        connect(host, port);
+        
         
         for (int i = 0; i < 2; i++)
         {
@@ -207,6 +222,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         txaInformation = LibraryComponents.LocateAJTextArea(this, layout, txaInformation, 350, 150, 5, 5);
         txaInformation.setEditable(false);
+        //Alows the info screen to scroll automatically
+        DefaultCaret caret = (DefaultCaret)txaInformation.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        JScrollPane infoPane = new JScrollPane(txaInformation);
+        infoPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         informationHeading = new JLabel("New data recieved from: ");
         informationHeading.setForeground(guiColor);
@@ -219,7 +239,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         layout.putConstraint(SpringLayout.WEST, pnlInformation, 420, SpringLayout.WEST, this);
         layout.putConstraint(SpringLayout.NORTH, pnlInformation, 95, SpringLayout.NORTH, this);
 
-        pnlInformation.add(txaInformation, BorderLayout.CENTER);
+        pnlInformation.add(infoPane, BorderLayout.CENTER);
         pnlInformation.add(informationHeading, BorderLayout.NORTH);
         pnlInformation.add(btnExit, BorderLayout.SOUTH);
     }
@@ -246,7 +266,14 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         if (e.getSource() == btnTestConnection)
         {
-            connect(host, port);
+            String msg = "testing testing ";
+            try
+            {
+                sendMsgToServer(msg);
+            } catch (IOException ex)
+            {
+                System.out.println("An error occured: " + ex);
+            }
         }
         if (e.getSource() == btnSortLocation)
         {
@@ -441,14 +468,14 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private void connect(String serverName, int serverPort)
     {
         //displays info for connection
-        txaInformation.append("connecting to server");
+        txaInformation.append("connecting to server....\n");
         try
         {
             //opens connection with server
             socket = new Socket(serverName, serverPort);
             
             //upodates connection information
-            txaInformation.append("connected on" + socket);
+            txaInformation.append("connected on port: " + socket.getPort());
             System.out.println("Connected on: " + socket);
             //runs open method for creating new thread for applicaiton.
             open();
@@ -470,17 +497,28 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         try
         {
-            clientThread = new ClientThread(this, socket);
+
+            dataOut = new DataOutputStream(socket.getOutputStream());
+            dataIn = new DataInputStream(socket.getInputStream());
+
+//            clientThread = new ClientThread(this, socket, appName);
+            //Starts a new thread to handle incoming requests.
+            new Thread(this).start();
             txaInformation.append("New Thread Created");
 
         } catch (Exception e)
         {
-            System.out.println("Error creating thread on "+ this.getName() + e);
+            System.out.println("Error creating thread on " + this.getName() + e);
         }
     }
     
+    private void sendMsgToServer(String msg) throws IOException{
+        
+        dataOut.writeUTF(msg);
+    }
+    
     /**
-     * Method for closing connection to the server (server also automatically 
+     * Method for closing connection to the server (server also automatically
      * handles connections on server side)
      */
     public void close()
@@ -496,18 +534,38 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
             System.out.println("Error closing connection!! :" + e);
         }
     }
-    
+
     public void receiveMsgFromServer(String msg)
     {
-        System.out.println(msg);
-        txaInformation.append(msg);
+                   txaInformation.append("\n");
+            txaInformation.append(msg);
     }
-    
-    public void receiveObjectFromServer(TrafficEntry entry){
-        txaInformation.append(entry.convertToString());
+
+    public void receiveObjectFromServer(TrafficEntry entry)
+    {
+        if (entry != null)
+        {
+            txaInformation.append(entry.convertToString());
+        }
+
     }
-    
-   
+
+    @Override
+    public void run(){
+        while (true)
+        {           
+            try
+            {
+                receiveMsgFromServer(dataIn.readUTF());
+                
+            } catch (IOException e)
+            {
+                System.out.println("Error receiving msg from server: " + e);
+            }
+            
+        }
+    }
+
   
 //</editor-fold>
 

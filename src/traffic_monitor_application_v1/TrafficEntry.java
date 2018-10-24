@@ -68,7 +68,6 @@ public class TrafficEntry implements Serializable
      */
     public String[] toStringArray()
     {
-
         String[] array = new String[]
         {
             this.time,
