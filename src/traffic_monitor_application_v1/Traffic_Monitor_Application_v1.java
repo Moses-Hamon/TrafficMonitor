@@ -48,7 +48,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     
     
     //host and ports for server connection
-    private final String host = "DESKTOP-E8H27QU";
+    private final String host = "localhost";
     private final int port = 5000;
     // The streams we communicate to the server; these come
     // from the socket

@@ -48,7 +48,7 @@ private Hashtable objectOutputStreams = new Hashtable();
     private void listen(int port) throws IOException
     {
         // create the SeverSocket
-         ss = new ServerSocket(port, 0, InetAddress.getLocalHost());
+         ss = new ServerSocket(port, 0, InetAddress.getByName("localhost"));
 
         // Confirmation that socket is listening
         System.out.println("Listening on: " + ss);
@@ -91,7 +91,7 @@ private Hashtable objectOutputStreams = new Hashtable();
     //Send a message to all clients (utility routine)
     public void sendToAll(String message)
     {
-        message = message + " WEEEEEEEEEEEEEEEE";
+        
         // We synchronize on this because another thread might be
         // calling removeConnection() and this would screw us up
         // as we tried to walk through the list

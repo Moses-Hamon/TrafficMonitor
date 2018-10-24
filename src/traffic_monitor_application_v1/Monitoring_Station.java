@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -29,7 +30,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
     
     //Socket used to connect to server
     private Socket socket;
-    private final String serverName = "DESKTOP-E8H27QU";
+    private final String serverName = "localhost";
     private final int serverPort = 5000;
     // The streams we communicate to the server; these come
     // from the socket
