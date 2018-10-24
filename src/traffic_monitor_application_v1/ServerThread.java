@@ -3,7 +3,6 @@ package traffic_monitor_application_v1;
 import java.io.DataInputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-
 /**
  *
  * @author Moses
@@ -48,6 +47,7 @@ public class ServerThread extends Thread
                 
                 // Send message/object to all clients
                 server.sendToAll( message );
+                server.sendObjectToAll(entry);
             }
         } catch (Exception ie)
         {

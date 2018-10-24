@@ -6,30 +6,20 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.*;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.*;
-import java.io.DataInputStream;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.border.Border;
+import java.net.UnknownHostException;
 import javax.swing.border.LineBorder;
 
 
@@ -41,7 +31,9 @@ import javax.swing.border.LineBorder;
  */
 public class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener
 {
-    static String applicationName = "Traffic Monitor Main";
+    //Connection used for new thread.
+    private Socket socket;
+    //host and ports for server connection
     private final String host = "DESKTOP-E8H27QU";
     private final int port = 5000;
     // The streams we communicate to the server; these come
@@ -95,8 +87,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setupDoubleLinkedList(trafficData);
         displayLinkedList(Dlist);
         setupBinaryTree(trafficData);
-        connectToServer();
-        
+//        connect(host, port);
+        //checkForTrafficEntry();
         
         for (int i = 0; i < 2; i++)
         {
@@ -254,7 +246,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         if (e.getSource() == btnTestConnection)
         {
-            clientThread.sendMsg(trafficData.get(1).convertToString());
+            connect(host, port);
         }
         if (e.getSource() == btnSortLocation)
         {
@@ -440,20 +432,84 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Server Connection">
+    
     /**
-     * connects the application to the server
+     * Connects application to the server
+     * @param serverName
+     * @param serverPort 
      */
-    private void connectToServer()
+    private void connect(String serverName, int serverPort)
     {
-            //Start a background thread for receiving messages
-            clientThread = new ClientThread(host, port, applicationName, this);
+        //displays info for connection
+        txaInformation.append("connecting to server");
+        try
+        {
+            //opens connection with server
+            socket = new Socket(serverName, serverPort);
             
+            //upodates connection information
+            txaInformation.append("connected on" + socket);
+            System.out.println("Connected on: " + socket);
+            //runs open method for creating new thread for applicaiton.
+            open();
+
+            //Exception handling
+        } catch (UnknownHostException uhe)
+        {
+            System.out.println("Host unknown: " + uhe.getMessage());
+        } catch (IOException ioe)
+        {
+            System.out.println("Unexpected exception: " + ioe.getMessage());
+        }
     }
     
-    public void receiveNewTrafficEntry(TrafficEntry entry){
-        System.out.println(entry.toString());
-        trafficData.add(entry);
-        trafficModel = new MyModel(trafficData, columnNames);
+    /**
+     * Opens new thread for to handle incoming data and objects
+     */
+    private void open()
+    {
+        try
+        {
+            clientThread = new ClientThread(this, socket);
+            txaInformation.append("New Thread Created");
+
+        } catch (Exception e)
+        {
+            System.out.println("Error creating thread on "+ this.getName() + e);
+        }
     }
+    
+    /**
+     * Method for closing connection to the server (server also automatically 
+     * handles connections on server side)
+     */
+    public void close()
+    {
+        try
+        {
+            if (socket != null)
+            {
+                socket.close();
+            }
+        } catch (IOException e)
+        {
+            System.out.println("Error closing connection!! :" + e);
+        }
+    }
+    
+    public void receiveMsgFromServer(String msg)
+    {
+        System.out.println(msg);
+        txaInformation.append(msg);
+    }
+    
+    public void receiveObjectFromServer(TrafficEntry entry){
+        txaInformation.append(entry.convertToString());
+    }
+    
+   
+  
 //</editor-fold>
+
+    
 }

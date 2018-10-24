@@ -47,7 +47,7 @@ private Hashtable objectOutputStreams = new Hashtable();
     private void listen(int port) throws IOException
     {
         // create the SeverSocket
-        ServerSocket ss = new ServerSocket(port, 5, InetAddress.getLocalHost());
+        ServerSocket ss = new ServerSocket(port, 0, InetAddress.getLocalHost());
 
         // Confirmation that socket is listening
         System.out.println("Listening on: " + ss);
@@ -123,7 +123,7 @@ private Hashtable objectOutputStreams = new Hashtable();
                 try
                 {
                     objectOut.writeObject(entry);
-                    System.out.println("Sent Object: "+ entry.toString());
+                    System.out.println("Sent Object: "+ entry.convertToString());
                 } catch (IOException ex)
                 {
                     System.out.println("Error sending Object: " + ex);

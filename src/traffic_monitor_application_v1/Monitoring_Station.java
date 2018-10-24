@@ -5,8 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JButton;
@@ -21,17 +26,21 @@ import javax.swing.SpringLayout;
  */
 public class Monitoring_Station extends JFrame implements ActionListener
 {
-    static String applicationName = "Monitoring Station";
+    
     //Socket used to connect to server
     private Socket socket;
-    private String host = "DESKTOP-E8H27QU";
-    private int port = 4444;
+    private final String serverName = "DESKTOP-E8H27QU";
+    private final int serverPort = 5000;
     // The streams we communicate to the server; these come
     // from the socket
+    DataOutputStream dataOut;
+    ObjectOutputStream objectOut;
+    
+    //Global variable for the Thread
     private ClientThread monitorClient;
     
     static int monitorNumber = 0;
-    JLabel lblTitle;
+    JLabel lblTitle, lblStatus;
     JButton btnSubmit, btnExit;
     String[] lblHeadings = new String[]
     {
@@ -52,7 +61,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
         displayLabels(springLayout);
         displayTextFields(springLayout);
         displayButtons(springLayout);
-        connectToServer();
+        connect(serverName, serverPort);
     }
 //<editor-fold defaultstate="collapsed" desc="Gui">  
     void displayLabels(SpringLayout layout)
@@ -106,7 +115,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
         {
              TrafficEntry data = collectStationData();
              System.out.println(data.convertToString());
-             monitorClient.sendObject(data);
+             
         }
 
     }
@@ -132,14 +141,104 @@ public class Monitoring_Station extends JFrame implements ActionListener
  
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="Server Connection">
-    /**
-     * connects the application to the server
+
+  /**
+     * Connects application to the server
+     * @param serverName
+     * @param serverPort 
      */
-    private void connectToServer()
+    private void connect(String serverName, int serverPort)
     {
-            monitorClient = new ClientThread(host, port, applicationName, null);
+        //displays info for connection
+        
+        try
+        {
+            //opens connection with server
+            socket = new Socket(serverName, serverPort);
             
+            //upodates connection information
+            
+            System.out.println("Connected on: " + socket);
+            //runs open method for creating new thread for applicaiton.
+            open();
+
+            //Exception handling
+        } catch (UnknownHostException uhe)
+        {
+            System.out.println("Host unknown: " + uhe.getMessage());
+        } catch (IOException ioe)
+        {
+            System.out.println("Unexpected exception: " + ioe.getMessage());
+        }
     }
+    
+    /**
+     * Opens new thread for to handle incoming data and objects
+     */
+    private void open()
+    {
+        try
+        {
+            dataOut = new DataOutputStream(socket.getOutputStream());
+            objectOut = new ObjectOutputStream(dataOut);
+            
+            monitorClient = new ClientThread(this, socket);
+
+        } catch (Exception e)
+        {
+            System.out.println("Error creating thread on "+ this.getName() + e);
+        }
+    }
+    
+    /**
+     * Method for closing connection to the server (server also automatically 
+     * handles connections on server side)
+     */
+    public void close()
+    {
+        try
+        {
+            if (socket != null)
+            {
+                socket.close();
+            }
+        } catch (IOException e)
+        {
+            System.out.println("Error closing connection!! :" + e);
+        }
+    }
+    
+     /**
+     * Sends a message to the server. Used for displaying connection information and other messages
+     * @param msg 
+     */
+    void sendMsg(String msg)
+    {
+        try
+        {
+            dataOut.writeUTF(msg);
+        } catch (IOException ex)
+        {
+            System.out.println("Error Sending Message: " + ex);
+        }
+    }
+
+    /**
+     * Receives a Traffic Entry and sends it on the stream
+     * @param entry 
+     */
+    public void sendObject(TrafficEntry entry)
+    {
+        try
+        {
+            objectOut.writeObject(entry);
+            sendMsg("Item has been sent");
+        } catch (Exception e)
+        {
+            System.out.println("Error sending Object: " + e);
+        }
+    }
+    
 //</editor-fold>
     
 
