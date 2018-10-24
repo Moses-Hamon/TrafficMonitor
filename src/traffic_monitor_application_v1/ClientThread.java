@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -24,21 +25,22 @@ public class ClientThread extends Thread
     //Tracks the name of the application using the thread
     private Traffic_Monitor_Application_v1 client;
     private Monitoring_Station mClient;
+    private String appName;
     //handles the data input and output
-    private DataOutputStream dataOut;
+//    private DataOutputStream dataOut;
     private DataInputStream dataIn;
-    //for object serialization
-    private ObjectOutputStream objectOut;
+//    //for object serialization
+//    private ObjectOutputStream objectOut;
     private ObjectInputStream objectIn;
     
-    public ClientThread(Monitoring_Station client, Socket socket)
+    public ClientThread(Monitoring_Station client, Socket socket, String name)
     {
-        //initiate connection
+        this.appName = name;
         this.socket = socket;
         this.mClient = client;
         clientNumber++;
         open();
-        start();
+//        start();
     }
     
     /**
@@ -47,52 +49,83 @@ public class ClientThread extends Thread
      *
      * @param client
      * @param socket
+     * @param name
      */
-    public ClientThread(Traffic_Monitor_Application_v1 client, Socket socket)
+    public ClientThread(Traffic_Monitor_Application_v1 client, Socket socket, String name)
     {
         //initiate connection
+        this.appName = name;
         this.socket = socket;
         this.client = client;
         clientNumber++;
         open();
-        start();
+//        start();
     }
     
     private void open()
     {
         try
         {
-            dataIn = new DataInputStream(socket.getInputStream());
-            objectIn = new ObjectInputStream(dataIn);
-            System.out.println("data and object streams opened for " + client.getName() + clientNumber);
+             dataIn = new DataInputStream(socket.getInputStream());
+//            objectIn = new ObjectInputStream(dataIn);
+//            dataOut = new DataOutputStream(socket.getOutputStream());
             
+
+            String msg = "data and object streams opened for ";
+            if (client != null)
+            {
+                //string Joiner used to join Variables.
+                //Msg for the Main Application connecting
+                msg = StringUtils.join(msg, appName, clientNumber);
+                System.out.println(msg);
+//                System.out.println("data and object streams opened for " + client.getTitle()+ clientNumber);
+            } else
+            {
+                //msg for the Traffic Monitors
+                msg = StringUtils.join(msg, appName);
+                System.out.println(msg);
+//                System.out.println("data and object streams opened for " + mClient.getTitle()+ clientNumber);
+            }
         } catch (IOException e)
         {
             System.out.println("Error getting input streams: " + e);
-            
         }
     }
+    
+    
     /**
      * checks for incoming messages and objects.
      */
+   
     public void run()
     {
-        
-        while (true)
-        {
-            try
+       
+            while (true)
             {
-                client.receiveMsgFromServer(dataIn.readUTF());
-                client.receiveObjectFromServer((TrafficEntry) objectIn.readObject());
-                
-            } catch (IOException e)
-            {
-                System.out.println("Error " + e);
-            } catch (ClassNotFoundException ex)
-            {
-                
+                try
+                {
+                    String msg = dataIn.readUTF();
+                    
+                    if (msg != null)
+                    {
+                        System.out.println("received message: " + msg);
+                        
+                        
+                            client.receiveMsgFromServer(msg);
+                        
+                        
+                    }
+                    
+                    msg = null;
+                    
+                } catch (IOException ex)
+                {
+                    Logger.getLogger(ClientThread.class.getName()).log(Level.SEVERE, null, ex);
+                    //breaks out of infinite loop
+                    break;
+                }
             }
-        }
+
     }
 
     /**
@@ -103,13 +136,14 @@ public class ClientThread extends Thread
         try
         {
             this.socket.close();
-        } catch (Exception e)
+        } catch (IOException e)
         {
             System.out.println("Could not close connection: " + e);
         }
     }
     
-   
+
+    
     
     
     
