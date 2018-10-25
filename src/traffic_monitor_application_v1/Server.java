@@ -26,7 +26,6 @@ public class Server
     // A mapping from sockets to DataOutputStreams. This will
 // help us avoid having to create a DataOutputStream each time
 // we want to write to a stream.
-private Hashtable outputStreams = new Hashtable();
 private Hashtable objectOutputStreams = new Hashtable();
     
     // Constructor and while-accept loop all in one.
@@ -65,11 +64,11 @@ private Hashtable objectOutputStreams = new Hashtable();
 
             // Create a DataOutputStream for writing data to the
             // other side
-            DataOutputStream dataOut = new DataOutputStream(s.getOutputStream());
-//            ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
+//            DataOutputStream dataOut = new DataOutputStream(s.getOutputStream());
+            ObjectOutputStream objectOut = new ObjectOutputStream(s.getOutputStream());
             // Save this stream so we don't need to make it again
-            outputStreams.put(s, dataOut);
-//            objectOutputStreams.put(s, objectOut);
+//            outputStreams.put(s, dataOut);
+            objectOutputStreams.put(s, objectOut);
 
             // Create a new thread for this connection, and then forget
             //about it
@@ -79,44 +78,14 @@ private Hashtable objectOutputStreams = new Hashtable();
     
     // Get an enumeration of all the OutputStreams, one for each client
     // connected to us
-    Enumeration getOutputStreams() {
-        return outputStreams.elements();
-    }
-    
-    
     Enumeration getObjectOutputStreams() {
         return objectOutputStreams.elements();
     }
     
-    //Send a message to all clients (utility routine)
-    public void sendToAll(String message)
-    {
-        
-        // We synchronize on this because another thread might be
-        // calling removeConnection() and this would screw us up
-        // as we tried to walk through the list
-        synchronized (outputStreams)
-        {
-            
-            //For each Client...
-            for (Enumeration e = getOutputStreams(); e.hasMoreElements();)
-            {
-                //... get the output stream ...
-                DataOutputStream dataOut = (DataOutputStream) e.nextElement();
-
-                //.. and send the message ...
-                try
-                {
-                    dataOut.writeUTF(message);
-                    System.out.println("Message Sent: " + message);
-                } catch (IOException ex)
-                {
-                    System.out.println("Error sending: " + ex);
-                }
-            }
-        }
-    }
-    
+    /**
+     * Sends out a TrafficEntry Object to all Streams using the HashTable
+     * @param entry - Must pass a TrafficEntry to be sent to each client
+     */
     void sendObjectToAll(TrafficEntry entry)
     {
         synchronized (objectOutputStreams)
@@ -145,12 +114,12 @@ private Hashtable objectOutputStreams = new Hashtable();
         // Synchronize so we don't mess up sendToAll() while it walks
         // down the list of all output streamsa
 
-        synchronized (outputStreams)
+        synchronized (objectOutputStreams)
         {
             // Tell the world
             System.out.println("Removing connection to " + s);
             // Remove it from our hashtable/list
-            outputStreams.remove(s);
+//            outputStreams.remove(s);
             objectOutputStreams.remove(s);
             // Make sure it's closed
             try

@@ -18,9 +18,7 @@ public class ServerThread extends Thread
     {
         this.server = server;
         this.socket = socket;
-
         start();
-
     }
 
     // This runs in a separate thread when start() is called in the
@@ -30,28 +28,23 @@ public class ServerThread extends Thread
     {
         try
         {
-            //Create a DataInputStream for communication; the client
-            // is using a DataOutputStream to write to us
-            DataInputStream dataIn = new DataInputStream(socket.getInputStream());
-//            ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
+            //Create a ObjectInputStream for communication; the client
+            // is using a ObjectOutputStream to write to us
+            ObjectInputStream objectIn = new ObjectInputStream(socket.getInputStream());
             //Over and over forever
             while (true)
             {
-                //read the text message
-                String message = dataIn.readUTF();
-//                TrafficEntry entry = (TrafficEntry) objectIn.readObject();
-                
-                // write to console
-                System.out.println("Message :" + message);
-//                System.out.println(entry.convertToString());
-                
-                // Send message/object to all clients
-                server.sendToAll( message );
-//                server.sendObjectToAll(entry);
+                //Read all traffic entries 
+                TrafficEntry entry = (TrafficEntry) objectIn.readObject();
+                // if the entry exists then log it and send it on.
+                if (entry != null)
+                {
+                    System.out.println("Received Traffic Entry from " + entry.stationLocationID);
+                    server.sendObjectToAll(entry);
+                }
             }
         } catch (Exception ie)
         {
-            ie.printStackTrace();
         }
         finally{
             //The connection is closed for one reason or another,

@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -75,6 +76,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
             labels[i] = LibraryComponents.LocateAJLabel(this, layout, lblHeadings[i], 10, yPos);
         }
         lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Stn " + monitorNumber, 10, 10);
+        lblStatus = LibraryComponents.LocateAJLabel(this, layout, "Status", 10, 250);
     }
 
     private void displayTextFields(SpringLayout springLayout)
@@ -93,6 +95,9 @@ public class Monitoring_Station extends JFrame implements ActionListener
                     }
                 });
             }
+            if (i==1){
+                textFields[1].setText(Integer.toString(monitorNumber));
+            }
         }
         
     }
@@ -110,26 +115,64 @@ public class Monitoring_Station extends JFrame implements ActionListener
     {
         if (e.getSource() == btnExit)
         {
-            monitorClient.close();
+            close();
             this.dispose();
         }
+        
         if (e.getSource() == btnSubmit)
         {
-//            TrafficEntry data = collectStationData();
-//             System.out.println(data.convertToString());
-            try
+            TrafficEntry entry = null;
+            //checks for blank fields
+            if (checkFieldsForText())
             {
-//                sendObject(data);
-                sendMsg("Test");
-            } catch (Exception ex)
+                //trys to convert textfields into traffic object
+                try
+                {
+                    entry = collectStationData();
+                    System.out.println(entry.convertToString());
+                } catch (Exception ex)
+                {
+                    lblStatus.setText("Please Enter valid values for Entry");
+                }
+                // if the object exists send it to the server
+                if (entry != null)
+                {
+                    try
+                    {
+                        sendObject(entry);
+                    } catch (Exception ex)
+                    {
+                        System.out.println("Error Error");
+                    }
+                }
+            } else
             {
-                System.out.println("Error Error");
+                lblStatus.setText("Please enter all details");
             }
         }
     }
     
     //</editor-fold>
-//<editor-fold defaultstate="collapsed" desc="Methods">  
+//<editor-fold defaultstate="collapsed" desc="Methods"> 
+    
+    //Checks fields for blank space
+    private boolean checkFieldsForText()
+    {
+        for (JTextField textField : textFields)
+        {
+            if (StringUtils.isBlank(textField.getText()))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Collects all information from the JTextFields and places them into 
+     * a TrafficEntry Object
+     * @return a new completed TrafficEntry Object 
+     */
     private TrafficEntry collectStationData()
     {
         TrafficEntry entry = new TrafficEntry();
@@ -146,9 +189,9 @@ public class Monitoring_Station extends JFrame implements ActionListener
     private String collectCurrentTime(){
         return new SimpleDateFormat("HH:mm:ss").format(new Date());
     }
-
  
 //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Server Connection">
 
   /**
@@ -166,7 +209,6 @@ public class Monitoring_Station extends JFrame implements ActionListener
             socket = new Socket(serverName, serverPort);
             
             //upodates connection information
-            
             System.out.println("Connected on: " + socket);
             //runs open method for creating new thread for applicaiton.
             open();
@@ -182,20 +224,22 @@ public class Monitoring_Station extends JFrame implements ActionListener
     }
     
     /**
-     * Opens new thread for to handle incoming data and objects
+     * Opens new thread for to handle incoming objects
      * Also opens DataOutputStream for sending data.
      */
     private void open()
     {
         try
         {
-            dataOut = new DataOutputStream(socket.getOutputStream());
-//            objectOut = new ObjectOutputStream(dataOut);
+            //open objectOut Streams first
+            objectOut = new ObjectOutputStream(socket.getOutputStream());
             
+            //opens new thread for receiving incoming data/objects
             monitorClient = new ClientThread(this, socket, appName+monitorNumber);
             monitorClient.start();
             
-            dataOut.writeUTF(appName+monitorNumber + " has DataOutStream");
+            String msg = StringUtils.join(appName, monitorNumber , " has OutStream");
+            System.out.println(msg);
 
         } catch (Exception e)
         {
@@ -219,13 +263,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
             {
                 objectOut.close();
             }
-            if (dataOut != null)
-            {
-                dataOut.close();
-            }
-            else{
-                
-            }
+            
         } catch (IOException e)
         {
             System.out.println("Error closing connection!! :" + e);
@@ -241,7 +279,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
         try
         {
             dataOut.writeUTF(msg);
-//            dataOut.flush();
+        // dataOut.flush();
         } catch (IOException ex)
         {
             System.out.println("Error Sending Message: " + ex);
@@ -257,21 +295,30 @@ public class Monitoring_Station extends JFrame implements ActionListener
         try
         {
             objectOut.writeObject(entry);
-            sendMsg("Item has been sent");
+            lblStatus.setText("Entry Successfully Sent!!");
         } catch (IOException e)
         {
             System.out.println("Error sending Object: " + e);
         }
     }
     
-    public void receiveMsgFromServer(String msg)
-    {
-        String receivedMsg = msg;
+    /**
+     * Used for label update if the Traffic Object is sent properly.
+     * @param bool 
+     */
+    public void checkIfObjectSent(boolean bool){
+        if (bool)
+        {
+            lblStatus.setText("Entry Sent " + collectCurrentTime());
+        }
+        
     }
     
      
     
 //</editor-fold>
+
+    
     
 
 }

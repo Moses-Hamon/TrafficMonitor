@@ -266,14 +266,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         if (e.getSource() == btnTestConnection)
         {
-            String msg = "testing testing ";
-            try
-            {
-                sendMsgToServer(msg);
-            } catch (IOException ex)
-            {
-                System.out.println("An error occured: " + ex);
-            }
+            
         }
         if (e.getSource() == btnSortLocation)
         {
@@ -475,7 +468,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
             socket = new Socket(serverName, serverPort);
             
             //upodates connection information
-            txaInformation.append("connected on port: " + socket.getPort());
+            txaInformation.append("connected on port: " + socket.getPort() + "\n");
             System.out.println("Connected on: " + socket);
             //runs open method for creating new thread for applicaiton.
             open();
@@ -497,11 +490,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         try
         {
+            //opens the object stream in order of OUT then IN
+            objectOut = new ObjectOutputStream(socket.getOutputStream());
+            //in streams
+            objectIn = new ObjectInputStream(socket.getInputStream());
 
-            dataOut = new DataOutputStream(socket.getOutputStream());
-            dataIn = new DataInputStream(socket.getInputStream());
-
-//            clientThread = new ClientThread(this, socket, appName);
             //Starts a new thread to handle incoming requests.
             new Thread(this).start();
             txaInformation.append("New Thread Created");
@@ -512,11 +505,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         }
     }
     
-    private void sendMsgToServer(String msg) throws IOException{
-        
-        dataOut.writeUTF(msg);
-    }
-    
+   
     /**
      * Method for closing connection to the server (server also automatically
      * handles connections on server side)
@@ -529,45 +518,48 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
             {
                 socket.close();
             }
+//            clientThread.interrupt();
         } catch (IOException e)
         {
             System.out.println("Error closing connection!! :" + e);
         }
     }
 
-    public void receiveMsgFromServer(String msg)
-    {
-                   txaInformation.append("\n");
-            txaInformation.append(msg);
-    }
-
     public void receiveObjectFromServer(TrafficEntry entry)
     {
-        if (entry != null)
-        {
-            txaInformation.append(entry.convertToString());
-        }
-
+        txaInformation.append("\n");
+        txaInformation.append(entry.convertToString());
     }
 
+    
+    
+/**
+ * Thread for handling incoming data.
+ */
     @Override
     public void run(){
         while (true)
         {           
             try
             {
-                receiveMsgFromServer(dataIn.readUTF());
+                receiveObjectFromServer((TrafficEntry) objectIn.readObject());
+                
                 
             } catch (IOException e)
             {
                 System.out.println("Error receiving msg from server: " + e);
-            }
+            } catch (ClassNotFoundException ex)
+            {
+                Logger.getLogger(Traffic_Monitor_Application_v1.class.getName()).log(Level.SEVERE, null, ex);
+            } 
             
         }
     }
 
   
 //</editor-fold>
+
+    
 
     
 }
