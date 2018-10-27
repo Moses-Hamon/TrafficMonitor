@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Enumeration;
@@ -47,7 +48,7 @@ private Hashtable objectOutputStreams = new Hashtable();
     private void listen(int port) throws IOException
     {
         // create the SeverSocket
-         ss = new ServerSocket(port, 0, InetAddress.getByName("localhost"));
+         ss = new ServerSocket(port);
 
         // Confirmation that socket is listening
         System.out.println("Listening on: " + ss);

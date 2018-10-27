@@ -1,5 +1,6 @@
 package traffic_monitor_application_v1;
 
+import com.sun.tracing.dtrace.ArgsAttributes;
 import java.util.Random;
 import java.util.Arrays;
 import java.awt.BorderLayout;
@@ -28,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultCaret;
+import javax.swing.JOptionPane;
 
 
 
@@ -48,7 +50,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     
     
     //host and ports for server connection
-    private final String host = "localhost";
+    private String host;
     private final int port = 5000;
     // The streams we communicate to the server; these come
     // from the socket
@@ -63,6 +65,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private JLabel lblTitle, lblDataHeading, lblPreOrder, lblInOrder, lblPostOrder, lblLinkedList, lblBinaryTree, lblSort, informationHeading;
     private JTable tblTrafficData;
     private MyModel trafficModel;
+    private JOptionPane configIpAddress;
     private Color guiColor = new Color(0, 102, 0);
     private ArrayList<TrafficEntry> trafficData;
     DoubleLinkList.DList Dlist;
@@ -76,7 +79,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     public static void main(String[] args)
     {
         JFrame myFrame = new Traffic_Monitor_Application_v1();
-
+        
         myFrame.setSize(800, 680);
         myFrame.getContentPane().setBackground(new Color(255, 254, 235)); //Sets Jframe Background Color
         myFrame.setLocationRelativeTo(null); //open in the middle of the screen. 
@@ -102,14 +105,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setupDoubleLinkedList(trafficData);
         displayLinkedList(Dlist);
         setupBinaryTree(trafficData);
-        connect(host, port);
         
         
-        for (int i = 0; i < 2; i++)
-        {
-            Monitoring_Station monitor = new Monitoring_Station();
-            monitor.show();
-        }
+        
      
         
     }
@@ -266,7 +264,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     {
         if (e.getSource() == btnTestConnection)
         {
-            
+            String host = JOptionPane.showInputDialog("Enter Server IP");
+            connect(host, port);
+            openStations(host);
         }
         if (e.getSource() == btnSortLocation)
         {
@@ -558,8 +558,13 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
   
 //</editor-fold>
-
-    
-
+private void openStations(String serverName)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            Monitoring_Station monitor = new Monitoring_Station(serverName);
+            monitor.show();
+        }
+    }
     
 }

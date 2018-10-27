@@ -54,7 +54,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
 //    JLabel lblTime, lblLocation, lblNumberOfLanes, lblTotalNumOfVehicles, lblAvgNumOfVehicles, lblAvgVelocity;
 //    JTextField txtTime, txtLocation, txtNumOfLabels, txtTotalNumOfVehicles, txtAvgNumOfVehicles, txtAvgVelocity;
 
-    public Monitoring_Station()
+    public Monitoring_Station(String serverName)
     {
         monitorNumber++;
         this.setSize(450, 600);
