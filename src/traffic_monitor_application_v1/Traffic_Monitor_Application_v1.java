@@ -1,5 +1,6 @@
 package traffic_monitor_application_v1;
 
+import com.google.gson.Gson;
 import com.sun.tracing.dtrace.ArgsAttributes;
 import java.util.Random;
 import java.util.Arrays;
@@ -537,22 +538,25 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
  * Thread for handling incoming data.
  */
     @Override
-    public void run(){
+    public void run()
+    {
         while (true)
-        {           
+        {
             try
             {
-                receiveObjectFromServer((TrafficEntry) objectIn.readObject());
-                
-                
+                //creates new Gson 
+                Gson gson = new Gson();
+                // Converts the JSon file back into a Traffic Entry File
+                receiveObjectFromServer(gson.fromJson(objectIn.readObject().toString(), TrafficEntry.class));
+
             } catch (IOException e)
             {
                 System.out.println("Error receiving msg from server: " + e);
             } catch (ClassNotFoundException ex)
             {
                 Logger.getLogger(Traffic_Monitor_Application_v1.class.getName()).log(Level.SEVERE, null, ex);
-            } 
-            
+            }
+
         }
     }
 

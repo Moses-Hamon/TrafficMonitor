@@ -1,6 +1,7 @@
 
 package traffic_monitor_application_v1;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -90,7 +91,7 @@ public class ClientThread extends Thread
             boolean hasSent = false;
             try
             {
-                TrafficEntry entry = (TrafficEntry) objectIn.readObject();
+                TrafficEntry entry = new Gson().fromJson(objectIn.readObject().toString(), TrafficEntry.class);
 
             } catch (IOException | ClassNotFoundException ex)
             {

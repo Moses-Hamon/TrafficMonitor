@@ -1,15 +1,14 @@
 package traffic_monitor_application_v1;
 
+import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -21,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import org.apache.commons.lang3.StringUtils;
+
 
 /**
  *
@@ -294,7 +294,10 @@ public class Monitoring_Station extends JFrame implements ActionListener
     {
         try
         {
-            objectOut.writeObject(entry);
+            Gson gson = new Gson();
+            String convertedTrafficEntry = gson.toJson(entry);
+            System.out.println(convertedTrafficEntry);
+            objectOut.writeObject(convertedTrafficEntry);
             lblStatus.setText("Entry Successfully Sent!!");
         } catch (IOException e)
         {
