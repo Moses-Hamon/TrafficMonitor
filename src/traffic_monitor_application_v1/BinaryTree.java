@@ -102,7 +102,7 @@ public class BinaryTree
     // All nodes are visited in ascending order
     // Recursion is used to go to one node and
     // then go to its child nodes and so forth
-    public ArrayList inOrderTraverseTree(BTNode focusNode, ArrayList temp)
+    public ArrayList<TrafficEntry> inOrderTraverseTree(BTNode focusNode, ArrayList<TrafficEntry> temp)
     {
         if (focusNode != null)
         {
@@ -110,7 +110,7 @@ public class BinaryTree
             inOrderTraverseTree(focusNode.leftChild, temp);
             System.out.println(focusNode.entry.convertToString());
             // Visit the currently focused on node
-            temp.add(focusNode.entry.convertToString());
+            temp.add(focusNode.entry);
             // Traverse the right node
             inOrderTraverseTree(focusNode.rightChild, temp);
 
@@ -119,14 +119,14 @@ public class BinaryTree
         return temp;
     }
 
-    public ArrayList preorderTraverseTree(BTNode focusNode, ArrayList temp)
+    public ArrayList<TrafficEntry> preorderTraverseTree(BTNode focusNode, ArrayList<TrafficEntry> temp)
     {
 
         if (focusNode != null)
         {
 
             System.out.println(focusNode.entry.convertToString());
-            temp.add(focusNode.entry.convertToString());
+            temp.add(focusNode.entry);
 
             preorderTraverseTree(focusNode.leftChild, temp);
             preorderTraverseTree(focusNode.rightChild, temp);
@@ -135,7 +135,7 @@ public class BinaryTree
 return temp;
     }
 
-    public void postOrderTraverseTree(BTNode focusNode, ArrayList temp)
+    public ArrayList<TrafficEntry> postOrderTraverseTree(BTNode focusNode, ArrayList<TrafficEntry> temp)
     {
 
         if (focusNode != null)
@@ -145,9 +145,10 @@ return temp;
             postOrderTraverseTree(focusNode.rightChild, temp);
 
             System.out.println(focusNode.entry.convertToString());
-            temp.add(focusNode.entry.convertToString());
+            temp.add(focusNode.entry);
 
         }
+        return temp;
 
     }
 

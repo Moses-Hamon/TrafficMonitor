@@ -26,6 +26,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.border.LineBorder;
@@ -106,6 +107,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         setupDoubleLinkedList(trafficData);
         displayLinkedList(Dlist);
         setupBinaryTree(trafficData);
+        getIpAddressForServerAndConnect();
+        
+        
         
         
         
@@ -114,6 +118,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     }
 //<editor-fold defaultstate="collapsed" desc="Display GUI">
 
+    /**
+     * Sets up Labels
+     * @see LibraryComponents#LocateAJLabel(javax.swing.JFrame, javax.swing.SpringLayout, java.lang.String, int, int)
+     * @param layout - SpringLayout
+     */
     private void displayLabels(SpringLayout layout)
     {
         lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Office", 0, 10);
@@ -125,7 +134,10 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         lblLinkedList = LibraryComponents.LocateAJLabel(this, layout, "Linked List:", 5, 320);
         lblBinaryTree = LibraryComponents.LocateAJLabel(this, layout, "Binary Tree:", 5, 445);
     }
-
+/**
+ * Sets up all labels using the Library Component Method setupLabel()
+ * @see LibraryComponents#setupLabel(javax.swing.JLabel, int, int, java.awt.Color) 
+ */
     private void setupLabels()
     {
        LibraryComponents.setupLabel(lblTitle, 805, 60, guiColor);
@@ -139,7 +151,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     }
 
 
-
+/**
+ * Sets up all buttons using the LibraryComponents please see
+ * @see LibraryComponents#LocateAJButton(javax.swing.JFrame, java.awt.event.ActionListener, javax.swing.SpringLayout, java.lang.String, int, int, int, int) 
+ * @param layout    the SpringLayout used
+ */
     private void displayButtons(SpringLayout layout)
     {
         btnPreOrderDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 5, 610, 75, 35);
@@ -153,9 +169,14 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         btnSortVehicleNumber = LibraryComponents.LocateAJButton(this, this, layout, "Vehicle #", 234, 288, 90, 25);
         btnSortVelocity = LibraryComponents.LocateAJButton(this, this, layout, "Velocity", 324, 288, 80, 25);
         btnBinaryTreeDisplay = LibraryComponents.LocateAJButton(this, this, layout, "Display", 715, 441, 75, 25);
-        btnTestConnection = LibraryComponents.LocateAJButton(this, this, layout, "Test", 500, 300, 75, 35);
+        //btnTestConnection = LibraryComponents.LocateAJButton(this, this, layout, "Test", 500, 300, 75, 35);
     }
 
+    /**
+     * Purpose: Setup for JTextArea
+     * @see LibraryComponents#LocateAJTextArea(javax.swing.JFrame, javax.swing.SpringLayout, javax.swing.JTextArea, int, int, int, int)
+     * @param layout 
+     */
     private void displayTextFields(SpringLayout layout)
     {
         txaLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txaLinkedList, 5, 340, 5, 87);
@@ -164,7 +185,6 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
     /**
      * Method for setting up and displaying JTable to Hold incoming data.
-     *
      * @param layout spring layout
      *
      */
@@ -263,61 +283,87 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource() == btnTestConnection)
-        {
-            String host = JOptionPane.showInputDialog("Enter Server IP");
-            connect(host, port);
-            openStations(host);
-        }
+        
+        
+        
         if (e.getSource() == btnSortLocation)
         {
-            tblTrafficData.setModel(new MyModel(bubbleSort(trafficData), columnNames));
-            displayArrayToConsole(trafficData);
+            
+            //sort the trafficdata
+            ArrayList<TrafficEntry> sortedList = bubbleSort(trafficData);
+            //set the new sorted list into the Table
+            tblTrafficData.setModel(new MyModel(sortedList, columnNames));
+            //set the model back to the original so that we can add new entries
+            tblTrafficData.setModel(trafficModel);
+            //display the data to the console
+            //displayArrayToConsole(trafficData);
         }
         if (e.getSource() == btnSortVehicleNumber)
         {
             tblTrafficData.setModel(new MyModel(selectionSort(trafficData), columnNames));
-            displayArrayToConsole(trafficData);
+            tblTrafficData.setModel(trafficModel);
+            //displayArrayToConsole(trafficData);
         }
         if (e.getSource() == btnSortVelocity)
         {
-            
+            for (TrafficEntry entry : trafficData){
+                System.out.print(entry.avgVelocity + ", ");
+            }
             tblTrafficData.setModel(new MyModel(QuickSort(trafficData, 0, trafficData.size()), columnNames));
+            tblTrafficData.setModel(trafficModel);
+            //displayArrayToConsole(trafficData);
+            
         }
         if (e.getSource() == btnInOrderDisplay)
         {
             txaBinaryTreeList.setText("");
-            ArrayList temp = new ArrayList();
+            txaBinaryTreeList.append("Total Number Of Vehicles: ");
+            ArrayList<TrafficEntry> temp = new ArrayList<TrafficEntry>();
             trafficTree.inOrderTraverseTree(trafficTree.root, temp);
+                      
             for (int i = 0; i < temp.size(); i++)
             {
                 txaBinaryTreeList.append("[");
-                txaBinaryTreeList.append(temp.get(i).toString());
-                txaBinaryTreeList.append("] ");
+                txaBinaryTreeList.append(String.valueOf(temp.get(i).totalNumberOfVehicles));
+                txaBinaryTreeList.append("]");
+                if (i < temp.size()-1)
+                {
+                    txaBinaryTreeList.append(", ");
+                }
             }
         }
         if (e.getSource() == btnPreOrderDisplay)
         {
             txaBinaryTreeList.setText("");
-            ArrayList temp = new ArrayList();
+            txaBinaryTreeList.append("Total Number Of Vehicles: ");
+            ArrayList<TrafficEntry> temp = new ArrayList<TrafficEntry>();
             trafficTree.preorderTraverseTree(trafficTree.root, temp);
             for (int i = 0; i < temp.size(); i++)
             {
                 txaBinaryTreeList.append("[");
-                txaBinaryTreeList.append(temp.get(i).toString());
-                txaBinaryTreeList.append("] ");
+                txaBinaryTreeList.append(String.valueOf(temp.get(i).totalNumberOfVehicles));
+                txaBinaryTreeList.append("]");
+                if (i < temp.size()-1)
+                {
+                    txaBinaryTreeList.append(", ");
+                }
             }
         }
         if (e.getSource() == btnPostOrderDisplay)
         {
             txaBinaryTreeList.setText("");
-            ArrayList temp = new ArrayList();
+            txaBinaryTreeList.append("Total Number Of Vehicles: ");
+            ArrayList<TrafficEntry> temp = new ArrayList<TrafficEntry>();
             trafficTree.preorderTraverseTree(trafficTree.root, temp);
             for (int i = 0; i < temp.size(); i++)
             {
                 txaBinaryTreeList.append("[");
-                txaBinaryTreeList.append(temp.get(i).toString());
-                txaBinaryTreeList.append("] ");
+                txaBinaryTreeList.append(String.valueOf(temp.get(i).totalNumberOfVehicles));
+                txaBinaryTreeList.append("]");
+                if (i < temp.size()-1)
+                {
+                    txaBinaryTreeList.append(", ");
+                }
             }
         }
         if (e.getSource() == btnExit)
@@ -388,23 +434,23 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
             //sets random entry (pivot for sort)
             Random rn = new Random();
             int pivot = entry.get(rn.nextInt(size) + l).avgVelocity;
-            // System.out.println(pivot);
+             System.out.println("\n" + pivot);
             while (l < r)
             {
                 while (entry.get(r).avgVelocity > pivot && r > l)
                 {
-                    // System.out.println(entry.get(r).avgVelocity + " > " + pivot + " & " + r + " > " + l);
+                     System.out.println(entry.get(r).avgVelocity + " > " + pivot + " & " + r + " > " + l);
                     r--;
                 }
                 while (entry.get(l).avgVelocity < pivot && l <= r)
                 {
-                // System.out.println(entry.get(l).avgVelocity  + " < " + pivot + " & " + l + " <= " + r);
+                 System.out.println(entry.get(l).avgVelocity  + " < " + pivot + " & " + l + " <= " + r);
                     l++;
                 }
                 if (l < r)
                 {
                     TrafficEntry temp = entry.get(l);
-                    //  System.out.print("swapping entry " + l + " with entry " + "" + r + "\n");
+                      System.out.print("swapping entry " + l + " with entry " + "" + r + "\n");
                     entry.set(l, entry.get(r));
                     entry.set(r, temp);
                     l++;
@@ -455,6 +501,43 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 //<editor-fold defaultstate="collapsed" desc="Server Connection">
     
     /**
+     * Will ask the user to enter the IPAddress that the server will be on and connect
+     * the application and the monitoring stations to the server.
+     */
+    private void getIpAddressForServerAndConnect()
+    {
+
+ 
+        
+        host = JOptionPane.showInputDialog(null, "PLease Enter the IP Adress of Server", "Server Address Input", JOptionPane.INFORMATION_MESSAGE);
+        System.out.println(host);
+        
+        if (host == null){
+            txaInformation.append("Please restart application and enter an IP Address");
+            System.out.println("User Cancelled");
+        }
+        else if (!host.isEmpty())
+        {
+            connect(host, port);
+            openStations(host);
+        }
+    }
+    
+    /**
+     * Opens the Monitoring Stations using the server(host)
+     * @param serverName 
+     */
+    private void openStations(String serverName)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            Monitoring_Station monitor = new Monitoring_Station(serverName);
+            monitor.show();
+        }
+    }
+    
+    
+    /**
      * Connects application to the server
      * @param serverName
      * @param serverPort 
@@ -478,9 +561,11 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         } catch (UnknownHostException uhe)
         {
             System.out.println("Host unknown: " + uhe.getMessage());
+            txaInformation.append("Could Not Connect " + uhe.getMessage());
         } catch (IOException ioe)
         {
             System.out.println("Unexpected exception: " + ioe.getMessage());
+            txaInformation.append("Could Not Connect " + ioe.getMessage());
         }
     }
     
@@ -529,10 +614,13 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     public void receiveObjectFromServer(TrafficEntry entry)
     {
         txaInformation.append("\n");
-        txaInformation.append(entry.convertToString());
+        txaInformation.append("New entry received from Station: "+ entry.stationLocationID);
+        trafficData.add(entry);
+        trafficModel.fireTableDataChanged();
+        //sets focus to the bottom of the table (auto scrolls for each entry the traffic monitor receives)
+        tblTrafficData.scrollRectToVisible(tblTrafficData.getCellRect(tblTrafficData.getRowCount()-1, tblTrafficData.getColumnCount(), true));
     }
 
-    
     
 /**
  * Thread for handling incoming data.
@@ -562,13 +650,5 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
   
 //</editor-fold>
-private void openStations(String serverName)
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            Monitoring_Station monitor = new Monitoring_Station(serverName);
-            monitor.show();
-        }
-    }
-    
+
 }

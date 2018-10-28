@@ -51,13 +51,12 @@ public class Monitoring_Station extends JFrame implements ActionListener
     };
     JLabel[] labels = new JLabel[6];
     JTextField[] textFields = new JTextField[6];
-//    JLabel lblTime, lblLocation, lblNumberOfLanes, lblTotalNumOfVehicles, lblAvgNumOfVehicles, lblAvgVelocity;
-//    JTextField txtTime, txtLocation, txtNumOfLabels, txtTotalNumOfVehicles, txtAvgNumOfVehicles, txtAvgVelocity;
 
     public Monitoring_Station(String serverName)
     {
         monitorNumber++;
         this.setSize(450, 600);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setBackground(new Color(255, 254, 235));
         SpringLayout springLayout = new SpringLayout();
         setLayout(springLayout);
@@ -142,7 +141,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
                         sendObject(entry);
                     } catch (Exception ex)
                     {
-                        System.out.println("Error Error");
+                        System.out.println("Could Not send File: " + ex.getMessage());
                     }
                 }
             } else
@@ -153,6 +152,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
     }
     
     //</editor-fold>
+    
 //<editor-fold defaultstate="collapsed" desc="Methods"> 
     
     //Checks fields for blank space
@@ -217,9 +217,13 @@ public class Monitoring_Station extends JFrame implements ActionListener
         } catch (UnknownHostException uhe)
         {
             System.out.println("Host unknown: " + uhe.getMessage());
+            //closes the monitor if it cannot connect.
+            this.close();
         } catch (IOException ioe)
         {
             System.out.println("Unexpected exception: " + ioe.getMessage());
+            //closes the monitor if it cannot connect.
+            this.close();
         }
     }
     
@@ -244,6 +248,7 @@ public class Monitoring_Station extends JFrame implements ActionListener
         } catch (Exception e)
         {
             System.out.println("Error creating thread on "+ this.getName() + e);
+            this.close();
         }
     }
     

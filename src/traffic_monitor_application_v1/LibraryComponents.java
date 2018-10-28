@@ -20,26 +20,27 @@
 package traffic_monitor_application_v1;
 
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import javax.swing.border.LineBorder;
 
 
 public class LibraryComponents
 {
     
-    /** --------------------------------------------------------
-    * Purpose: Locate a single JLabel within the JFrame.
-    * @param   Layout_manager, JLabel_Caption, Width, X_position, Y_Position
-    * @returns The JLabel.
-    * ----------------------------------------------------------
-    */
+    /**
+     * Purpose: Locate a single JLabel within the JFrame.
+     * @param myJFrame
+     * @param myJLabelLayout
+     * @param JLabelCaption
+     * @param x
+     * @param y
+     * @return 
+     */
     public static JLabel LocateAJLabel(JFrame myJFrame, SpringLayout myJLabelLayout, String JLabelCaption, int x, int y)
     {
 	// Instantiate the JLabel
@@ -56,6 +57,7 @@ public class LibraryComponents
    
         
     /**
+     * Purpose: Locate a single JTextField within the JFrame.
      * @param myJFrame - JFrame to implement into
      * @param myKeyLstnr - Key Listener
      * @param myJTextFieldLayout - SpringLayout
@@ -76,12 +78,18 @@ public class LibraryComponents
     }
 
         
-    /** --------------------------------------------------------
-    * Purpose: Locate a single JButton within the JFrame.
-    * @param   Layout_manager, JButton_name, JButton_caption, X_position, Y_Position, Width, Height
-    * @returns The JButton.
-    * ----------------------------------------------------------
-    */
+    /**
+     * Purpose: Locate a single JButton within the JFrame.
+     * @param myJFrame
+     * @param myActnLstnr
+     * @param myJButtonLayout
+     * @param JButtonCaption
+     * @param x - Pixels from the WEST side of the Frame
+     * @param y - Pixels from the NORTH side of the Frame
+     * @param w - Width
+     * @param h - Height
+     * @return JButton
+     */
     public static JButton LocateAJButton(JFrame myJFrame, ActionListener myActnLstnr, SpringLayout myJButtonLayout, String  JButtonCaption, int x, int y, int w, int h)
     {    
         JButton myJButton = new JButton(JButtonCaption);
@@ -94,12 +102,17 @@ public class LibraryComponents
     }
 
     
-    /** --------------------------------------------------------
-    * Purpose: Locate a single JTextArea within the JFrame.
-    * @param   Layout_manager, JTextArea_name, X_position, Y_Position, Width, Height
-    * @returns The JTextArea.
-    * ----------------------------------------------------------
-    */
+    /**
+     *  Purpose: Locate a single JTextArea within the JFrame.
+     * @param myJFrame
+     * @param myLayout
+     * @param myJTextArea
+     * @param x - Pixels from the WEST side of the Frame
+     * @param y - Pixels from the NORTH side of the Frame
+     * @param w - Width
+     * @param h - Height
+     * @return JTextArea.
+     */
     public static JTextArea LocateAJTextArea(JFrame myJFrame, SpringLayout myLayout, JTextArea myJTextArea, int x, int y, int w, int h)
     {    
         
@@ -115,15 +128,14 @@ public class LibraryComponents
         
         return myJTextArea;
     }
-//    public static JPanel LocateAJPanel(JFrame myJFrame, SpringLayout myLayout, JPanel myJPanel){
-//            myJPanel = new JPanel();
-//            
-//            myJFrame.add(myJPanel);
-//            return myJPanel;
-//        
-//    }
 
-
+    /**
+     * Purpose: Setup for label size and color
+     * @param label - Label to be changed
+     * @param x - Width of border area
+     * @param y - Height of Border Area
+     * @param color - Color of the Label
+     */
     public static void setupLabel(JLabel label, int x, int y, Color color)
     {
         label.setBorder(new LineBorder(Color.BLACK));
