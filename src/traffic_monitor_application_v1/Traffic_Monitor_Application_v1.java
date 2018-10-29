@@ -26,12 +26,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultCaret;
 import javax.swing.JOptionPane;
+import org.apache.commons.lang3.StringUtils;
 
 
 
@@ -108,6 +110,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayLinkedList(Dlist);
         setupBinaryTree(trafficData);
         getIpAddressForServerAndConnect();
+//        loadTest(trafficData);
+        hashExample();
         
         
         
@@ -209,6 +213,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         trafficData.add(new TrafficEntry("10:00:00", 1, 3, 24, 8, 80));
         trafficData.add(new TrafficEntry("10:00:00", 2, 2, 14, 7, 80));
         
+        
         // constructor of JTable model
         trafficModel = new MyModel(trafficData, columnNames);
         // Create a new table instance
@@ -306,9 +311,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         }
         if (e.getSource() == btnSortVelocity)
         {
-            for (TrafficEntry entry : trafficData){
-                System.out.print(entry.avgVelocity + ", ");
-            }
+                       
             tblTrafficData.setModel(new MyModel(QuickSort(trafficData, 0, trafficData.size()), columnNames));
             tblTrafficData.setModel(trafficModel);
             //displayArrayToConsole(trafficData);
@@ -426,6 +429,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
     static ArrayList<TrafficEntry> QuickSort(ArrayList<TrafficEntry> entry, int left, int right)
     {
+        
         int l = left;
         int r = right - 1;
         int size = right - left;
@@ -433,27 +437,36 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         {
             //sets random entry (pivot for sort)
             Random rn = new Random();
-            int pivot = entry.get(rn.nextInt(size) + l).avgVelocity;
-             System.out.println("\n" + pivot);
+            int rand = rn.nextInt(size);
+            int pivot = entry.get(rand + l).avgVelocity;
+//             System.out.println("\n new pivot: " + pivot + " index: " + rand);
             while (l < r)
             {
                 while (entry.get(r).avgVelocity > pivot && r > l)
                 {
-                     System.out.println(entry.get(r).avgVelocity + " > " + pivot + " & " + r + " > " + l);
+//                     System.out.println(entry.get(r).avgVelocity + " > " + pivot + " & " + r + " > " + l);
                     r--;
                 }
                 while (entry.get(l).avgVelocity < pivot && l <= r)
                 {
-                 System.out.println(entry.get(l).avgVelocity  + " < " + pivot + " & " + l + " <= " + r);
+//                    System.out.println(StringUtils.join("Index ", l, ": ", entry.get(l).avgVelocity, " < ", pivot, " & ", l, "<= ", r));
                     l++;
                 }
                 if (l < r)
                 {
-                    TrafficEntry temp = entry.get(l);
-                      System.out.print("swapping entry " + l + " with entry " + "" + r + "\n");
+                    TrafficEntry temp = entry.get(l); 
+//                      System.out.print("swapping entry " + l + ": " + entry.get(l).avgVelocity + " with entry " + "" + r + ": " + entry.get(r).avgVelocity + "\n");
+//                      System.out.println(StringUtils.join("swapping entry ", l, ": ", entry.get(l).avgVelocity, " with entry ", "" , r , ": " , entry.get(r).avgVelocity , "\n"));
                     entry.set(l, entry.get(r));
                     entry.set(r, temp);
                     l++;
+//                    System.out.print("New order: ");
+//                    entry.forEach((entry1) ->
+//                    {
+//                        System.out.print(entry1.avgVelocity + ", ");
+//                        
+//                    });
+//                    System.out.println("\n ");
                 }
             }
             QuickSort(entry, left, l);
@@ -651,4 +664,27 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
   
 //</editor-fold>
 
+    private void hashExample()
+    {
+        int hash1 = trafficData.get(0).hashCode();
+        int hash2 = trafficData.get(1).hashCode();
+        System.out.println("Hash1: " + hash1 + " Hash2: "+ hash2);
+        Hashtable entries = new Hashtable();
+        entries.put(trafficData.get(5), trafficData.get(5).avgNumberOfVehicles);
+        System.out.println(entries.get(trafficData.get(5)));
+        
+    }
+    
+    private void loadTest(ArrayList<TrafficEntry> data){
+        
+        
+        Random rand = new Random();
+        for (int i = 0; i < 100000; i++)
+        {
+        data.add(new TrafficEntry(rand.nextInt(24)+":00:00",rand.nextInt(2-1)+1, rand.nextInt(5-1)+1, rand.nextInt(25-1)+1, rand.nextInt(12-1)+1, rand.nextInt(250-25)+25));    
+        }
+        
+        
+        
+    }
 }

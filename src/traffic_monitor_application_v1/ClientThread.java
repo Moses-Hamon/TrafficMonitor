@@ -44,7 +44,7 @@ public class ClientThread extends Thread
      * Constructor creates new Thread using the Socket and ApplicationName Also
      * increments the client number for identification purposes.
      *
-     * @param client
+     * @param client - 
      * @param socket
      * @param name
      */
