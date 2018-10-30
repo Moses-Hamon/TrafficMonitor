@@ -1,7 +1,10 @@
 package traffic_monitor_application_v1;
 
 import com.google.gson.Gson;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,6 +20,7 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Moe
  */
-public class Monitoring_Station extends JFrame implements ActionListener
+public final class Monitoring_Station extends JFrame implements ActionListener
 {
     
     //Socket used to connect to server
@@ -40,11 +44,13 @@ public class Monitoring_Station extends JFrame implements ActionListener
     
     //Global variable for the Thread
     private ClientThread monitorClient;
-    
+    private final Color guiColor = new Color(0, 102, 0);
+    private final Color guiColorPanel = new Color(247,249,241);
     static int monitorNumber = 0;
     String appName = "MonitorStation";
-    JLabel lblTitle, lblStatus;
+    JLabel lblTitle, lblStatus, lblHeading;
     JButton btnSubmit, btnExit;
+    JPanel pnlMain;
     String[] lblHeadings = new String[]
     {
         "Time", "Location", "Number Of Lanes", "Total Number of Vehicles", "Avg Number of Vehicles", "Avg Velocity"
@@ -55,36 +61,57 @@ public class Monitoring_Station extends JFrame implements ActionListener
     public Monitoring_Station(String serverName)
     {
         monitorNumber++;
-        this.setSize(450, 600);
+        this.setSize(375, 450);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setBackground(new Color(255, 254, 235));
         SpringLayout springLayout = new SpringLayout();
+//       
         setLayout(springLayout);
         displayLabels(springLayout);
         displayTextFields(springLayout);
         displayButtons(springLayout);
+
+        setupGuiColour();
         connect(serverName, serverPort);
     }
 //<editor-fold defaultstate="collapsed" desc="Gui">  
+
+    private void setupGuiColour()
+    {
+        LibraryComponents.setupLabel(lblTitle, 375, 60, guiColor);
+        lblTitle.setFont(new Font("Aharoni", Font.PLAIN, 40));
+
+    }
+
+    private void setupMainPanel(SpringLayout layout)
+    {
+        pnlMain = new JPanel(layout);
+        pnlMain.setBackground(guiColorPanel);
+        this.getContentPane().add(pnlMain);
+        layout.putConstraint(SpringLayout.NORTH, pnlMain, 80, SpringLayout.NORTH, this);
+        layout.putConstraint(SpringLayout.WEST, pnlMain, 25, SpringLayout.WEST, this);
+        pnlMain.setPreferredSize(new Dimension(310, 315));
+    }
     void displayLabels(SpringLayout layout)
     {
-        int yPos = 0;
+        int yPos = 80;
         for (int i = 0; i < 6; i++)
         {
             yPos = yPos + 35;
-            labels[i] = LibraryComponents.LocateAJLabel(this, layout, lblHeadings[i], 10, yPos);
+            labels[i] = LibraryComponents.LocateAJLabel(this, layout, lblHeadings[i], 30, yPos);
         }
-        lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Stn " + monitorNumber, 10, 10);
-        lblStatus = LibraryComponents.LocateAJLabel(this, layout, "Status", 10, 250);
+        lblTitle = LibraryComponents.LocateAJLabel(this, layout, "Monitoring Stn " + monitorNumber, 0, 10);
+        lblStatus = LibraryComponents.LocateAJLabel(this, layout, "Status", 30, 325);
+        lblHeading = LibraryComponents.LocateAJLabel(this, layout, "Enter your readings and click Submit", 30, 80);  
     }
 
     private void displayTextFields(SpringLayout springLayout)
     {
-        int yPos = 0;
+        int yPos = 80;
         for (int i = 0; i < textFields.length; i++)
         {
             yPos = yPos + 35;
-            textFields[i] = LibraryComponents.LocateAJTextField(this, null, springLayout, 8, 200, yPos);
+            textFields[i] = LibraryComponents.LocateAJTextField(this, null, springLayout, 8, 220, yPos);
             if (i==0)
             {
                 textFields[i].addMouseListener(new MouseAdapter(){
@@ -103,8 +130,8 @@ public class Monitoring_Station extends JFrame implements ActionListener
     
     private void displayButtons(SpringLayout springLayout)
     {
-        btnSubmit = LibraryComponents.LocateAJButton(this, this, springLayout, "Submit", 10, 350, 125, 40);
-        btnExit = LibraryComponents.LocateAJButton(this, this, springLayout, "Exit", 175, 350, 125, 40);
+        btnSubmit = LibraryComponents.LocateAJButton(this, this, springLayout, "Submit", 30, 350, 125, 40);
+        btnExit = LibraryComponents.LocateAJButton(this, this, springLayout, "Exit", 205, 350, 125, 40);
     }
     //</editor-fold>
     
@@ -325,6 +352,8 @@ public class Monitoring_Station extends JFrame implements ActionListener
      
     
 //</editor-fold>
+
+
 
     
     
