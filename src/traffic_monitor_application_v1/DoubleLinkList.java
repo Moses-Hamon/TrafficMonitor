@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package traffic_monitor_application_v1;
 
 import java.util.Arrays;
@@ -17,7 +12,6 @@ public class DoubleLinkList
     //node class for double linked list
     public static class Node
     {
-
         Node prev;  // previous Node in a doubly-linked list
         Node next;  // next Node in a doubly-linked list
         TrafficEntry trafficEntry;  // data stored in this Node
@@ -116,12 +110,30 @@ public class DoubleLinkList
             {             // list is empty, only header Node
                 return "List Empty";
             }
-            str = "list content = ";
             for (Node current = head.next; current != head && current != null; current = current.next)
             {
-                str = str + " [ " + current.trafficEntry.convertToString() + " ] ";
+                str = " [" + current.trafficEntry.convertToString() + "] " + str;
             }
             return str;
+        }
+        
+        public TrafficEntry searchLinkedList(int value)
+        {
+            if (head.next == head)
+            { // list is empty, only header Node
+                return null;
+            }
+            //for each node in the double linked list
+            for (Node current = head.next; current != head; current = current.next)
+            {
+                //value matches
+                if (current.trafficEntry.totalNumberOfVehicles == value)
+                {
+                    return current.trafficEntry;
+                }
+            }
+            //return null if nothing is found
+            return null;
         }
     }
 
