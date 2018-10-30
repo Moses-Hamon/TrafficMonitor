@@ -19,15 +19,15 @@ import javax.swing.*;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.*;
-import java.io.DataInputStream;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.border.LineBorder;
@@ -42,13 +42,11 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @author Moses
  */
-public class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener, Runnable
+public final class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener, Runnable
 {
     //Connection used for new thread.
     private Socket socket;
     //Data Streams
-    DataOutputStream dataOut;
-    DataInputStream dataIn;
     ObjectInputStream objectIn;
     ObjectOutputStream objectOut;
     
@@ -70,7 +68,8 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private JTable tblTrafficData;
     private MyModel trafficModel;
     private JOptionPane configIpAddress;
-    private Color guiColor = new Color(0, 102, 0);
+    private final Color guiColor = new Color(0, 102, 0);
+    private final Color guiColorPanel = new Color(247,249,241);
     private ArrayList<TrafficEntry> trafficData;
     DoubleLinkList.DList Dlist;
     BinaryTree trafficTree;
@@ -110,8 +109,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         displayLinkedList(Dlist);
         setupBinaryTree(trafficData);
         getIpAddressForServerAndConnect();
-//        loadTest(trafficData);
-        hashExample();
+        loadTest(trafficData);
         
         
         
@@ -245,6 +243,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     private void displayIncomingInformation(SpringLayout layout)
     {
         txaInformation = LibraryComponents.LocateAJTextArea(this, layout, txaInformation, 350, 150, 5, 5);
+        txaInformation.setBackground(guiColorPanel);
         txaInformation.setEditable(false);
         //Alows the info screen to scroll automatically
         DefaultCaret caret = (DefaultCaret)txaInformation.getCaret();
@@ -319,6 +318,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         }
         if (e.getSource() == btnInOrderDisplay)
         {
+            setupBinaryTree(trafficData);
             txaBinaryTreeList.setText("");
             txaBinaryTreeList.append("Total Number Of Vehicles: ");
             ArrayList<TrafficEntry> temp = new ArrayList<TrafficEntry>();
@@ -335,11 +335,21 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
                 }
             }
         }
+        
+        if (e.getSource() == btnInOrderSave)
+        {
+            setupBinaryTree(trafficData);
+            ArrayList<TrafficEntry> temp = new ArrayList<TrafficEntry>();
+            trafficTree.inOrderTraverseTree(trafficTree.root, temp);
+            writeSortedArrayListToFile(temp, "InOrder");
+        }
+        
         if (e.getSource() == btnPreOrderDisplay)
         {
+            setupBinaryTree(trafficData);
             txaBinaryTreeList.setText("");
             txaBinaryTreeList.append("Total Number Of Vehicles: ");
-            ArrayList<TrafficEntry> temp = new ArrayList<TrafficEntry>();
+            ArrayList<TrafficEntry> temp = new ArrayList<>();
             trafficTree.preorderTraverseTree(trafficTree.root, temp);
             for (int i = 0; i < temp.size(); i++)
             {
@@ -352,11 +362,21 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
                 }
             }
         }
+        
+        if (e.getSource() == btnPreOrderSave)
+        {
+            setupBinaryTree(trafficData);
+            ArrayList<TrafficEntry> temp = new ArrayList<>();
+            trafficTree.preorderTraverseTree(trafficTree.root, temp);
+            writeSortedArrayListToFile(temp, "PreOrder");
+        }
+        
         if (e.getSource() == btnPostOrderDisplay)
         {
+            setupBinaryTree(trafficData);
             txaBinaryTreeList.setText("");
             txaBinaryTreeList.append("Total Number Of Vehicles: ");
-            ArrayList<TrafficEntry> temp = new ArrayList<TrafficEntry>();
+            ArrayList<TrafficEntry> temp = new ArrayList<>();
             trafficTree.preorderTraverseTree(trafficTree.root, temp);
             for (int i = 0; i < temp.size(); i++)
             {
@@ -369,6 +389,15 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
                 }
             }
         }
+        
+        if (e.getSource() == btnPostOrderSave)
+        {
+            setupBinaryTree(trafficData);
+            ArrayList<TrafficEntry> temp = new ArrayList<>();
+            trafficTree.postOrderTraverseTree(trafficTree.root, temp);
+            writeSortedArrayListToFile(temp, "PostOrder");
+        }
+
         if (e.getSource() == btnExit)
         {
             System.exit(0);
@@ -477,7 +506,34 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
     //</editor-fold>
     
 //<editor-fold defaultstate="collapsed" desc="Data Management">
-    
+    /**
+     * Prints the sorted list into a text file and provides hashes along with values of the entry
+     * @param entryList - Sorted list to be printed
+     * @param title - sortname for the list
+     */
+    private void writeSortedArrayListToFile(ArrayList<TrafficEntry> entryList, String title){
+        String hash = "hash: ";
+        BufferedWriter writer = null;
+        try
+        {
+            writer = new BufferedWriter(new FileWriter(title + ".txt"));
+            writer.write(title + " values for #OfVehicles");
+            writer.newLine();
+            
+            for (TrafficEntry entry : entryList)
+            {
+                writer.write(hash + entry.hashCode() + " Value:  " + entry.totalNumberOfVehicles);
+                writer.newLine();
+            }
+            writer.write("End of List...............");
+            writer.close();
+
+        } catch (IOException ex)
+        {
+            System.out.println("Could not be saved: " + ex);
+
+        }
+    }
     /**
      * Code used to setup the double linked list.
      * @param entry 
@@ -666,12 +722,7 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
 
     private void hashExample()
     {
-        int hash1 = trafficData.get(0).hashCode();
-        int hash2 = trafficData.get(1).hashCode();
-        System.out.println("Hash1: " + hash1 + " Hash2: "+ hash2);
-        Hashtable entries = new Hashtable();
-        entries.put(trafficData.get(5), trafficData.get(5).avgNumberOfVehicles);
-        System.out.println(entries.get(trafficData.get(5)));
+        
         
     }
     
@@ -679,9 +730,9 @@ public class Traffic_Monitor_Application_v1 extends JFrame implements ActionList
         
         
         Random rand = new Random();
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < 50; i++)
         {
-        data.add(new TrafficEntry(rand.nextInt(24)+":00:00",rand.nextInt(2-1)+1, rand.nextInt(5-1)+1, rand.nextInt(25-1)+1, rand.nextInt(12-1)+1, rand.nextInt(250-25)+25));    
+        data.add(new TrafficEntry(rand.nextInt(24)+":00:00",rand.nextInt(2)+1, rand.nextInt(5-1)+1, rand.nextInt(25-1)+1, rand.nextInt(12-1)+1, rand.nextInt(250-25)+25));    
         }
         
         
