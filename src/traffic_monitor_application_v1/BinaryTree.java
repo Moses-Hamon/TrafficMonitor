@@ -99,9 +99,16 @@ public class BinaryTree
 
     }
 
-    // All nodes are visited in ascending order
-    // Recursion is used to go to one node and
-    // then go to its child nodes and so forth
+
+
+    /**
+     * All nodes are visited in ascending order
+     * Recursion is used to go to one node and
+     * then go to its child nodes and so forth
+     * @param focusNode
+     * @param temp
+     * @return
+     */
     public ArrayList<TrafficEntry> inOrderTraverseTree(BTNode focusNode, ArrayList<TrafficEntry> temp)
     {
         if (focusNode != null)
@@ -113,43 +120,32 @@ public class BinaryTree
             temp.add(focusNode.entry);
             // Traverse the right node
             inOrderTraverseTree(focusNode.rightChild, temp);
-
         }
-        
         return temp;
     }
 
     public ArrayList<TrafficEntry> preorderTraverseTree(BTNode focusNode, ArrayList<TrafficEntry> temp)
     {
-
         if (focusNode != null)
         {
-
             System.out.println(focusNode.entry.convertToString());
             temp.add(focusNode.entry);
-
             preorderTraverseTree(focusNode.leftChild, temp);
             preorderTraverseTree(focusNode.rightChild, temp);
-
         }
 return temp;
     }
 
     public ArrayList<TrafficEntry> postOrderTraverseTree(BTNode focusNode, ArrayList<TrafficEntry> temp)
     {
-
         if (focusNode != null)
         {
-
             postOrderTraverseTree(focusNode.leftChild, temp);
             postOrderTraverseTree(focusNode.rightChild, temp);
-
             System.out.println(focusNode.entry.convertToString());
             temp.add(focusNode.entry);
-
         }
         return temp;
-
     }
 
     public BTNode findNode(int key)
