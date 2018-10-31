@@ -71,7 +71,7 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
     private final Color guiColor = new Color(0, 102, 0);
     private final Color guiColorPanel = new Color(247,249,241);
     private ArrayList<TrafficEntry> trafficData;
-    DoubleLinkList.DList Dlist;
+    DoubleLinkList.DList dList;
     BinaryTree trafficTree;
 
     String columnNames[] =
@@ -106,8 +106,9 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
         displayIncomingInformation(TrafficLayout);
         displayArrayToConsole(trafficData);
         setupDoubleLinkedList(trafficData);
-        displayLinkedList(Dlist);
+        displayLinkedList(dList);
         setupBinaryTree(trafficData);
+        
         getIpAddressForServerAndConnect();
         loadTest(trafficData);
         
@@ -181,8 +182,8 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
      */
     private void displayTextFields(SpringLayout layout)
     {
-        txaLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txaLinkedList, 5, 340, 5, 87);
-        txaBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txaBinaryTreeList, 5, 465, 5, 87);
+        txaLinkedList = LibraryComponents.LocateAJTextArea(this, layout, txaLinkedList, 5, 340, 86, 5);
+        txaBinaryTreeList = LibraryComponents.LocateAJTextArea(this, layout, txaBinaryTreeList, 5, 465, 87, 5);
     }
 
     /**
@@ -278,6 +279,7 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
     
     public void displayLinkedList(DoubleLinkList.DList Dlist)
     {
+        txaLinkedList.setText("");
         txaLinkedList.append(Dlist.convertToString());
     }
    
@@ -432,7 +434,6 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
 
     public static ArrayList<TrafficEntry> selectionSort(ArrayList<TrafficEntry> entry)
     {
-
         //for each traffic entry in the array
         for (int i = 0; i < entry.size(); i++)
         {
@@ -446,12 +447,12 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
                 }
                 //swap the minimum entry with first entry
             }
-              //Move miniumum entry into temp
-                TrafficEntry temp = entry.get(minIndex);
-                //place the first entry into Minimum's spot in the Arraylist
-                entry.set(minIndex, entry.get(i));
-                //place temp into first index
-                entry.set(i, temp);
+            //Move miniumum entry into temp
+            TrafficEntry temp = entry.get(minIndex);
+            //place the first entry into Minimum's spot in the Arraylist
+            entry.set(minIndex, entry.get(i));
+            //place temp into first index
+            entry.set(i, temp);
         }
         return entry;
     }
@@ -540,16 +541,16 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
      */
     public void setupDoubleLinkedList(ArrayList<TrafficEntry> entry)
     {
-        Dlist = new DoubleLinkList.DList(); 
+        dList = new DoubleLinkList.DList(); 
 
         for (int i = 0; i < entry.size(); i++)
         {
             TrafficEntry temp = entry.get(i); //grab first Traffic Entry Object
-            Dlist.head.append(new DoubleLinkList.Node(temp));
+            dList.head.append(new DoubleLinkList.Node(temp));
             
         }
         System.out.println("-----------------------------------------------------");
-        Dlist.print();
+        dList.print();
     }
     /**
      * Used to setup Binary Tree for storing Traffic Entry Data.
@@ -575,10 +576,8 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
      */
     private void getIpAddressForServerAndConnect()
     {
-
- 
-        
-        host = JOptionPane.showInputDialog(null, "PLease Enter the IP Adress of Server", "Server Address Input", JOptionPane.INFORMATION_MESSAGE);
+//        host = JOptionPane.showInputDialog(this, "PLease Enter the IP Adress of Server", "Server Address Input", JOptionPane.INFORMATION_MESSAGE);
+        host = JOptionPane.showInputDialog(this, "Please enter IP address of Server", "localhost");
         System.out.println(host);
         
         if (host == null){
@@ -688,6 +687,9 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
         trafficModel.fireTableDataChanged();
         //sets focus to the bottom of the table (auto scrolls for each entry the traffic monitor receives)
         tblTrafficData.scrollRectToVisible(tblTrafficData.getCellRect(tblTrafficData.getRowCount()-1, tblTrafficData.getColumnCount(), true));
+        
+        dList.head.append(new DoubleLinkList.Node(entry));
+        displayLinkedList(dList);
     }
 
     
@@ -720,20 +722,18 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
   
 //</editor-fold>
 
-    private void hashExample()
-    {
-        
-        
-    }
-    
+   
     private void loadTest(ArrayList<TrafficEntry> data){
         
         
         Random rand = new Random();
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 100000; i++)
         {
-        data.add(new TrafficEntry(rand.nextInt(24)+":00:00",rand.nextInt(2)+1, rand.nextInt(5-1)+1, rand.nextInt(25-1)+1, rand.nextInt(12-1)+1, rand.nextInt(250-25)+25));    
+            TrafficEntry entry = new TrafficEntry(rand.nextInt(24)+":00:00",rand.nextInt(2)+1, rand.nextInt(5-1)+1, rand.nextInt(25-1)+1, rand.nextInt(12-1)+1, rand.nextInt(250-25)+25);
+        data.add(entry);
+//        dList.head.append(new DoubleLinkList.Node(entry));
         }
+        displayLinkedList(dList);
         
         
         

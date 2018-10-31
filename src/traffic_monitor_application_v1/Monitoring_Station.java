@@ -326,9 +326,12 @@ public final class Monitoring_Station extends JFrame implements ActionListener
     {
         try
         {
+            //new Gson instance
             Gson gson = new Gson();
+            //Converts entry into Json String
             String convertedTrafficEntry = gson.toJson(entry);
             System.out.println(convertedTrafficEntry);
+            //Send Json to server
             objectOut.writeObject(convertedTrafficEntry);
             lblStatus.setText("Entry Successfully Sent!!");
         } catch (IOException e)

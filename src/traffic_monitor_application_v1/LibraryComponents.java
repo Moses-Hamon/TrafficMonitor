@@ -24,7 +24,7 @@ import java.awt.Color;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.Font; 
 import java.awt.event.KeyListener;
 import javax.swing.border.LineBorder;
 
@@ -113,7 +113,7 @@ public class LibraryComponents
      * @param h - Height
      * @return JTextArea.
      */
-    public static JTextArea LocateAJTextArea(JFrame myJFrame, SpringLayout myLayout, JTextArea myJTextArea, int x, int y, int w, int h)
+    public static JTextArea LocateAJTextArea(JFrame myJFrame, SpringLayout myLayout, JTextArea myJTextArea, int x, int y, int h, int w)
     {    
         
         myJTextArea = new JTextArea(w,h);
