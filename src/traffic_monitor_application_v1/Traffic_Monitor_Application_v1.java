@@ -39,8 +39,21 @@ import org.apache.commons.lang3.StringUtils;
 
 
 /**
- *
+ * Program Traffic Monitor Application
+ * 
  * @author Moses
+ * 
+ * @version 1.1
+ * 
+ * Due_date 6/11/2018
+ * 
+ * Function To provide automation of recording and storing traffic data entries
+ * 
+ * Input Receives input from Traffic Monitoring Stations (JSON formatted objects)
+ * 
+ * Output Outputs the data into a single text FILE.
+ * 
+ * 
  */
 public final class Traffic_Monitor_Application_v1 extends JFrame implements ActionListener, Runnable
 {
@@ -49,17 +62,11 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
     //Data Streams
     ObjectInputStream objectIn;
     ObjectOutputStream objectOut;
-    
-    
     //host and ports for server connection
     private String host;
     private final int port = 5000;
-    // The streams we communicate to the server; these come
-    // from the socket
-    private ClientThread clientThread;
-    String appName = "Traffic_Application";
 
-    
+    //gui components
     private JButton btnSortLocation, btnSortVehicleNumber, btnSortVelocity, btnExit, btnPreOrderDisplay,
             btnPreOrderSave, btnInOrderDisplay, btnInOrderSave, btnPostOrderDisplay, btnPostOrderSave, btnBinaryTreeDisplay, btnTestConnection;
     private JTextArea txaLinkedList, txaBinaryTreeList, txaInformation;
@@ -73,16 +80,21 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
     private ArrayList<TrafficEntry> trafficData;
     DoubleLinkList.DList dList;
     BinaryTree trafficTree;
-
+    
     String columnNames[] =
     {
         "Time", "Location", "Av.Vehicle#", "Av.Velocity"
     };
 
+    /**
+     * Main entry point of application
+     *
+     * @param args
+     */
     public static void main(String[] args)
     {
         JFrame myFrame = new Traffic_Monitor_Application_v1();
-        
+
         myFrame.setSize(800, 680);
         myFrame.getContentPane().setBackground(new Color(255, 254, 235)); //Sets Jframe Background Color
         myFrame.setLocationRelativeTo(null); //open in the middle of the screen. 
@@ -91,6 +103,10 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Constructor of Application (will run when instantiating the application.
+     * Calls methods that sets up all GUI and Data Components.
+     */
     public Traffic_Monitor_Application_v1()
     {
         setTitle("Traffic Monitor Application");
@@ -108,17 +124,11 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
         setupDoubleLinkedList(trafficData);
         displayLinkedList(dList);
         setupBinaryTree(trafficData);
-        
+
         getIpAddressForServerAndConnect();
-        loadTest(trafficData);
-        
-        
-        
-        
-        
-     
-        
+        loadTest(trafficData, 1000);
     }
+    
 //<editor-fold defaultstate="collapsed" desc="Display GUI">
 
     /**
@@ -268,6 +278,10 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
         pnlInformation.add(btnExit, BorderLayout.SOUTH);
     }
 
+    /**
+     * Method for printing a list of the current data to the console for debugging purposes
+     * @param entry - ArrayList of traffic entry objects
+     */
     public void displayArrayToConsole(ArrayList<TrafficEntry> entry)
     {
         for (int i = 0; i < entry.size(); i++)
@@ -277,6 +291,10 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
         System.out.println("-----------------------------------------------------");
     }
     
+    /**
+     * Prints out the entire double linked list displaying all the entries stored within.
+     * @param Dlist - Double linked list to be printed to the text area
+     */
     public void displayLinkedList(DoubleLinkList.DList Dlist)
     {
         txaLinkedList.setText("");
@@ -286,6 +304,11 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
     //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Action and Key Listeners">  
+
+    /**
+     * Action Events for buttons
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -409,6 +432,13 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
     //</editor-fold>
 
 //<editor-fold defaultstate="collapsed" desc="Sorting Functions">
+
+    /**
+     * Bubble sort algorithm implemented for sorting ArrayList of Traffic entry objects
+     * 
+     * @param entry - The ArrayList of traffic entry objects.
+     * @return - returns an ArrayList of entries sorted by Station Location Id
+     */
     public static ArrayList<TrafficEntry> bubbleSort(ArrayList<TrafficEntry> entry)
     {
         //for each Traffic Entry
@@ -432,6 +462,11 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
         return entry;
     }
 
+    /**
+     * Selection sort algorithm implemented for sorting ArrayList of Traffic entry objects
+     * @param entry - The ArrayList of traffic entry objects.
+     * @return - returns an ArrayList of entries sorted by average number of vehicles.
+     */
     public static ArrayList<TrafficEntry> selectionSort(ArrayList<TrafficEntry> entry)
     {
         //for each traffic entry in the array
@@ -679,6 +714,14 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
         }
     }
 
+    /**
+     *Method used for handling a traffic entry received for the server
+     * Updates the information area
+     * Adds entry and updates table 
+     * Adds new entry to Double Linked list
+     * 
+     * @param entry
+     */
     public void receiveObjectFromServer(TrafficEntry entry)
     {
         txaInformation.append("\n");
@@ -722,16 +765,17 @@ public final class Traffic_Monitor_Application_v1 extends JFrame implements Acti
   
 //</editor-fold>
 
-   
-    private void loadTest(ArrayList<TrafficEntry> data){
-        
-        
+   /**
+    * Adds in 1000 entries
+    * @param data - Traffic Array List of traffic entry objects.
+    */
+    private void loadTest(ArrayList<TrafficEntry> data, int numOfEntries){
         Random rand = new Random();
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < numOfEntries; i++)
         {
             TrafficEntry entry = new TrafficEntry(rand.nextInt(24)+":00:00",rand.nextInt(2)+1, rand.nextInt(5-1)+1, rand.nextInt(25-1)+1, rand.nextInt(12-1)+1, rand.nextInt(250-25)+25);
         data.add(entry);
-//        dList.head.append(new DoubleLinkList.Node(entry));
+        dList.head.append(new DoubleLinkList.Node(entry));
         }
         displayLinkedList(dList);
         
